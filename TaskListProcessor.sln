@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34302.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskListProcessing", "src\TaskListProcessor\TaskListProcessing.csproj", "{D8147420-383F-4077-A7ED-A30006818F2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityWeatherService", "src\CityWeatherService\CityWeatherService.csproj", "{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityWeatherService.Tests", "tests\CityWeatherService.Tests\CityWeatherService.Tests.csproj", "{A908DAFE-DF36-4780-B360-F35AC9201168}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4307C73D-C201-415F-99A4-279B5F8C95A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9BAB8D29-69A3-4B91-9259-575C977B54DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListProcessor.Console", "examples\TaskListProcessor.Console\TaskListProcessor.Console.csproj", "{D018A326-13F7-4CE7-B6E8-1640EDFBF317}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{D9A4BD30-6D83-41BF-82A6-8DDE3568D24F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8147420-383F-4077-A7ED-A30006818F2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8147420-383F-4077-A7ED-A30006818F2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8147420-383F-4077-A7ED-A30006818F2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8147420-383F-4077-A7ED-A30006818F2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A908DAFE-DF36-4780-B360-F35AC9201168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A908DAFE-DF36-4780-B360-F35AC9201168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A908DAFE-DF36-4780-B360-F35AC9201168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A908DAFE-DF36-4780-B360-F35AC9201168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D018A326-13F7-4CE7-B6E8-1640EDFBF317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D018A326-13F7-4CE7-B6E8-1640EDFBF317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D018A326-13F7-4CE7-B6E8-1640EDFBF317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D018A326-13F7-4CE7-B6E8-1640EDFBF317}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8147420-383F-4077-A7ED-A30006818F2B} = {4307C73D-C201-415F-99A4-279B5F8C95A8}
+		{BACF5D40-FBB8-4AC2-A3B6-AA5B256F5A1B} = {4307C73D-C201-415F-99A4-279B5F8C95A8}
+		{A908DAFE-DF36-4780-B360-F35AC9201168} = {9BAB8D29-69A3-4B91-9259-575C977B54DF}
+		{D018A326-13F7-4CE7-B6E8-1640EDFBF317} = {D9A4BD30-6D83-41BF-82A6-8DDE3568D24F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6398EAC7-F409-4736-BF9C-5B949884E55C}
+	EndGlobalSection
+EndGlobal
