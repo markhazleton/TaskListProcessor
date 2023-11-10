@@ -78,7 +78,7 @@ public class CityThingsToDoService
     /// <param name="city">The name of the city.</param>
     /// <returns>A task that represents the asynchronous operation and contains the list of activities for the city.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the city argument is null or empty.</exception>
-    public async Task<List<Activity>> GetThingsToDoAsync(string city)
+    public async Task<IEnumerable<Activity>> GetThingsToDoAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city))
         {

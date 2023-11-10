@@ -21,7 +21,7 @@ public class CityThingsToDoServiceTests
 
         // Assert
         Assert.IsNotNull(activities);
-        Assert.IsTrue(activities.Any(), "Expected to find activities for Rome, but found none.");
+        Assert.IsTrue(activities.Any());
     }
 
     [TestMethod]

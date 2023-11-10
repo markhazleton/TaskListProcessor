@@ -1,6 +1,7 @@
 ﻿using CityThingsToDo;
 using CityWeatherService;
 using Microsoft.Extensions.Logging;
+using TaskListProcessing;
 using static CityThingsToDo.CityThingsToDoService;
 using static CityWeatherService.WeatherService;
 
@@ -10,7 +11,7 @@ var logger = loggerFactory.CreateLogger<Program>();
 
 var thingsToDoService = new CityThingsToDoService();
 var weatherService = new WeatherService();
-var cityDashboards = new TaskListProcessing.TaskListProcessor();
+var cityDashboards = new TaskListProcessorGeneric();
 var cities = new List<string> { "London", "Paris", "New York", "Tokyo", "Sydney", "Chicago", "Dallas", "Wichita" };
 var tasks = new List<Task>();
 foreach (var city in cities)
@@ -18,41 +19,49 @@ foreach (var city in cities)
     tasks.Add(cityDashboards.GetTaskResultAsync($"{city} Weather", weatherService.GetWeather(city)));
     tasks.Add(cityDashboards.GetTaskResultAsync($"{city} Things To Do", thingsToDoService.GetThingsToDoAsync(city)));
 }
-await TaskListProcessing.TaskListProcessor.WhenAllWithLoggingAsync(tasks, logger);
+await cityDashboards.WhenAllWithLoggingAsync(tasks, logger);
 
 Console.WriteLine("All tasks completed\n\n");
 Console.WriteLine("Telemetry:");
-foreach (var cityTelemetry in cityDashboards.Telemetry.OrderBy(o=>o))
+foreach (var cityTelemetry in cityDashboards.Telemetry.OrderBy(o => o))
 {
     Console.WriteLine(cityTelemetry);
 }
 
 Console.WriteLine("\n\nResults:");
-foreach (var city in cityDashboards.TaskResults.OrderBy(o=>o.Name))
+foreach (var city in cityDashboards.TaskResults.OrderBy(o => o.Name))
 {
     Console.WriteLine($"{city.Name}:");
-    if (city.Data is not null)
+
+    if (city is TaskResult<IEnumerable<WeatherForecast>> cityWeather)
     {
-        if (city.Name.EndsWith("Weather"))
+        if (cityWeather.Data is null)
         {
-            foreach (var forecast in city.Data as IEnumerable<WeatherForecast>)
-            {
-                Console.WriteLine(forecast);
-            }
+            Console.WriteLine("No weather data available");
+            continue;
         }
-        else if (city.Name.EndsWith("Things To Do"))
-        { 
-            foreach (var activity in city.Data as IEnumerable<Activity>)
+        else
+        {
+            foreach (var forecast in cityWeather.Data as IEnumerable<WeatherForecast>)
             {
-                Console.WriteLine(activity);
+                Console.WriteLine(forecast.ToString());
             }
         }
     }
-    else
+    else if (city is TaskResult<IEnumerable<Activity>> cityActivity)
     {
-        Console.WriteLine("No data");
+        if (cityActivity.Data is null)
+        {
+            Console.WriteLine("No activity data available");
+        }
+        else
+        {
+            foreach (var activity in cityActivity.Data as IEnumerable<Activity>)
+            {
+                Console.WriteLine(activity.ToString());
+            }
+        }
     }
-    Console.WriteLine();
 }
 
 Console.WriteLine(TimeProvider.System.GetLocalNow());
