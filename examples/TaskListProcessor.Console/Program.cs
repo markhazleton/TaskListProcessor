@@ -22,7 +22,7 @@ await TaskListProcessing.TaskListProcessor.WhenAllWithLoggingAsync(tasks, logger
 
 Console.WriteLine("All tasks completed\n\n");
 Console.WriteLine("Telemetry:");
-foreach (var cityTelemetry in cityDashboards.Telemetry)
+foreach (var cityTelemetry in cityDashboards.Telemetry.OrderBy(o=>o))
 {
     Console.WriteLine(cityTelemetry);
 }
