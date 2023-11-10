@@ -10,6 +10,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\CityThingsToDo\CityThingsToDo.csproj" />
 		<ProjectReference Include="..\..\src\CityWeatherService\CityWeatherService.csproj" />
 		<ProjectReference Include="..\..\src\TaskListProcessing\TaskListProcessing.csproj" />
 	</ItemGroup>
