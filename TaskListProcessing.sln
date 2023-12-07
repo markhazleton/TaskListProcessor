@@ -19,6 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskListProcessor.Console",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{457EF58D-5C6E-4CFA-AD3F-D0AC6C1C34D8}"
 	ProjectSection(SolutionItems) = preProject
+		Generic TaskResult_T_ in List_20231110_111944.md = Generic TaskResult_T_ in List_20231110_111944.md
 		NET Code Article_ Task Handling_20231110_084310.md = NET Code Article_ Task Handling_20231110_084310.md
 		README.md = README.md
 	EndProjectSection
