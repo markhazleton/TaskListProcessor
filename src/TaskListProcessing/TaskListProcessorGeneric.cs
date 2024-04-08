@@ -70,7 +70,7 @@ public class TaskListProcessorGeneric
     /// </summary>
     /// <param name="tasks">The tasks to wait on.</param>
     /// <param name="logger">The logger used to log any errors.</param>
-    public async Task WhenAllWithLoggingAsync(IEnumerable<Task> tasks, ILogger logger)
+    public static async Task WhenAllWithLoggingAsync(IEnumerable<Task> tasks, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(logger);
         try
@@ -97,25 +97,4 @@ public class TaskListProcessorGeneric
     /// A collection of telemetry data representing the performance of the tasks.
     /// </summary>
     public List<string> Telemetry { get; internal set; } = [];
-}
-public class TaskResult<T> : ITaskResult
-{
-    public TaskResult()
-    {
-        Name = "UNKNOWN";
-        Data = default;
-    }
-
-    public TaskResult(string name, T data)
-    {
-        Name = name;
-        Data = data;
-    }
-
-    public T? Data { get; set; }
-    public string Name { get; set; }
-}
-public interface ITaskResult
-{
-    string Name { get; set; }
 }

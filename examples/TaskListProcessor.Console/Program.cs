@@ -19,7 +19,7 @@ foreach (var city in cities)
     tasks.Add(cityDashboards.GetTaskResultAsync($"{city} Weather", weatherService.GetWeather(city)));
     tasks.Add(cityDashboards.GetTaskResultAsync($"{city} Things To Do", thingsToDoService.GetThingsToDoAsync(city)));
 }
-await cityDashboards.WhenAllWithLoggingAsync(tasks, logger);
+await TaskListProcessorGeneric.WhenAllWithLoggingAsync(tasks, logger);
 
 Console.WriteLine("All tasks completed\n\n");
 Console.WriteLine("Telemetry:");
@@ -42,7 +42,7 @@ foreach (var city in cityDashboards.TaskResults.OrderBy(o => o.Name))
         }
         else
         {
-            foreach (var forecast in cityWeather.Data as IEnumerable<WeatherForecast>)
+            foreach (var forecast in cityWeather.Data)
             {
                 Console.WriteLine(forecast.ToString());
             }
@@ -56,7 +56,7 @@ foreach (var city in cityDashboards.TaskResults.OrderBy(o => o.Name))
         }
         else
         {
-            foreach (var activity in cityActivity.Data as IEnumerable<Activity>)
+            foreach (var activity in cityActivity.Data)
             {
                 Console.WriteLine(activity.ToString());
             }

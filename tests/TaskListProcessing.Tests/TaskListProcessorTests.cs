@@ -1,7 +1,4 @@
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TaskListProcessing.Tests;
 
@@ -9,19 +6,18 @@ namespace TaskListProcessing.Tests;
 [TestClass]
 public class TaskListProcessorTests
 {
-    private Mock<ILogger> _mockLogger;
-    private TaskListProcessor _taskListProcessor;
+    private TaskListProcessor? _taskListProcessor;
 
     [TestInitialize]
     public void Setup()
     {
-        _mockLogger = new Mock<ILogger>();
         _taskListProcessor = new TaskListProcessor();
     }
 
     [TestMethod]
     public async Task GetTaskResultAsync_TaskCompletes_SuccessTelemetryRecorded()
     {
+        if (_taskListProcessor == null) throw new NullReferenceException(nameof(_taskListProcessor));
         // Arrange
         var taskName = "SuccessfulTask";
         var task = Task.FromResult<object>(new object());
@@ -36,6 +32,7 @@ public class TaskListProcessorTests
     [TestMethod]
     public async Task GetTaskResultAsync_TaskFails_FailureTelemetryRecorded()
     {
+        if (_taskListProcessor == null) throw new NullReferenceException(nameof(_taskListProcessor));
         // Arrange
         var taskName = "FailedTask";
         var task = Task.FromException<object>(new Exception("Test exception"));

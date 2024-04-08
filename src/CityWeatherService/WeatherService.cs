@@ -25,7 +25,7 @@ public class WeatherService
     /// <returns>A task that represents the asynchronous operation and contains the weather forecast for the city.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the city argument is null.</exception>
     /// <exception cref="Exception">Thrown when there is a random failure in fetching the weather data.</exception>
-    public async Task<IEnumerable<WeatherForecast>> GetWeather(string city, bool AddRandomError = true)
+    public async Task<IEnumerable<WeatherForecast>> GetWeather(string? city, bool AddRandomError = true)
     {
         if (string.IsNullOrWhiteSpace(city))
         {
