@@ -40,7 +40,7 @@ namespace CityWeatherService.Tests
         public async Task GetWeather_ShouldThrowArgumentNullException_WhenCityIsEmpty()
         {
             // Act
-            await _weatherService.GetWeather("", false);
+            await _weatherService.GetWeather(string.Empty, false);
         }
 
         [TestMethod]
