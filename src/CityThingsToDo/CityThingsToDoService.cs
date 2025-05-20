@@ -1,5 +1,8 @@
 ﻿namespace CityThingsToDo;
 
+/// <summary>
+/// Provides a list of things to do for various cities, simulating a data source for demonstration purposes.
+/// </summary>
 public class CityThingsToDoService
 {
     public CityThingsToDoService()
@@ -73,11 +76,12 @@ public class CityThingsToDoService
     };
 
     /// <summary>
-    /// Asynchronously gets a list of things to do for a given city.
+    /// Gets a list of things to do for a given city asynchronously.
     /// </summary>
     /// <param name="city">The name of the city.</param>
     /// <returns>A task that represents the asynchronous operation and contains the list of activities for the city.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the city argument is null or empty.</exception>
+    /// <exception cref="ArgumentException">Thrown when no activities are found for the specified city.</exception>
     public async Task<IEnumerable<Activity>> GetThingsToDoAsync(string city)
     {
         if (string.IsNullOrWhiteSpace(city))
@@ -100,12 +104,23 @@ public class CityThingsToDoService
     /// <summary>
     /// Represents an activity with a name and a price per person.
     /// </summary>
+    /// <param name="name">The name of the activity.</param>
+    /// <param name="pricePerPerson">The price per person for the activity.</param>
     public class Activity(string name, decimal pricePerPerson)
     {
+        /// <summary>
+        /// Gets the name of the activity.
+        /// </summary>
         public string Name { get; } = name ?? throw new ArgumentNullException(nameof(name));
+        /// <summary>
+        /// Gets the price per person for the activity.
+        /// </summary>
         public decimal PricePerPerson { get; } = pricePerPerson;
 
-        // Optionally, override ToString() for a better string representation of an Activity
+        /// <summary>
+        /// Returns a string that represents the current activity.
+        /// </summary>
+        /// <returns>A string that represents the current activity.</returns>
         public override string ToString()
         {
             return $"{Name} - {PricePerPerson:C}";

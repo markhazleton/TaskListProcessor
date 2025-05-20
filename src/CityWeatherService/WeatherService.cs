@@ -1,7 +1,7 @@
 ﻿namespace CityWeatherService;
 
 /// <summary>
-/// WeatherService
+/// Provides weather forecast data for a given city, simulating external service calls and random failures for demonstration purposes.
 /// </summary>
 public class WeatherService
 {
@@ -19,11 +19,12 @@ public class WeatherService
     ];
 
     /// <summary>
-    /// Asynchronously gets the weather forecast for a given city.
+    /// Gets the weather forecast for a given city asynchronously.
     /// </summary>
     /// <param name="city">The name of the city for which the weather forecast is required.</param>
+    /// <param name="AddRandomError">If true, randomly simulates a failure to fetch weather data.</param>
     /// <returns>A task that represents the asynchronous operation and contains the weather forecast for the city.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when the city argument is null.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when the city argument is null or empty.</exception>
     /// <exception cref="Exception">Thrown when there is a random failure in fetching the weather data.</exception>
     public async Task<IEnumerable<WeatherForecast>> GetWeather(string? city, bool AddRandomError = true)
     {

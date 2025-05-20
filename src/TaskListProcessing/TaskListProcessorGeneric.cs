@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace TaskListProcessing;
 
 /// <summary>
-/// TaskListProcessing
+/// Provides functionality to process a list of asynchronous tasks, collect their results, and gather telemetry data.
 /// </summary>
 public class TaskListProcessorGeneric
 {
@@ -40,9 +40,9 @@ public class TaskListProcessorGeneric
     /// <summary>
     /// Executes a task, logs the result and the time taken, and adds the result to the task list.
     /// </summary>
+    /// <typeparam name="T">The type of the task's result.</typeparam>
     /// <param name="taskName">The name of the task.</param>
     /// <param name="task">The task to execute and log.</param>
-    /// <typeparam name="T">The type of the task's result.</typeparam>
     public async Task GetTaskResultAsync<T>(string taskName, Task<T> task) where T : class
     {
         var sw = new Stopwatch();
@@ -84,17 +84,17 @@ public class TaskListProcessorGeneric
     }
 
     /// <summary>
-    /// The name of the task list.
+    /// Gets or sets the name of the task list.
     /// </summary>
     public string? TaskListName { get; set; }
 
     /// <summary>
-    /// A collection of task results.
+    /// Gets or sets the collection of task results.
     /// </summary>
     public ICollection<ITaskResult> TaskResults { get; set; } = new HashSet<ITaskResult>();
 
     /// <summary>
-    /// A collection of telemetry data representing the performance of the tasks.
+    /// Gets the collection of telemetry data representing the performance of the tasks.
     /// </summary>
     public List<string> Telemetry { get; internal set; } = [];
 }

@@ -2,6 +2,11 @@
 // This application fetches weather and things-to-do data for a list of cities,
 // processes the results asynchronously, and outputs telemetry and results.
 
+/// <summary>
+/// Entry point for the TaskListProcessor.Console application. Demonstrates asynchronous task processing,
+/// telemetry collection, and result aggregation for weather and things-to-do data across multiple cities.
+/// </summary>
+
 using CityThingsToDo;
 using CityWeatherService;
 using Microsoft.Extensions.Logging;
