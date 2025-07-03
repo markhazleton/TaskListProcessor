@@ -27,14 +27,14 @@ public static class UsageExamples
             ["Paris Weather"] = async ct => await GetWeatherAsync("Paris", ct),
             ["London Activities"] = async ct => await GetActivitiesAsync("London", ct),
             ["Paris Activities"] = async ct => await GetActivitiesAsync("Paris", ct)
-        };        try
+        }; try
         {
             await processor.ProcessTasksAsync(tasks, cts.Token);
-            
+
             // Get telemetry summary
             var summary = processor.GetTelemetrySummary();
             logger.LogInformation("Processing Summary: {Summary}", summary);
-            
+
             // Process results
             foreach (var result in processor.TaskResults)
             {
