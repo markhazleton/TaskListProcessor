@@ -1,8 +1,9 @@
 // Example usage demonstrating the improved TaskListProcessor
 
 using Microsoft.Extensions.Logging;
+using TaskListProcessing.Core;
 
-namespace TaskListProcessing;
+namespace TaskListProcessing.Utilities;
 
 /// <summary>
 /// Provides usage examples for the improved TaskListProcessor.

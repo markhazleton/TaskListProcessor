@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using TaskListProcessing.Core;
+using TaskListProcessing.Interfaces;
+using TaskListProcessing.Models;
 
 namespace TaskListProcessing.Tests;
 

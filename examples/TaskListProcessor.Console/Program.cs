@@ -4,8 +4,7 @@
 using CityThingsToDo;
 using CityWeatherService;
 using Microsoft.Extensions.Logging;
-using TaskListProcessing;
-using static CityThingsToDo.CityThingsToDoService;
+using TaskListProcessing.Core;
 using static CityWeatherService.WeatherService;
 
 // Main Program

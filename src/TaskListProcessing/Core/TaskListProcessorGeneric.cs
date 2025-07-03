@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using TaskListProcessing.Interfaces;
+using TaskListProcessing.Models;
 
-namespace TaskListProcessing;
+namespace TaskListProcessing.Core;
 
 /// <summary>
 /// Provides functionality to process a list of asynchronous tasks, collect their results, and gather telemetry data.

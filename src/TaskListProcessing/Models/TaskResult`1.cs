@@ -1,4 +1,6 @@
-﻿namespace TaskListProcessing;
+﻿using TaskListProcessing.Interfaces;
+
+namespace TaskListProcessing.Models;
 
 /// <summary>
 /// Represents the result of a task, including its name and result data.

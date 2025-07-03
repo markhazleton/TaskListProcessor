@@ -1,7 +1,7 @@
 ﻿// Program.cs - Enhanced TaskListProcessor Console Application
 // Demonstrates advanced asynchronous task processing with impressive telemetry and clear output formatting
 
-using TaskListProcessing;
+using TaskListProcessing.Core;
 using static CityThingsToDo.CityThingsToDoService;
 using static CityWeatherService.WeatherService;
 

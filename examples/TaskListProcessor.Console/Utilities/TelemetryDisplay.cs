@@ -1,9 +1,11 @@
 ﻿// Program.cs - Enhanced TaskListProcessor Console Application
 // Demonstrates advanced asynchronous task processing with impressive telemetry and clear output formatting
 
-using TaskListProcessing;
 
 // Enhanced telemetry display class
+using TaskListProcessing.Core;
+using TaskListProcessing.Telemetry;
+
 public static class TelemetryDisplay
 {
     public static void ShowImpressiveTelemetry(TaskListProcessorImproved processor, string scenarioName)

@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TaskListProcessing.Core;
 
 namespace TaskListProcessing.Tests;
 

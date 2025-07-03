@@ -1,4 +1,4 @@
-﻿namespace TaskListProcessing
+﻿namespace TaskListProcessing.Interfaces
 {
     /// <summary>
     /// Defines a contract for task result objects, requiring a Name property and success tracking.
