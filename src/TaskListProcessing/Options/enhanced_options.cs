@@ -1,9 +1,8 @@
+using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TaskListProcessing.Interfaces;
 using TaskListProcessing.Scheduling;
-using Microsoft.Extensions.Options;
 
 namespace TaskListProcessing.Options;
 

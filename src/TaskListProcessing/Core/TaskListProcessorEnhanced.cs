@@ -26,7 +26,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     private readonly RetryHandler? _retryHandler;
     private readonly ObjectPool<EnhancedTaskResult<object>>? _resultPool;
     private readonly CancellationTokenSource _cancellationTokenSource = new();
-    
+
     private bool _disposed;
     private bool _initialized;
     private TaskProgress _currentProgress = new(0, 0);
@@ -43,14 +43,14 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         TaskListName = taskListName ?? "TaskProcessor";
         _logger = logger;
         _options = options ?? new TaskListProcessorOptions();
-        
+
         _concurrencyLimiter = new SemaphoreSlim(_options.MaxConcurrentTasks, _options.MaxConcurrentTasks);
-        
+
         if (_options.CircuitBreakerOptions != null)
         {
             _circuitBreaker = new CircuitBreaker(_options.CircuitBreakerOptions);
         }
-        
+
         if (_options.RetryPolicy != null)
         {
             _retryHandler = new RetryHandler(_options.RetryPolicy);
@@ -202,14 +202,14 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             foreach (var taskDef in tasks)
             {
                 var processingTask = ProcessSingleTaskWithManagementAsync(
-                    taskDef, 
+                    taskDef,
                     () =>
                     {
                         var completed = Interlocked.Increment(ref completedTasks);
                         var elapsed = DateTimeOffset.UtcNow - startTime;
                         var estimated = EstimateRemainingTime(completed, tasks.Count, elapsed);
                         var successRate = CalculateSuccessRate();
-                        
+
                         UpdateProgress(completed, tasks.Count, taskDef.Name, elapsed, progress, estimated, successRate);
                     },
                     cancellationToken);
@@ -264,7 +264,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         };
 
         var result = await ProcessSingleTaskAsync(taskDef, cancellationToken);
-        
+
         // Convert to strongly typed result
         return new EnhancedTaskResult<T>(taskName, (T?)result.Data, result.IsSuccessful)
         {
@@ -296,7 +296,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             Factory = kvp.Value
         });
 
-        var tasks = taskDefinitions.Select(taskDef => 
+        var tasks = taskDefinitions.Select(taskDef =>
             ProcessSingleTaskAsync(taskDef, cancellationToken)).ToList();
 
         while (tasks.Any())
@@ -427,7 +427,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         CancellationToken cancellationToken)
     {
         await _concurrencyLimiter.WaitAsync(cancellationToken);
-        
+
         try
         {
             // Check circuit breaker
@@ -556,9 +556,9 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     }
 
     private void UpdateProgress(
-        int completed, 
-        int total, 
-        string? currentTask, 
+        int completed,
+        int total,
+        string? currentTask,
         TimeSpan elapsed,
         IProgress<TaskProgress>? progress = null,
         TimeSpan? estimated = null,
@@ -579,7 +579,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     private TimeSpan? EstimateRemainingTime(int completed, int total, TimeSpan elapsed)
     {
         if (completed == 0 || total == 0) return null;
-        
+
         var avgTimePerTask = elapsed.TotalMilliseconds / completed;
         var remaining = total - completed;
         return TimeSpan.FromMilliseconds(avgTimePerTask * remaining);
@@ -589,7 +589,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     {
         var telemetryList = _telemetry.ToList();
         if (!telemetryList.Any()) return 0.0;
-        
+
         return (double)telemetryList.Count(t => t.IsSuccessful) / telemetryList.Count * 100;
     }
 
@@ -625,7 +625,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     private ObjectPool<EnhancedTaskResult<object>> CreateResultPool()
     {
         var poolOptions = _options.MemoryPoolOptions ?? new MemoryPoolOptions();
-        
+
         var policy = new DefaultPooledObjectPolicy<EnhancedTaskResult<object>>();
         var provider = new DefaultObjectPoolProvider
         {
@@ -640,7 +640,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         if (_resultPool == null || _options.MemoryPoolOptions == null) return;
 
         var prewarmedObjects = new List<EnhancedTaskResult<object>>();
-        
+
         for (int i = 0; i < _options.MemoryPoolOptions.InitialPoolSize; i++)
         {
             prewarmedObjects.Add(_resultPool.Get());
@@ -698,7 +698,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         if (!_disposed)
         {
             _cancellationTokenSource?.Cancel();
-            
+
             // Export final telemetry
             if (_options.TelemetryExporter != null && _options.EnableDetailedTelemetry)
             {

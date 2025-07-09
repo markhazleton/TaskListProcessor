@@ -13,7 +13,6 @@ namespace TaskListProcessing.LoadBalancing
         private readonly List<TaskListProcessorEnhanced> _processors;
         private readonly LoadBalancingStrategy _strategy;
         private readonly object _lock = new();
-        private int _currentIndex = 0;
         private bool _disposed;
 
         /// <summary>

@@ -193,9 +193,9 @@ public class EnhancedTaskResult<T> : ITaskResult, IEquatable<EnhancedTaskResult<
     public override string ToString()
     {
         var status = IsSuccessful ? "Success" : "Failed";
-        var error = !string.IsNullOrEmpty(ErrorMessage) ? $" - {ErrorMessage}" : "";
-        var timing = ExecutionTime.TotalMilliseconds > 0 ? $" ({ExecutionTime.TotalMilliseconds:F0}ms)" : "";
-        var attempt = AttemptNumber > 1 ? $" [Attempt {AttemptNumber}]" : "";
+        var error = !string.IsNullOrEmpty(ErrorMessage) ? $" - {ErrorMessage}" : string.Empty;
+        var timing = ExecutionTime.TotalMilliseconds > 0 ? $" ({ExecutionTime.TotalMilliseconds:F0}ms)" : string.Empty;
+        var attempt = AttemptNumber > 1 ? $" [Attempt {AttemptNumber}]" : string.Empty;
         return $"{Name}: {status}{error}{timing}{attempt}";
     }
 

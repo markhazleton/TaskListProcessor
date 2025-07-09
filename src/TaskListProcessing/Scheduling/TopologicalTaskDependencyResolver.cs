@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
 using TaskListProcessing.Interfaces;
 using TaskListProcessing.Models;
 

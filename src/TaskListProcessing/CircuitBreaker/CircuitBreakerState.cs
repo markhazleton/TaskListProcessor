@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-
 namespace TaskListProcessing;
 
 /// <summary>
@@ -11,12 +9,12 @@ public enum CircuitBreakerState
     /// Circuit is closed and requests are flowing normally.
     /// </summary>
     Closed,
-    
+
     /// <summary>
     /// Circuit is open and all requests are being rejected.
     /// </summary>
     Open,
-    
+
     /// <summary>
     /// Circuit is half-open and testing if the service has recovered.
     /// </summary>

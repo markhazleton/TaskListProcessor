@@ -46,20 +46,20 @@ public class ConsoleTelemetryExporter : ITelemetryExporter
     public Task ExportAsync(IEnumerable<TaskTelemetry> telemetry, CancellationToken cancellationToken = default)
     {
         var telemetryList = telemetry.ToList();
-        
+
         Console.WriteLine($"\n=== TELEMETRY EXPORT ({DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC) ===");
         Console.WriteLine($"Total Records: {telemetryList.Count}");
-        
+
         foreach (var record in telemetryList)
         {
             var json = JsonSerializer.Serialize(record, _jsonOptions);
             Console.WriteLine(json);
         }
-        
+
         Console.WriteLine("=== END TELEMETRY EXPORT ===\n");
-        
+
         _logger?.LogInformation("Exported {RecordCount} telemetry records to console", telemetryList.Count);
-        
+
         return Task.CompletedTask;
     }
 }
@@ -117,7 +117,7 @@ public class FileTelemetryExporter : ITelemetryExporter, IDisposable
     public async Task ExportAsync(IEnumerable<TaskTelemetry> telemetry, CancellationToken cancellationToken = default)
     {
         await _fileLock.WaitAsync(cancellationToken);
-        
+
         try
         {
             var telemetryList = telemetry.ToList();
@@ -131,7 +131,7 @@ public class FileTelemetryExporter : ITelemetryExporter, IDisposable
             var json = JsonSerializer.Serialize(exportData, _jsonOptions);
             await File.AppendAllTextAsync(_filePath, json + Environment.NewLine, cancellationToken);
 
-            _logger?.LogInformation("Exported {RecordCount} telemetry records to file '{FilePath}'", 
+            _logger?.LogInformation("Exported {RecordCount} telemetry records to file '{FilePath}'",
                 telemetryList.Count, _filePath);
         }
         catch (Exception ex)
@@ -198,9 +198,9 @@ public class OpenTelemetryExporter : ITelemetryExporter
     public Task ExportAsync(IEnumerable<TaskTelemetry> telemetry, CancellationToken cancellationToken = default)
     {
         using var activity = _activitySource.StartActivity("TaskListProcessor.ExportTelemetry");
-        
+
         var telemetryList = telemetry.ToList();
-        
+
         activity?.SetTag("service.name", _serviceName);
         activity?.SetTag("telemetry.record_count", telemetryList.Count);
         activity?.SetTag("telemetry.successful_tasks", telemetryList.Count(t => t.IsSuccessful));
@@ -210,11 +210,11 @@ public class OpenTelemetryExporter : ITelemetryExporter
         foreach (var record in telemetryList)
         {
             using var taskActivity = _activitySource.StartActivity($"Task.{record.TaskName}");
-            
+
             taskActivity?.SetTag("task.name", record.TaskName);
             taskActivity?.SetTag("task.duration_ms", record.ElapsedMilliseconds);
             taskActivity?.SetTag("task.successful", record.IsSuccessful);
-            
+
             if (!record.IsSuccessful)
             {
                 taskActivity?.SetTag("task.error_type", record.ErrorType);
@@ -224,7 +224,7 @@ public class OpenTelemetryExporter : ITelemetryExporter
         }
 
         _logger?.LogInformation("Exported {RecordCount} telemetry records to OpenTelemetry", telemetryList.Count);
-        
+
         return Task.CompletedTask;
     }
 }
@@ -281,7 +281,7 @@ public class CompositeTelemetryExporter : ITelemetryExporter, IDisposable
         });
 
         await Task.WhenAll(exportTasks);
-        
+
         _logger?.LogInformation("Exported telemetry to {ExporterCount} exporters", enabledExporters.Count);
     }
 
@@ -321,8 +321,8 @@ public class HttpTelemetryExporter : ITelemetryExporter, IDisposable
     /// <param name="headers">Optional HTTP headers to include.</param>
     /// <param name="logger">Optional logger for structured logging.</param>
     public HttpTelemetryExporter(
-        string endpoint, 
-        HttpClient? httpClient = null, 
+        string endpoint,
+        HttpClient? httpClient = null,
         Dictionary<string, string>? headers = null,
         ILogger? logger = null)
     {
@@ -376,7 +376,7 @@ public class HttpTelemetryExporter : ITelemetryExporter, IDisposable
             var response = await _httpClient.PostAsync(_endpoint, content, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            _logger?.LogInformation("Exported {RecordCount} telemetry records to HTTP endpoint '{Endpoint}'", 
+            _logger?.LogInformation("Exported {RecordCount} telemetry records to HTTP endpoint '{Endpoint}'",
                 telemetryList.Count, _endpoint);
         }
         catch (Exception ex)
@@ -527,8 +527,8 @@ public static class TelemetryExporterFactory
     /// <param name="logger">Optional logger.</param>
     /// <returns>HTTP telemetry exporter.</returns>
     public static ITelemetryExporter CreateHttp(
-        string endpoint, 
-        Dictionary<string, string>? headers = null, 
+        string endpoint,
+        Dictionary<string, string>? headers = null,
         ILogger? logger = null)
     {
         return new HttpTelemetryExporter(endpoint, null, headers, logger);

@@ -71,7 +71,7 @@ public static class TaskListProcessorTestHelpers
     /// <param name="delay">Delay before completion.</param>
     /// <returns>Task factory function.</returns>
     public static Func<CancellationToken, Task<object?>> CreateSuccessTask(
-        object? result = null, 
+        object? result = null,
         TimeSpan delay = default)
     {
         return async ct =>
@@ -89,7 +89,7 @@ public static class TaskListProcessorTestHelpers
     /// <param name="delay">Delay before failure.</param>
     /// <returns>Task factory function.</returns>
     public static Func<CancellationToken, Task<object?>> CreateFailureTask(
-        Exception? exception = null, 
+        Exception? exception = null,
         TimeSpan delay = default)
     {
         return async ct =>
@@ -107,7 +107,7 @@ public static class TaskListProcessorTestHelpers
     /// <param name="delay">Delay before completion.</param>
     /// <returns>Task factory function.</returns>
     public static Func<CancellationToken, Task<object?>> CreateRandomTask(
-        double successProbability = 0.8, 
+        double successProbability = 0.8,
         TimeSpan delay = default)
     {
         return async ct =>
@@ -137,7 +137,7 @@ public static class TaskListProcessorTestHelpers
         TimeSpan maxDelay = default)
     {
         var tasks = new Dictionary<string, Func<CancellationToken, Task<object?>>>();
-        
+
         if (minDelay == default) minDelay = TimeSpan.FromMilliseconds(50);
         if (maxDelay == default) maxDelay = TimeSpan.FromMilliseconds(200);
 
@@ -146,9 +146,9 @@ public static class TaskListProcessorTestHelpers
             var taskName = $"TestTask_{i:D3}";
             var delay = TimeSpan.FromMilliseconds(
                 Random.Shared.Next((int)minDelay.TotalMilliseconds, (int)maxDelay.TotalMilliseconds));
-            
+
             var shouldSucceed = Random.Shared.NextDouble() < successRate;
-            
+
             if (shouldSucceed)
             {
                 tasks[taskName] = CreateSuccessTask($"Result_{i}", delay);
@@ -621,7 +621,7 @@ public static class IntegrationTestHelpers
         for (int i = 0; i < Math.Min(apiEndpoints, endpoints.Length); i++)
         {
             var (name, delay, successRate) = endpoints[i];
-            
+
             for (int j = 0; j < requestsPerEndpoint; j++)
             {
                 var taskName = $"{name}_Request_{j:D3}";

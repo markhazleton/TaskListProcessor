@@ -21,7 +21,7 @@ public record TaskTelemetry(
     public override string ToString()
     {
         var status = IsSuccessful ? "completed" : $"failed with {ErrorType}";
-        var errorInfo = !string.IsNullOrEmpty(ErrorMessage) ? $": {ErrorMessage}" : "";
+        var errorInfo = !string.IsNullOrEmpty(ErrorMessage) ? $": {ErrorMessage}" : string.Empty;
         return $"{TaskName}: Task {status} in {ElapsedMilliseconds:N0} ms{errorInfo}";
     }
 }
