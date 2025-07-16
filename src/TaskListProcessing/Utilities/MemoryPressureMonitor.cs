@@ -32,7 +32,7 @@ public class MemoryPressureMonitor : IDisposable
     public MemoryPressureMonitor(ILogger? logger = null)
     {
         _logger = logger;
-        _monitorTimer = new Timer(CheckMemoryPressure, null, 
+        _monitorTimer = new Timer(CheckMemoryPressure, null,
             TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10));
     }
 
@@ -62,10 +62,10 @@ public class MemoryPressureMonitor : IDisposable
             {
                 var previousLevel = _currentLevel;
                 _currentLevel = newLevel;
-                
-                _logger?.LogInformation("Memory pressure changed from {Previous} to {Current} (Memory: {TotalMemory:N0} bytes, Working Set: {WorkingSet:N0} bytes)", 
+
+                _logger?.LogInformation("Memory pressure changed from {Previous} to {Current} (Memory: {TotalMemory:N0} bytes, Working Set: {WorkingSet:N0} bytes)",
                     previousLevel, newLevel, totalMemory, workingSet);
-                    
+
                 PressureChanged?.Invoke(this, new MemoryPressureChangedEventArgs(previousLevel, newLevel));
             }
         }
@@ -98,17 +98,17 @@ public enum MemoryPressureLevel
     /// Normal memory usage - no action required.
     /// </summary>
     Normal,
-    
+
     /// <summary>
     /// Medium memory usage - consider reducing pool sizes.
     /// </summary>
     Medium,
-    
+
     /// <summary>
     /// High memory usage - actively reduce pool sizes.
     /// </summary>
     High,
-    
+
     /// <summary>
     /// Critical memory usage - emergency cleanup required.
     /// </summary>

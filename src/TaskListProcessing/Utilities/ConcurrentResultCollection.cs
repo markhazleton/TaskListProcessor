@@ -26,7 +26,7 @@ public class ConcurrentResultCollection<T> : IDisposable
     public void Add(T item)
     {
         if (_disposed) throw new ObjectDisposedException(nameof(ConcurrentResultCollection<T>));
-        
+
         _items.Enqueue(item);
         Interlocked.Exchange(ref _snapshotInvalid, 1);
     }
@@ -97,7 +97,7 @@ public class ConcurrentResultCollection<T> : IDisposable
     public bool TryPeek(out T? result)
     {
         if (_disposed) throw new ObjectDisposedException(nameof(ConcurrentResultCollection<T>));
-        
+
         return _items.TryPeek(out result);
     }
 
@@ -110,10 +110,10 @@ public class ConcurrentResultCollection<T> : IDisposable
         {
             _disposed = true;
             _snapshotLock?.Dispose();
-            
+
             // Clear references to help GC
             _cachedSnapshot = null;
-            
+
             // Clear the queue
             while (_items.TryDequeue(out _)) { }
         }

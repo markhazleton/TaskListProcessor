@@ -384,7 +384,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             {
                 var tasks = taskFactories.Select(kvp => ProduceResultAsync(
                     kvp.Key, kvp.Value, writer, cancellationToken));
-                
+
                 await Task.WhenAll(tasks).SafeAwait();
             }
             finally
@@ -414,7 +414,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     {
         var taskDef = new TaskDefinition { Name = taskName, Factory = factory };
         var result = await ProcessSingleTaskAsync(taskDef, cancellationToken).SafeAwait();
-        
+
         await writer.WriteAsync(result, cancellationToken).ConfigureAwait(false);
     }
 
@@ -771,10 +771,10 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 
         // Create a temporary pool for the policy
         var tempPool = provider.Create(new PooledTaskResultPolicy<object>(null!));
-        
+
         // Create the actual policy with the pool reference
         var policy = new PooledTaskResultPolicy<object>(tempPool);
-        
+
         return provider.Create(policy);
     }
 

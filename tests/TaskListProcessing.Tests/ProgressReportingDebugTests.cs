@@ -36,7 +36,7 @@ namespace TaskListProcessing.Tests
         {
             // Arrange
             var progressReports = new List<TaskProgress>();
-            var progressReporter = new Progress<TaskProgress>(p => 
+            var progressReporter = new Progress<TaskProgress>(p =>
             {
                 Debug.WriteLine($"Progress: {p.CompletedTasks}/{p.TotalTasks} - {p.CurrentTaskName}");
                 progressReports.Add(p);
@@ -68,7 +68,7 @@ namespace TaskListProcessing.Tests
         {
             // Arrange
             var progressReports = new List<TaskProgress>();
-            var progressReporter = new Progress<TaskProgress>(p => 
+            var progressReporter = new Progress<TaskProgress>(p =>
             {
                 Debug.WriteLine($"Progress: {p.CompletedTasks}/{p.TotalTasks} - {p.CurrentTaskName}");
                 progressReports.Add(p);

@@ -39,7 +39,7 @@ public class PooledTaskResultPolicy<T> : IPooledObjectPolicy<PooledTaskResult<T>
     public bool Return(PooledTaskResult<T> obj)
     {
         if (obj == null) return false;
-        
+
         // Validate object state before returning to pool
         if (obj.IsReturned)
         {

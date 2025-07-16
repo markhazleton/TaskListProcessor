@@ -14,13 +14,13 @@ public interface IPooledTaskResult<T> : ITaskResult, IDisposable
     /// Once returned, the object should not be used.
     /// </summary>
     bool IsReturned { get; }
-    
+
     /// <summary>
     /// Forces return to pool (for cleanup scenarios).
     /// This is equivalent to calling Dispose() but provides semantic clarity.
     /// </summary>
     void ForceReturn();
-    
+
     /// <summary>
     /// Gets the result data of the task.
     /// </summary>
