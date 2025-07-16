@@ -1,11 +1,11 @@
 # 🚀 TaskListProcessor
 
-[![.NET](https://img.shields.io/badge/.NET-8.0+-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-9.0+-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square)](https://github.com/markhazleton/TaskListProcessor)
 [![NuGet](https://img.shields.io/badge/NuGet-Coming%20Soon-orange?style=flat-square)](https://www.nuget.org/packages/TaskListProcessor)
 
-> **A modern, thread-safe .NET library for orchestrating asynchronous operations with enterprise-grade telemetry, error handling, and cancellation support.**
+> **A modern, enterprise-grade .NET 9.0 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, dependency injection, and advanced scheduling capabilities.**
 
 ---
 
@@ -24,6 +24,7 @@
   - [🛠️ API Reference](#️-api-reference)
   - [🧪 Testing](#-testing)
   - [🔄 Migration Guide](#-migration-guide)
+  - [🏗️ Project Structure](#️-project-structure)
   - [🤝 Contributing](#-contributing)
   - [📜 License](#-license)
   - [🔗 Resources](#-resources)
@@ -32,74 +33,96 @@
 
 ## ✨ Overview
 
-TaskListProcessor is a production-ready .NET library designed to solve the common challenge of orchestrating multiple asynchronous operations while maintaining observability, reliability, and performance. Whether you're building dashboards, data aggregation pipelines, or distributed systems, TaskListProcessor provides the robust foundation you need.
+TaskListProcessor is a production-ready .NET 9.0 library designed to solve complex asynchronous orchestration challenges in modern applications. Built with enterprise-grade patterns including dependency injection, circuit breakers, task scheduling, and comprehensive telemetry, it provides a robust foundation for high-throughput, fault-tolerant systems.
 
 ### 🎯 Why TaskListProcessor?
 
-**The Problem:** Modern applications often need to coordinate multiple async operations—API calls, database queries, file I/O—while handling failures gracefully and providing meaningful telemetry. Traditional approaches using `Task.WhenAll()` are fragile and lack observability.
+**The Problem:** Modern applications require sophisticated coordination of multiple async operations—API calls, database queries, file I/O, microservice interactions—while maintaining resilience, observability, and performance under varying loads.
 
-**The Solution:** TaskListProcessor provides a battle-tested framework with:
+**The Solution:** TaskListProcessor provides a battle-tested, enterprise-ready framework with:
 
-- 🛡️ **Isolation**: One task failure doesn't crash the entire operation
-- 📊 **Observability**: Rich telemetry and structured logging
-- ⚡ **Performance**: Optimized concurrent execution with configurable parallelism
-- 🎯 **Type Safety**: Strongly-typed results with comprehensive error information
-- 🔧 **Extensibility**: Plugin architecture for custom scenarios
+- 🛡️ **Fault Isolation**: Circuit breakers and individual task failure isolation
+- 📊 **Enterprise Observability**: OpenTelemetry integration with rich metrics and tracing
+- ⚡ **Advanced Scheduling**: Priority-based, dependency-aware task execution
+- 🎯 **Type Safety**: Strongly-typed results with comprehensive error categorization
+- 🔧 **Dependency Injection**: Native .NET DI integration with decorator pattern support
+- 🏗️ **Interface Segregation**: Clean, focused interfaces following SOLID principles
 
 ## 🔥 Key Features
 
-### Core Capabilities
+### Core Processing Capabilities
 
-- **🚀 Concurrent Execution**: Parallel task processing with configurable concurrency limits
-- **🛡️ Fault Isolation**: Individual task failures don't affect other operations
-- **📊 Rich Telemetry**: Comprehensive timing, success rates, and error tracking
-- **🎯 Type Safety**: Strongly-typed results with full IntelliSense support
-- **⏱️ Timeout & Cancellation**: Built-in support for graceful shutdown and timeouts
+- **🚀 Concurrent Execution**: Parallel task processing with configurable concurrency limits and load balancing
+- **🛡️ Circuit Breaker Pattern**: Automatic failure detection and cascading failure prevention
+- **📊 Rich Telemetry**: Comprehensive timing, success rates, error tracking, and OpenTelemetry integration
+- **🎯 Type Safety**: Strongly-typed results with full IntelliSense support and error categorization
+- **⏱️ Timeout & Cancellation**: Built-in support for graceful shutdown and per-task timeouts
+- **🔄 Task Dependencies**: Dependency resolution with topological sorting and execution ordering
 
-### Enterprise Features
+### Enterprise Architecture Features
 
-- **🧵 Thread Safety**: Concurrent collections and lock-free operations
-- **📝 Structured Logging**: Integration with Microsoft.Extensions.Logging
-- **🔄 Resource Management**: Proper IDisposable implementation and cleanup
-- **📈 Performance Monitoring**: Built-in metrics for throughput and latency
-- **🎨 Extensible Design**: Plugin-based architecture for custom scenarios
+- **🏗️ Dependency Injection**: Native .NET DI integration with fluent configuration API
+- **🎨 Interface Segregation**: Clean, focused interfaces following SOLID principles
+- **� Decorator Pattern**: Pluggable cross-cutting concerns (logging, metrics, circuit breakers)
+- **📈 Advanced Scheduling**: Priority-based, FIFO, LIFO, and custom scheduling strategies
+- **🧵 Thread Safety**: Lock-free concurrent collections and thread-safe operations
+- **💾 Memory Optimization**: Object pooling and efficient memory management
 
 ### Developer Experience
 
-- **📖 Comprehensive Documentation**: Inline XML docs and rich examples
-- **🧪 Thorough Testing**: Extensive unit and integration test coverage
-- **🎪 Interactive Demo**: Full-featured console application showcasing all features
-- **🔍 Debug Support**: Rich diagnostic information and error context
+- **� Structured Logging**: Integration with Microsoft.Extensions.Logging and Serilog
+- **🔍 Health Checks**: Built-in health monitoring and diagnostic capabilities
+- **� Streaming Results**: Async enumerable support for real-time result processing
+- **🧪 Testing Support**: Comprehensive test helpers and mock-friendly interfaces
+- **📖 Rich Documentation**: Extensive XML documentation and practical examples
 
 ## 🏗️ Architecture
 
-TaskListProcessor follows modern .NET design principles with a clean, extensible architecture:
+TaskListProcessor implements a modern, enterprise-ready architecture with clear separation of concerns:
 
 ```ascii
-┌─────────────────────────────────────────────────────────────┐
-│                TaskListProcessorEnhanced                   │
-├─────────────────────────────────────────────────────────────┤
-│ + ProcessTasksAsync()     │ Thread-safe task orchestration │
-│ + ExecuteTaskAsync<T>()   │ Individual task execution     │
-│ + WhenAllWithLoggingAsync() │ Batch processing utilities  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              │               │               │
-    ┌─────────▼────────┐ ┌────▼─────┐ ┌──────▼──────┐
-    │ EnhancedTaskResult │ │TaskTelemetry│ │TaskListOptions│
-    │ + Data           │ │ + Duration │ │ + MaxConcurrency│
-    │ + IsSuccessful   │ │ + Success  │ │ + Timeout      │
-    │ + ErrorMessage   │ │ + Exception│ │ + RetryPolicy  │
-    └──────────────────┘ └──────────┘ └─────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                    Dependency Injection Layer                  │
+│        services.AddTaskListProcessor().WithAllDecorators()     │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Decorator Chain                            │
+│  LoggingDecorator → MetricsDecorator → CircuitBreakerDecorator  │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Interface Segregation Layer                 │
+│  ITaskProcessor │ ITaskBatchProcessor │ ITaskStreamProcessor   │
+│              ITaskTelemetryProvider                           │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Core Processing Engine                       │
+│            TaskListProcessorEnhanced (Backward Compatible)     │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+              ┌─────────────────┼─────────────────┐
+              │                 │                 │
+    ┌─────────▼────────┐ ┌─────▼──────┐ ┌───────▼──────┐
+    │ TaskDefinition   │ │TaskTelemetry│ │TaskProgress  │
+    │ + Dependencies   │ │ + Metrics   │ │ + Reporting  │
+    │ + Priority       │ │ + Tracing   │ │ + Streaming  │
+    │ + Scheduling     │ │ + Health    │ │ + Estimates  │
+    └──────────────────┘ └────────────┘ └──────────────┘
 ```
 
 ### Core Components
 
-- **TaskListProcessorEnhanced**: The main orchestrator with thread-safe execution
-- **EnhancedTaskResult&lt;T&gt;**: Strongly-typed results with comprehensive error information  
-- **TaskTelemetry**: Rich performance and diagnostic data
-- **TaskListOptions**: Configuration for advanced scenarios
+- **Interface Layer**: Clean, focused interfaces for different processing scenarios
+- **Decorator Layer**: Cross-cutting concerns (logging, metrics, circuit breakers)
+- **Processing Engine**: Thread-safe orchestration with advanced scheduling
+- **Telemetry System**: Comprehensive observability and health monitoring
+- **Dependency Resolution**: Topological sorting and execution ordering
+- **Circuit Breaker**: Cascading failure prevention and automatic recovery
 
 ## ⚡ Quick Start
 
@@ -117,10 +140,10 @@ dotnet build
 dotnet run --project examples/TaskListProcessor.Console
 ```
 
-### Basic Usage
+### Basic Usage (Direct Instantiation)
 
 ```csharp
-using TaskListProcessing;
+using TaskListProcessing.Core;
 using Microsoft.Extensions.Logging;
 
 // Set up logging (optional but recommended)
@@ -145,6 +168,52 @@ await processor.ProcessTasksAsync(taskFactories, cancellationToken);
 foreach (var result in processor.TaskResults)
 {
     Console.WriteLine($"{result.Name}: {(result.IsSuccessful ? "✅" : "❌")}");
+}
+```
+
+### Dependency Injection Usage (Recommended)
+
+```csharp
+using TaskListProcessing.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+// Program.cs
+var builder = Host.CreateApplicationBuilder(args);
+
+// Configure TaskListProcessor with decorators
+builder.Services.AddTaskListProcessor(options =>
+{
+    options.MaxConcurrentTasks = 10;
+    options.EnableDetailedTelemetry = true;
+    options.CircuitBreakerOptions = new() { FailureThreshold = 3 };
+})
+.WithLogging()
+.WithMetrics()
+.WithCircuitBreaker();
+
+var host = builder.Build();
+
+// Usage in your services
+public class MyService
+{
+    private readonly ITaskBatchProcessor _processor;
+    
+    public MyService(ITaskBatchProcessor processor)
+    {
+        _processor = processor;
+    }
+    
+    public async Task ProcessDataAsync()
+    {
+        var tasks = new Dictionary<string, Func<CancellationToken, Task<object?>>>
+        {
+            ["API Call"] = async ct => await CallApiAsync(ct),
+            ["DB Query"] = async ct => await QueryDatabaseAsync(ct)
+        };
+        
+        await _processor.ProcessTasksAsync(tasks);
+    }
 }
 ```
 
@@ -219,56 +288,139 @@ else
 
 ## 🔧 Advanced Usage
 
-### Custom Configuration
+### Task Dependencies & Scheduling
+
+```csharp
+using TaskListProcessing.Models;
+using TaskListProcessing.Scheduling;
+
+// Configure with dependency resolution
+var options = new TaskListProcessorOptions
+{
+    DependencyResolver = new TopologicalTaskDependencyResolver(),
+    SchedulingStrategy = TaskSchedulingStrategy.Priority,
+    MaxConcurrentTasks = Environment.ProcessorCount * 2
+};
+
+using var processor = new TaskListProcessorEnhanced("Advanced Tasks", logger, options);
+
+// Define tasks with dependencies and priorities
+var taskDefinitions = new[]
+{
+    new TaskDefinition
+    {
+        Name = "Initialize",
+        Factory = async ct => await InitializeAsync(ct),
+        Priority = TaskPriority.High
+    },
+    new TaskDefinition
+    {
+        Name = "Process Data",
+        Factory = async ct => await ProcessDataAsync(ct),
+        Dependencies = new[] { "Initialize" },
+        Priority = TaskPriority.Medium
+    },
+    new TaskDefinition
+    {
+        Name = "Generate Report",
+        Factory = async ct => await GenerateReportAsync(ct),
+        Dependencies = new[] { "Process Data" },
+        Priority = TaskPriority.Low
+    }
+};
+
+await processor.ProcessTaskDefinitionsAsync(taskDefinitions);
+```
+
+### Circuit Breaker Configuration
 
 ```csharp
 var options = new TaskListProcessorOptions
 {
-    MaxConcurrency = Environment.ProcessorCount * 2,
-    DefaultTimeout = TimeSpan.FromSeconds(30),
-    RetryPolicy = new ExponentialBackoffRetry(maxRetries: 3)
-};
-
-using var processor = new TaskListProcessorEnhanced("Advanced Tasks", logger, options);
-```
-
-### Error Handling & Resilience
-
-```csharp
-// Built-in timeout and cancellation support
-using var timeoutCts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
-
-var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
-{
-    ["Resilient Task"] = async ct => 
+    CircuitBreakerOptions = new CircuitBreakerOptions
     {
-        using var combinedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        combinedCts.CancelAfter(TimeSpan.FromSeconds(10)); // Per-task timeout
-        
-        return await SomeResilientOperation(combinedCts.Token);
+        FailureThreshold = 5,
+        RecoveryTimeout = TimeSpan.FromMinutes(2),
+        MinimumThroughput = 10
     }
 };
 
-await processor.ProcessTasksAsync(taskFactories, timeoutCts.Token);
+using var processor = new TaskListProcessorEnhanced("Resilient Tasks", logger, options);
+
+// Tasks will automatically trigger circuit breaker on repeated failures
+var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
+{
+    ["Resilient API"] = async ct => await CallExternalApiAsync(ct),
+    ["Fallback Service"] = async ct => await CallFallbackServiceAsync(ct)
+};
+
+await processor.ProcessTasksAsync(taskFactories);
+
+// Check circuit breaker status
+var cbStats = processor.CircuitBreakerStats;
+if (cbStats?.State == CircuitBreakerState.Open)
+{
+    Console.WriteLine($"Circuit breaker opened at {cbStats.OpenedAt}");
+}
 ```
 
-### Custom Result Types
+### Streaming Results
 
 ```csharp
-public record WeatherData(string City, int Temperature, string Condition);
-public record ActivityData(string City, List<string> Activities);
+using TaskListProcessing.Interfaces;
 
-// Type-safe execution
-var weatherResult = await processor.ExecuteTaskAsync<WeatherData>(
-    "London Weather",
-    GetWeatherDataAsync("London"),
-    cancellationToken);
-
-if (weatherResult.IsSuccessful && weatherResult.Data != null)
+// Inject the stream processor
+public class StreamingService
 {
-    var weather = weatherResult.Data;
-    Console.WriteLine($"{weather.City}: {weather.Temperature}°F, {weather.Condition}");
+    private readonly ITaskStreamProcessor _streamProcessor;
+    
+    public StreamingService(ITaskStreamProcessor streamProcessor)
+    {
+        _streamProcessor = streamProcessor;
+    }
+    
+    public async Task ProcessWithStreamingAsync()
+    {
+        var tasks = CreateLongRunningTasks();
+        
+        // Process results as they complete
+        await foreach (var result in _streamProcessor.ProcessTasksStreamAsync(tasks))
+        {
+            Console.WriteLine($"Completed: {result.Name} - {result.IsSuccessful}");
+            
+            // Process result immediately without waiting for all tasks
+            await HandleResultAsync(result);
+        }
+    }
 }
+```
+
+### Health Monitoring
+
+```csharp
+var options = new TaskListProcessorOptions
+{
+    HealthCheckOptions = new HealthCheckOptions
+    {
+        MinSuccessRate = 0.8, // 80% success rate threshold
+        MaxAverageExecutionTime = TimeSpan.FromSeconds(5),
+        IncludeCircuitBreakerState = true
+    }
+};
+
+using var processor = new TaskListProcessorEnhanced("Health Monitored", logger, options);
+
+// After processing tasks
+var healthResult = processor.PerformHealthCheck();
+if (!healthResult.IsHealthy)
+{
+    Console.WriteLine($"Health check failed: {healthResult.Message}");
+}
+
+// Get detailed telemetry
+var telemetrySummary = processor.GetTelemetrySummary();
+Console.WriteLine($"Success rate: {telemetrySummary.SuccessRate:F1}%");
+Console.WriteLine($"Average execution time: {telemetrySummary.AverageExecutionTime:F0}ms");
 ```
 
 ## 📊 Performance & Telemetry
@@ -315,33 +467,47 @@ Console.WriteLine($"🚀 Throughput: {throughput:F1} tasks/second");
 
 ## 🛠️ API Reference
 
-### TaskListProcessorEnhanced
+### Core Interfaces
+
+| Interface | Description | Key Methods |
+|-----------|-------------|-------------|
+| `ITaskProcessor` | Single task execution | `ExecuteTaskAsync<T>()` |
+| `ITaskBatchProcessor` | Batch processing | `ProcessTasksAsync()`, `ProcessTaskDefinitionsAsync()` |
+| `ITaskStreamProcessor` | Streaming results | `ProcessTasksStreamAsync()` |
+| `ITaskTelemetryProvider` | Telemetry & health | `GetTelemetrySummary()`, `PerformHealthCheck()` |
+
+### TaskListProcessorEnhanced (Backward Compatible)
 
 | Method | Description | Returns |
 |--------|-------------|---------|
-| `ProcessTasksAsync(taskFactories, ct)` | Execute multiple tasks concurrently | `Task` |
+| `ProcessTasksAsync(taskFactories, progress, ct)` | Execute multiple tasks concurrently | `Task` |
+| `ProcessTaskDefinitionsAsync(definitions, progress, ct)` | Execute tasks with dependencies | `Task` |
 | `ExecuteTaskAsync<T>(name, task, ct)` | Execute single task with telemetry | `Task<EnhancedTaskResult<T>>` |
-| `WhenAllWithLoggingAsync(tasks, logger, ct)` | Static utility for batch execution | `Task` |
+| `ProcessTasksStreamAsync(taskFactories, ct)` | Stream results as they complete | `IAsyncEnumerable<EnhancedTaskResult<object>>` |
+| `GetTelemetrySummary()` | Get comprehensive telemetry | `TelemetrySummary` |
+| `PerformHealthCheck()` | Check processor health | `HealthCheckResult` |
 
-### EnhancedTaskResult&lt;T&gt;
+### Configuration Options
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Name` | `string` | Task identifier |
-| `Data` | `T?` | Task result data |
-| `IsSuccessful` | `bool` | Success indicator |
-| `ErrorMessage` | `string?` | Error details |
-| `Timestamp` | `DateTime` | Completion time |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `MaxConcurrentTasks` | `int` | `Environment.ProcessorCount * 2` | Maximum concurrent tasks |
+| `DefaultTaskTimeout` | `TimeSpan` | `5 minutes` | Default task timeout |
+| `EnableDetailedTelemetry` | `bool` | `true` | Enable comprehensive telemetry |
+| `CircuitBreakerOptions` | `CircuitBreakerOptions?` | `null` | Circuit breaker configuration |
+| `SchedulingStrategy` | `TaskSchedulingStrategy` | `FirstInFirstOut` | Task scheduling strategy |
+| `DependencyResolver` | `ITaskDependencyResolver?` | `null` | Dependency resolution |
 
-### TaskTelemetry
+### Data Models
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `TaskName` | `string` | Task identifier |
-| `DurationMs` | `long` | Execution time |
-| `IsSuccessful` | `bool` | Success status |
-| `ExceptionType` | `string?` | Exception type name |
-| `ErrorMessage` | `string?` | Error details |
+| Model | Description | Key Properties |
+|-------|-------------|----------------|
+| `EnhancedTaskResult<T>` | Task execution result | `Data`, `IsSuccessful`, `ErrorMessage`, `ErrorCategory` |
+| `TaskTelemetry` | Telemetry data | `TaskName`, `ElapsedMilliseconds`, `IsSuccessful` |
+| `TaskProgress` | Progress information | `CompletedTasks`, `TotalTasks`, `CurrentTask` |
+| `TaskDefinition` | Task with metadata | `Name`, `Factory`, `Dependencies`, `Priority` |
+| `CircuitBreakerStats` | Circuit breaker state | `State`, `FailureCount`, `OpenedAt` |
+| `TelemetrySummary` | Aggregated telemetry | `SuccessRate`, `AverageExecutionTime`, `TotalTasks` |
 
 ## 🧪 Testing
 
@@ -365,44 +531,169 @@ dotnet test --filter Category=Integration
 - ✅ **Performance Tests**: Throughput and latency validation
 - ✅ **Stress Tests**: High-concurrency scenarios
 
+## 🏗️ Project Structure
+
+TaskListProcessor follows a clean architecture with clear separation of concerns:
+
+```text
+TaskListProcessor/
+├── src/
+│   ├── TaskListProcessing/                    # Core library
+│   │   ├── Core/                             # Core implementations
+│   │   │   ├── TaskListProcessorEnhanced.cs  # Main orchestrator
+│   │   │   ├── TaskProcessor.cs              # Single task execution
+│   │   │   ├── TaskBatchProcessor.cs         # Batch processing
+│   │   │   ├── TaskStreamProcessor.cs        # Streaming results
+│   │   │   └── TaskTelemetryProvider.cs      # Telemetry collection
+│   │   ├── Interfaces/                       # Interface segregation
+│   │   │   ├── ITaskProcessor.cs             # Single task interface
+│   │   │   ├── ITaskBatchProcessor.cs        # Batch processing interface
+│   │   │   ├── ITaskStreamProcessor.cs       # Streaming interface
+│   │   │   └── ITaskTelemetryProvider.cs     # Telemetry interface
+│   │   ├── Extensions/                       # DI integration
+│   │   │   ├── ServiceCollectionExtensions.cs
+│   │   │   └── TaskProcessorBuilder.cs
+│   │   ├── Models/                           # Data models
+│   │   │   ├── EnhancedTaskResult.cs
+│   │   │   ├── TaskDefinition.cs
+│   │   │   ├── TaskProgress.cs
+│   │   │   └── HealthCheckResult.cs
+│   │   ├── Scheduling/                       # Task scheduling
+│   │   │   ├── TaskSchedulingStrategy.cs
+│   │   │   ├── AdvancedTaskScheduler.cs
+│   │   │   └── TopologicalTaskDependencyResolver.cs
+│   │   ├── CircuitBreaker/                   # Circuit breaker pattern
+│   │   │   ├── CircuitBreaker.cs
+│   │   │   └── CircuitBreakerOptions.cs
+│   │   ├── LoadBalancing/                    # Load balancing
+│   │   │   ├── LoadBalancingStrategy.cs
+│   │   │   └── LoadBalancingTaskDistributor.cs
+│   │   ├── Telemetry/                        # Telemetry & metrics
+│   │   │   ├── TaskTelemetry.cs
+│   │   │   ├── TelemetrySummary.cs
+│   │   │   └── SchedulerStats.cs
+│   │   ├── Options/                          # Configuration
+│   │   │   ├── TaskListProcessorOptions.cs
+│   │   │   ├── CircuitBreakerOptions.cs
+│   │   │   └── HealthCheckOptions.cs
+│   │   ├── Decorators/                       # Cross-cutting concerns
+│   │   │   ├── LoggingTaskProcessorDecorator.cs
+│   │   │   └── MetricsTaskProcessorDecorator.cs
+│   │   ├── Testing/                          # Test utilities
+│   │   │   └── TaskListProcessorTestHelpers.cs
+│   │   └── Utilities/                        # Helper classes
+│   ├── CityWeatherService/                   # Example service
+│   │   ├── WeatherService.cs
+│   │   └── CityWeatherService.csproj
+│   └── CityThingsToDo/                       # Example service
+│       ├── CityThingsToDoService.cs
+│       └── CityThingsToDo.csproj
+├── examples/
+│   └── TaskListProcessor.Console/            # Demo application
+│       ├── Program.cs
+│       └── Utilities/
+│           ├── AppConfiguration.cs
+│           ├── OutputFormatter.cs
+│           ├── ResultsDisplay.cs
+│           └── TelemetryDisplay.cs
+├── tests/
+│   ├── TaskListProcessing.Tests/             # Core library tests
+│   │   ├── InterfaceSegregationTests.cs
+│   │   └── TaskListProcessing.Tests.csproj
+│   ├── CityWeatherService.Tests/             # Service tests
+│   │   ├── WeatherServiceTests.cs
+│   │   └── CityWeatherService.Tests.csproj
+│   └── CityThingsToDo.Tests/                 # Service tests
+│       ├── CityThingsToDoServiceTests.cs
+│       └── CityThingsToDo.Tests.csproj
+├── docs/                                     # Documentation
+│   ├── PHASE1_README.md                      # Phase 1 features
+│   ├── MIGRATION_GUIDE.md                    # Migration guide
+│   └── CLEANUP_SUMMARY.md                    # Cleanup notes
+└── README.md                                 # This file
+```
+
+### Key Architecture Principles
+
+- **Interface Segregation**: Clean, focused interfaces for different scenarios
+- **Dependency Injection**: Native .NET DI with fluent configuration
+- **Single Responsibility**: Each component has a clear, focused purpose
+- **Extensibility**: Decorator pattern for cross-cutting concerns
+- **Testability**: Mockable interfaces and comprehensive test coverage
+
 ## 🔄 Migration Guide
 
-### From TaskListProcessorGeneric
+### From Legacy Processors to Modern Interfaces
 
-**Old (TaskListProcessorGeneric):**
+**Recommended Migration Path:**
 
-```csharp
-var processor = new TaskListProcessorGeneric();
-var tasks = new List<Task>();
-tasks.Add(processor.GetTaskResultAsync("Task1", SomeAsync()));
-await processor.WhenAllWithLoggingAsync(tasks, logger);
-```
-
-**New (TaskListProcessorEnhanced):**
+1. **Migrate to Dependency Injection** (Recommended)
 
 ```csharp
-using var processor = new TaskListProcessorEnhanced("MyTasks", logger);
-var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
+// Old approach
+var processor = new TaskListProcessorEnhanced("Tasks", logger);
+
+// New approach
+services.AddTaskListProcessor(options =>
 {
-    ["Task1"] = ct => SomeAsync()
-};
-await processor.ProcessTasksAsync(taskFactories, cancellationToken: ct);
+    options.MaxConcurrentTasks = 10;
+    options.EnableDetailedTelemetry = true;
+})
+.WithLogging()
+.WithMetrics();
+
+// In your service
+public class MyService
+{
+    private readonly ITaskBatchProcessor _processor;
+    public MyService(ITaskBatchProcessor processor) => _processor = processor;
+}
 ```
+
+2. **Direct Interface Usage** (Alternative)
+
+```csharp
+// Single task processing
+var taskProcessor = new TaskProcessor("SingleTasks", logger);
+var result = await taskProcessor.ExecuteTaskAsync("task", someTask);
+
+// Batch processing
+var batchProcessor = new TaskBatchProcessor("BatchTasks", logger);
+await batchProcessor.ProcessTasksAsync(taskFactories);
+
+// Streaming results
+var streamProcessor = new TaskStreamProcessor("StreamTasks", logger);
+await foreach (var result in streamProcessor.ProcessTasksStreamAsync(tasks))
+{
+    // Process results as they complete
+}
+```
+
+3. **Backward Compatibility** (For existing code)
+
+```csharp
+// TaskListProcessorEnhanced still works with all existing features
+using var processor = new TaskListProcessorEnhanced("Legacy", logger);
+await processor.ProcessTasksAsync(taskFactories);
+```
+
+### New Features in Current Version
+
+- **Interface Segregation**: Clean, focused interfaces for different scenarios
+- **Dependency Injection**: Native .NET DI integration with fluent configuration
+- **Task Dependencies**: Topological sorting and dependency resolution
+- **Circuit Breaker**: Automatic failure detection and recovery
+- **Advanced Scheduling**: Priority-based, dependency-aware task execution
+- **Streaming Results**: Real-time result processing via async enumerables
+- **Enhanced Telemetry**: OpenTelemetry integration and health monitoring
+- **Memory Optimization**: Object pooling and efficient resource management
 
 ### Breaking Changes
 
-1. **Task Definition**: Factory pattern instead of pre-created tasks
-2. **Resource Management**: Implements `IDisposable` - use `using` statements
-3. **Result Access**: Use `TaskResults` property instead of separate collection
-4. **Cancellation**: Built-in cancellation token support
-
-### Benefits of Migration
-
-- 🛡️ **Better Error Isolation**: Individual task failures don't affect others
-- 📊 **Enhanced Telemetry**: Richer performance and diagnostic data
-- 🧵 **Thread Safety**: Improved concurrent execution safety
-- ⏱️ **Cancellation Support**: Proper timeout and cancellation handling
-- 💾 **Resource Management**: Automatic cleanup and disposal
+1. **Namespace Changes**: Main classes moved to `TaskListProcessing.Core`
+2. **Interface Requirements**: New interfaces may require additional dependencies
+3. **Configuration Options**: Enhanced options structure with validation
+4. **Result Types**: Enhanced error categorization and telemetry data
 
 ## 🤝 Contributing
 
@@ -466,9 +757,11 @@ copies or substantial portions of the Software.
 
 ### 📚 Documentation & Articles
 
-- [📖 Complete Technical Article](https://markhazleton.com/task-list-processor.html) - Deep dive into architecture and patterns
-- [🔍 API Documentation](https://markhazleton.github.io/TaskListProcessor/) - Complete API reference
-- [📝 Best Practices Guide](https://markhazleton.com/async-best-practices.html) - Async programming patterns
+- [📖 Phase 1 Features Guide](docs/PHASE1_README.md) - Interface segregation and dependency injection
+- [📝 Migration Guide](docs/MIGRATION_GUIDE.md) - Detailed migration instructions
+- [🔄 Cleanup Summary](docs/CLEANUP_SUMMARY.md) - Recent improvements and changes
+- [🌐 Complete Technical Article](https://markhazleton.com/task-list-processor.html) - Deep dive into architecture and patterns
+- [� Best Practices Guide](https://markhazleton.com/async-best-practices.html) - Async programming patterns
 
 ### 🎯 Examples & Demos
 
@@ -503,11 +796,13 @@ dotnet run --project examples/TaskListProcessor.Console
 
 **See it in action with our interactive demo that showcases:**
 
-- 🌍 Multi-city travel data aggregation
-- ⚡ Concurrent API calls with error handling
-- 📊 Rich telemetry and performance metrics  
-- 🎯 Type-safe result processing
-- ⏱️ Timeout and cancellation scenarios
+- 🌍 Multi-city travel data aggregation with dependency resolution
+- ⚡ Concurrent API calls with circuit breaker protection
+- 📊 Rich telemetry with OpenTelemetry integration
+- 🎯 Type-safe result processing with error categorization
+- ⏱️ Advanced scheduling with priority-based execution
+- 🔄 Streaming results via async enumerables
+- 🏗️ Dependency injection with decorator pattern support
 
 *Built with ❤️ by [Mark Hazleton](https://markhazleton.com) • Follow for more .NET content and best practices*
 
