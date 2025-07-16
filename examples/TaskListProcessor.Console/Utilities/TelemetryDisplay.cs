@@ -8,7 +8,7 @@ using TaskListProcessing.Telemetry;
 
 public static class TelemetryDisplay
 {
-    public static void ShowImpressiveTelemetry(TaskListProcessorImproved processor, string scenarioName)
+    public static void ShowImpressiveTelemetry(TaskListProcessorEnhanced processor, string scenarioName)
     {
         var summary = processor.GetTelemetrySummary();
         var telemetryData = processor.Telemetry.ToList();

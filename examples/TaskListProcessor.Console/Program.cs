@@ -51,7 +51,7 @@ public class Program
 
         OutputFormatter.PrintInfo("Initializing task processor and creating task factories...");
 
-        using var taskProcessor = new TaskListProcessorImproved("City Data Collection", logger);
+        using var taskProcessor = new TaskListProcessorEnhanced("City Data Collection", logger);
         using var cts = new CancellationTokenSource(Config.DefaultTimeout);
 
         var taskFactories = CreateCityTaskFactories(Config.Cities, weatherService, thingsToDoService);
@@ -63,7 +63,7 @@ public class Program
 
         try
         {
-            await taskProcessor.ProcessTasksAsync(taskFactories, cts.Token);
+            await taskProcessor.ProcessTasksAsync(taskFactories, cancellationToken: cts.Token);
             stopwatch.Stop();
 
             OutputFormatter.PrintSuccess($"All tasks completed successfully in {stopwatch.ElapsedMilliseconds:N0}ms");
@@ -93,7 +93,7 @@ public class Program
 
         OutputFormatter.PrintInfo("Demonstrating individual task execution with detailed telemetry...");
 
-        using var processor = new TaskListProcessorImproved("Individual Task Demo", logger);
+        using var processor = new TaskListProcessorEnhanced("Individual Task Demo", logger);
 
         var weatherTask = weatherService.GetWeather("Seattle");
         var result = await processor.ExecuteTaskAsync("Seattle Weather", weatherTask);
@@ -125,7 +125,7 @@ public class Program
 
         OutputFormatter.PrintInfo("Demonstrating cancellation handling with short timeout...");
 
-        using var processor = new TaskListProcessorImproved("Cancellation Demo", logger);
+        using var processor = new TaskListProcessorEnhanced("Cancellation Demo", logger);
         using var cts = new CancellationTokenSource(Config.ShortTimeout);
 
         var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
@@ -149,7 +149,7 @@ public class Program
 
         try
         {
-            await processor.ProcessTasksAsync(taskFactories, cts.Token);
+            await processor.ProcessTasksAsync(taskFactories, cancellationToken: cts.Token);
             OutputFormatter.PrintSuccess("All tasks completed within timeout");
         }
         catch (OperationCanceledException)
@@ -178,7 +178,7 @@ public class Program
         {
             Console.WriteLine($"\n[PROC] Processing {scenario.Name} ({scenario.Cities.Length} cities)...");
 
-            using var processor = new TaskListProcessorImproved($"{scenario.Name} Processor", logger);
+            using var processor = new TaskListProcessorEnhanced($"{scenario.Name} Processor", logger);
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
             var taskFactories = scenario.Cities.ToDictionary(

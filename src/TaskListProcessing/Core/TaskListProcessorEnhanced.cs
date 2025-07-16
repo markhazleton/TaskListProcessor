@@ -444,10 +444,23 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             // Use retry handler if configured
             if (_retryHandler != null)
             {
-                taskResult = await _retryHandler.ExecuteWithRetryAsync(
+                var retryResult = await _retryHandler.ExecuteWithRetryAsync(
                     taskDefinition.Name,
                     taskDefinition.Factory,
                     cancellationToken);
+
+                // Convert the result to the expected type
+                taskResult = GetPooledResult();
+                taskResult.Name = retryResult.Name;
+                taskResult.Data = retryResult.Data;
+                taskResult.IsSuccessful = retryResult.IsSuccessful;
+                taskResult.ErrorMessage = retryResult.ErrorMessage;
+                taskResult.Exception = retryResult.Exception;
+                taskResult.ExecutionTime = retryResult.ExecutionTime;
+                taskResult.AttemptNumber = retryResult.AttemptNumber;
+                taskResult.IsRetryable = retryResult.IsRetryable;
+                taskResult.StartTime = retryResult.StartTime;
+                taskResult.Timestamp = retryResult.Timestamp;
             }
             else
             {
@@ -715,4 +728,4 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 /// <summary>
 /// Health check result for the task processor.
 /// </summary>
-public record HealthCheckResult(bool IsHealthy, string Message);
+// HealthCheckResult is now in TaskListProcessing.Models namespace

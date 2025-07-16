@@ -8,7 +8,7 @@ using static CityWeatherService.WeatherService;
 // Enhanced results display
 public static class ResultsDisplay
 {
-    public static void ShowEnhancedResults(TaskListProcessorImproved processor, AppConfiguration config)
+    public static void ShowEnhancedResults(TaskListProcessorEnhanced processor, AppConfiguration config)
     {
         OutputFormatter.PrintSubHeader("[CITY] CITY DATA RESULTS");
 
@@ -111,7 +111,7 @@ public static class ResultsDisplay
         }
     }
 
-    private static void ShowResultsSummary(TaskListProcessorImproved processor)
+    private static void ShowResultsSummary(TaskListProcessorEnhanced processor)
     {
         var total = processor.TaskResults.Count();
         var successful = processor.TaskResults.Count(r => r.IsSuccessful);

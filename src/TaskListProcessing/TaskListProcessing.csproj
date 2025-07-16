@@ -4,22 +4,20 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+
 	<ItemGroup>
-		<Compile Remove="CircuitBreakerOptions1.cs" />
-		<Compile Remove="health_checks.cs" />
-		<Compile Remove="TaskListProcessorOptions.cs" />
-		<Compile Remove="TaskResultImproved.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="C:\Users\markh\.nuget\packages\microsoft.diagnostics.tracing.traceevent\3.1.21\buildTransitive\..\lib\netstandard2.0\Dia2Lib.dll" />
+		<None
+			Remove="C:\Users\markh\.nuget\packages\microsoft.diagnostics.tracing.traceevent\3.1.21\buildTransitive\..\lib\netstandard2.0\Dia2Lib.dll" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions"
+			Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+			Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -27,7 +25,8 @@
 		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
 		<PackageReference Include="System.Threading.Channels" Version="9.0.7" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.7" />
-		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions"
+			Version="9.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="OpenTelemetry" Version="1.12.0" />

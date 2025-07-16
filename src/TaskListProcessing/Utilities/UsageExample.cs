@@ -17,7 +17,7 @@ public static class UsageExamples
     {
         var logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger("UsageExamples");
 
-        using var processor = new TaskListProcessorImproved("City Data Processing", logger);
+        using var processor = new TaskListProcessorEnhanced("City Data Processing", logger);
 
         // Configure tasks with proper error handling and cancellation
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
@@ -30,7 +30,7 @@ public static class UsageExamples
             ["Paris Activities"] = async ct => await GetActivitiesAsync("Paris", ct)
         }; try
         {
-            await processor.ProcessTasksAsync(tasks, cts.Token);
+            await processor.ProcessTasksAsync(tasks, cancellationToken: cts.Token);
 
             // Get telemetry summary
             var summary = processor.GetTelemetrySummary();
@@ -61,7 +61,7 @@ public static class UsageExamples
     public static async Task StronglyTypedExampleAsync()
     {
         var logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger("UsageExamples");
-        using var processor = new TaskListProcessorImproved("Individual Task Processing", logger);
+        using var processor = new TaskListProcessorEnhanced("Individual Task Processing", logger);
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
         // Using individual task execution with strongly typed results

@@ -8,11 +8,8 @@ This document describes the organized folder structure for the TaskListProcessin
 
 Contains the main task processor classes and core functionality:
 
-- `TaskListProcessor.cs` - Basic task processor implementation
 - `TaskListProcessorBuilder.cs` - Builder pattern for processor configuration
 - `TaskListProcessorEnhanced.cs` - Enhanced processor with advanced features
-- `TaskListProcessorGeneric.cs` - Generic processor implementation
-- `TaskListProcessorImproved.cs` - Improved processor with better error handling
 - `TaskOrchestrationFactory.cs` - Factory for creating task orchestration instances
 
 ### 📁 Interfaces

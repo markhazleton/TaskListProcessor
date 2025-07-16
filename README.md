@@ -2,28 +2,7 @@
 
 [![.NET](https://img.shields.io/badge/.NET-8.0+-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square)](<https://github.com/markhazleton/TaskLis###> Breaking Changes
-
-**Old (TaskListProcessorGeneric):**
-
-```csharp
-var processor = new TaskListProcessorGeneric();
-var tasks = new List<Task>();
-tasks.Add(processor.GetTaskResultAsync("Task1", SomeAsync()));
-await processor.WhenAllWithLoggingAsync(tasks, logger);
-```
-
-**New (TaskListProcessorImproved):**
-
-```csharp
-using var processor = new TaskListProcessorImproved("MyTasks", logger);
-var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
-{
-    ["Task1"] = ct => SomeAsync()
-};
-await processor.ProcessTasksAsync(taskFactories, ct);
-```
-
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square)](https://github.com/markhazleton/TaskListProcessor)
 [![NuGet](https://img.shields.io/badge/NuGet-Coming%20Soon-orange?style=flat-square)](https://www.nuget.org/packages/TaskListProcessor)
 
 > **A modern, thread-safe .NET library for orchestrating asynchronous operations with enterprise-grade telemetry, error handling, and cancellation support.**
@@ -98,7 +77,7 @@ TaskListProcessor follows modern .NET design principles with a clean, extensible
 
 ```ascii
 ┌─────────────────────────────────────────────────────────────┐
-│                TaskListProcessorImproved                    │
+│                TaskListProcessorEnhanced                   │
 ├─────────────────────────────────────────────────────────────┤
 │ + ProcessTasksAsync()     │ Thread-safe task orchestration │
 │ + ExecuteTaskAsync<T>()   │ Individual task execution     │
@@ -117,7 +96,7 @@ TaskListProcessor follows modern .NET design principles with a clean, extensible
 
 ### Core Components
 
-- **TaskListProcessorImproved**: The main orchestrator with thread-safe execution
+- **TaskListProcessorEnhanced**: The main orchestrator with thread-safe execution
 - **EnhancedTaskResult&lt;T&gt;**: Strongly-typed results with comprehensive error information  
 - **TaskTelemetry**: Rich performance and diagnostic data
 - **TaskListOptions**: Configuration for advanced scenarios
@@ -149,7 +128,7 @@ using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 var logger = loggerFactory.CreateLogger<Program>();
 
 // Create the processor
-using var processor = new TaskListProcessorImproved("My Tasks", logger);
+using var processor = new TaskListProcessorEnhanced("My Tasks", logger);
 
 // Define your tasks using the factory pattern
 var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
@@ -176,7 +155,7 @@ foreach (var result in processor.TaskResults)
 This example demonstrates fetching weather and activities data for multiple cities:
 
 ```csharp
-using var processor = new TaskListProcessorImproved("Travel Dashboard", logger);
+using var processor = new TaskListProcessorEnhanced("Travel Dashboard", logger);
 using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
 
 var cities = new[] { "London", "Paris", "Tokyo", "New York" };
@@ -250,7 +229,7 @@ var options = new TaskListProcessorOptions
     RetryPolicy = new ExponentialBackoffRetry(maxRetries: 3)
 };
 
-using var processor = new TaskListProcessorImproved("Advanced Tasks", logger, options);
+using var processor = new TaskListProcessorEnhanced("Advanced Tasks", logger, options);
 ```
 
 ### Error Handling & Resilience
@@ -336,7 +315,7 @@ Console.WriteLine($"🚀 Throughput: {throughput:F1} tasks/second");
 
 ## 🛠️ API Reference
 
-### TaskListProcessorImproved
+### TaskListProcessorEnhanced
 
 | Method | Description | Returns |
 |--------|-------------|---------|
@@ -399,15 +378,15 @@ tasks.Add(processor.GetTaskResultAsync("Task1", SomeAsync()));
 await processor.WhenAllWithLoggingAsync(tasks, logger);
 ```
 
-**New (TaskListProcessorImproved):**
+**New (TaskListProcessorEnhanced):**
 
 ```csharp
-using var processor = new TaskListProcessorImproved("MyTasks", logger);
+using var processor = new TaskListProcessorEnhanced("MyTasks", logger);
 var taskFactories = new Dictionary<string, Func<CancellationToken, Task<object?>>>
 {
     ["Task1"] = ct => SomeAsync()
 };
-await processor.ProcessTasksAsync(taskFactories, ct);
+await processor.ProcessTasksAsync(taskFactories, cancellationToken: ct);
 ```
 
 ### Breaking Changes
