@@ -25,7 +25,8 @@ public class TaskListProcessorEnhancedErrorTests
             MaxConcurrentTasks = 2,
             DefaultTaskTimeout = TimeSpan.FromSeconds(30),
             ContinueOnTaskFailure = true,
-            EnableDetailedTelemetry = true
+            EnableDetailedTelemetry = true,
+            EnableProgressReporting = true
         };
     }
 
@@ -165,7 +166,7 @@ public class TaskListProcessorEnhancedErrorTests
         cts.Cancel();
 
         // Assert
-        await Assert.ThrowsExceptionAsync<OperationCanceledException>(async () => await processingTask);
+        await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await processingTask);
     }
 
     [TestMethod]

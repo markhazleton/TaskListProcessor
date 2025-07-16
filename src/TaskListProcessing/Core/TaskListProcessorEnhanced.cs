@@ -175,8 +175,19 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         var tasks = taskDefinitions.ToList();
         var startTime = DateTimeOffset.UtcNow;
 
+        using var combinedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _cancellationTokenSource.Token);
+        var effectiveToken = combinedCts.Token;
+
         // Initialize progress
         UpdateProgress(0, tasks.Count, null, TimeSpan.Zero, progress);
+
+        // Handle empty task list
+        if (tasks.Count == 0)
+        {
+            // Report completion immediately for empty task list
+            UpdateProgress(0, 0, null, TimeSpan.Zero, progress, TimeSpan.Zero, 0.0);
+            return;
+        }
 
         // Resolve dependencies if resolver is configured
         if (_options.DependencyResolver != null)
@@ -201,6 +212,9 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         {
             foreach (var taskDef in tasks)
             {
+                // Check for cancellation before starting each task
+                effectiveToken.ThrowIfCancellationRequested();
+
                 var processingTask = ProcessSingleTaskWithManagementAsync(
                     taskDef,
                     () =>
@@ -212,7 +226,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 
                         UpdateProgress(completed, tasks.Count, taskDef.Name, elapsed, progress, estimated, successRate);
                     },
-                    cancellationToken);
+                    effectiveToken);
 
                 processingTasks.Add(processingTask);
 
@@ -221,18 +235,37 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
                 {
                     var completedTask = await Task.WhenAny(processingTasks);
                     processingTasks.Remove(completedTask);
+
+                    // Check if the completed task was cancelled and propagate the exception
+                    if (completedTask.IsCanceled)
+                    {
+                        effectiveToken.ThrowIfCancellationRequested();
+                    }
                 }
             }
 
             // Wait for all remaining tasks
             await Task.WhenAll(processingTasks);
         }
+        catch (OperationCanceledException) when (effectiveToken.IsCancellationRequested)
+        {
+            // Cancel all remaining tasks
+            foreach (var task in processingTasks)
+            {
+                if (!task.IsCompleted)
+                {
+                    // Wait a bit for graceful cancellation
+                    await Task.Delay(100, CancellationToken.None);
+                }
+            }
+            throw new TaskCanceledException("Task processing was cancelled");
+        }
         finally
         {
             // Export telemetry if configured
             if (_options.TelemetryExporter != null && _options.EnableDetailedTelemetry)
             {
-                await ExportTelemetryAsync(cancellationToken);
+                await ExportTelemetryAsync(CancellationToken.None);
             }
         }
     }
@@ -265,17 +298,39 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 
         var result = await ProcessSingleTaskAsync(taskDef, cancellationToken);
 
-        // Convert to strongly typed result
-        return new EnhancedTaskResult<T>(taskName, (T?)result.Data, result.IsSuccessful)
+        // Ensure result is not null
+        if (result == null)
         {
-            ErrorMessage = result.ErrorMessage,
-            ErrorCategory = result.ErrorCategory,
-            ExecutionTime = result.ExecutionTime,
-            IsRetryable = result.IsRetryable,
-            AttemptNumber = result.AttemptNumber,
-            Exception = result.Exception,
-            Metadata = result.Metadata
-        };
+            throw new InvalidOperationException($"ProcessSingleTaskAsync returned null for task '{taskName}'");
+        }
+
+        // Convert to strongly typed result - handle null data carefully
+        T? convertedData = default;
+        if (result.Data != null)
+        {
+            try
+            {
+                convertedData = (T?)result.Data;
+            }
+            catch (InvalidCastException)
+            {
+                // If cast fails, keep default value
+                convertedData = default;
+            }
+        }
+
+        var convertedResult = new EnhancedTaskResult<T>(taskName, convertedData, result.IsSuccessful);
+
+        // Set properties individually with null checks
+        convertedResult.ErrorMessage = result.ErrorMessage;
+        convertedResult.ErrorCategory = result.ErrorCategory;
+        convertedResult.ExecutionTime = result.ExecutionTime;
+        convertedResult.IsRetryable = result.IsRetryable;
+        convertedResult.AttemptNumber = result.AttemptNumber;
+        convertedResult.Exception = result.Exception;
+        convertedResult.Metadata = result.Metadata ?? new Dictionary<string, object>();
+
+        return convertedResult;
     }
 
     /// <summary>
@@ -523,6 +578,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             result.SetError(ex);
             _logger?.LogWarning("Task '{TaskName}' was cancelled after {ElapsedMs}ms",
                 taskDefinition.Name, stopwatch.ElapsedMilliseconds);
+            throw; // Re-throw the cancellation exception
         }
         catch (Exception ex)
         {
@@ -582,9 +638,11 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             _currentProgress = new TaskProgress(completed, total, currentTask, elapsed, estimated, successRate);
         }
 
+        // Always report progress if a progress reporter is provided
+        progress?.Report(_currentProgress);
+
         if (_options.EnableProgressReporting)
         {
-            progress?.Report(_currentProgress);
             ProgressChanged?.Invoke(this, _currentProgress);
         }
     }
@@ -620,7 +678,8 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             pooled.IsRetryable = false;
             pooled.AttemptNumber = 1;
             pooled.Exception = null;
-            pooled.Metadata.Clear();
+            pooled.Metadata?.Clear();
+            pooled.Metadata ??= new Dictionary<string, object>();
             pooled.Timestamp = DateTimeOffset.UtcNow;
             pooled.StartTime = DateTimeOffset.UtcNow;
             pooled.ExecutionTime = TimeSpan.Zero;

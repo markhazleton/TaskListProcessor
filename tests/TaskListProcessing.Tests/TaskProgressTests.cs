@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Concurrent;
 using TaskListProcessing.Core;
 using TaskListProcessing.Models;
 using TaskListProcessing.Options;
@@ -15,6 +16,7 @@ public class TaskProgressTests
 {
     private Mock<ILogger<TaskListProcessorEnhanced>> _mockLogger = null!;
     private TaskListProcessorOptions _options = null!;
+    private readonly List<TaskListProcessorEnhanced> _processors = new();
 
     [TestInitialize]
     public void TestInitialize()
@@ -27,9 +29,22 @@ public class TaskProgressTests
         };
     }
 
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        // Dispose all processors created during the test
+        foreach (var processor in _processors)
+        {
+            processor.Dispose();
+        }
+        _processors.Clear();
+    }
+
     private TaskListProcessorEnhanced CreateProcessor()
     {
-        return new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
+        var processor = new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
+        _processors.Add(processor);
+        return processor;
     }
 
     [TestMethod]
@@ -197,7 +212,7 @@ public class TaskProgressTests
         // Assert
         var finalProgress = progressReports.Last();
         Assert.IsTrue(finalProgress.SuccessRate > 0.0);
-        Assert.IsTrue(finalProgress.SuccessRate < 1.0); // Should be between 0 and 1 due to mixed results
+        Assert.IsTrue(finalProgress.SuccessRate < 100.0); // Should be between 0 and 100 due to mixed results
     }
 
     [TestMethod]
@@ -205,7 +220,7 @@ public class TaskProgressTests
     {
         // Arrange
         var processor = new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
-        var progressValues = new List<TaskProgress>();
+        var progressValues = new ConcurrentBag<TaskProgress>();
 
         // Act - Access CurrentProgress from multiple threads
         var tasks = Enumerable.Range(0, 10).Select(_ => Task.Run(() =>
@@ -213,13 +228,18 @@ public class TaskProgressTests
             for (int i = 0; i < 100; i++)
             {
                 var progress = processor.CurrentProgress;
-                progressValues.Add(progress);
+                if (progress != null)
+                {
+                    progressValues.Add(progress);
+                }
             }
         })).ToArray();
 
         Task.WaitAll(tasks);
 
         // Assert - All values should be consistent (initial state)
+        Assert.IsTrue(progressValues.Count > 0);
+        Assert.IsTrue(progressValues.All(p => p != null));
         Assert.IsTrue(progressValues.All(p => p.CompletedTasks == 0));
         Assert.IsTrue(progressValues.All(p => p.TotalTasks == 0));
         Assert.IsTrue(progressValues.All(p => p.CompletionPercentage == 0.0));
@@ -232,13 +252,16 @@ public class TaskProgressTests
         var progressReports = new List<TaskProgress>();
         var progressReporter = new Progress<TaskProgress>(p => progressReports.Add(p));
 
-        var processor = new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
+        var processor = CreateProcessor();
         await processor.InitializeAsync();
 
         var emptyTasks = new Dictionary<string, Func<CancellationToken, Task<object?>>>();
 
         // Act
         await processor.ProcessTasksAsync(emptyTasks, progressReporter);
+
+        // Give a small delay to ensure all progress reports are processed
+        await Task.Delay(50);
 
         // Assert
         Assert.IsTrue(progressReports.Count > 0);

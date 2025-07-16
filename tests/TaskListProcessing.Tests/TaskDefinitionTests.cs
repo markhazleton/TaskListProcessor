@@ -23,7 +23,8 @@ public class TaskDefinitionTests
         _options = new TaskListProcessorOptions
         {
             MaxConcurrentTasks = 3,
-            EnableDetailedTelemetry = true
+            EnableDetailedTelemetry = true,
+            EnableProgressReporting = true
         };
     }
 
@@ -376,7 +377,7 @@ public class TaskDefinitionTests
         cts.Cancel();
 
         // Assert
-        await Assert.ThrowsExceptionAsync<OperationCanceledException>(async () => await processingTask);
+        await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await processingTask);
     }
 
     [TestMethod]

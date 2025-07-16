@@ -61,6 +61,7 @@ public class EnhancedTaskResult<T> : ITaskResult, IEquatable<EnhancedTaskResult<
         IsSuccessful = false;
         Timestamp = DateTimeOffset.UtcNow;
         StartTime = DateTimeOffset.UtcNow;
+        Metadata = new Dictionary<string, object>();
     }
 
     /// <summary>
@@ -76,6 +77,7 @@ public class EnhancedTaskResult<T> : ITaskResult, IEquatable<EnhancedTaskResult<
         IsSuccessful = isSuccessful;
         Timestamp = DateTimeOffset.UtcNow;
         StartTime = DateTimeOffset.UtcNow;
+        Metadata = new Dictionary<string, object>();
     }
 
     /// <summary>
