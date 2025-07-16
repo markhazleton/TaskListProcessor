@@ -3,11 +3,14 @@ using Microsoft.Extensions.ObjectPool;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Threading.Channels;
+using TaskListProcessing.Extensions;
 using TaskListProcessing.Interfaces;
 using TaskListProcessing.Models;
 using TaskListProcessing.Options;
 using TaskListProcessing.Scheduling;
 using TaskListProcessing.Telemetry;
+using TaskListProcessing.Utilities;
 
 namespace TaskListProcessing.Core;
 
@@ -18,13 +21,14 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 {
     private readonly ILogger? _logger;
     private readonly TaskListProcessorOptions _options;
-    private readonly ConcurrentBag<ITaskResult> _taskResults = new();
-    private readonly ConcurrentBag<TaskTelemetry> _telemetry = new();
+    private readonly ConcurrentResultCollection<ITaskResult> _taskResults = new();
+    private readonly ConcurrentResultCollection<TaskTelemetry> _telemetry = new();
     private readonly ConcurrentQueue<TaskDefinition> _taskQueue = new();
     private readonly SemaphoreSlim _concurrencyLimiter;
     private readonly CircuitBreaker? _circuitBreaker;
     private readonly RetryHandler? _retryHandler;
-    private readonly ObjectPool<EnhancedTaskResult<object>>? _resultPool;
+    private readonly ObjectPool<PooledTaskResult<object>>? _resultPool;
+    private readonly MemoryPressureMonitor? _memoryPressureMonitor;
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     private bool _disposed;
@@ -59,6 +63,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         if (_options.EnableMemoryPooling)
         {
             _resultPool = CreateResultPool();
+            _memoryPressureMonitor = new MemoryPressureMonitor(_logger);
         }
     }
 
@@ -70,12 +75,12 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     /// <summary>
     /// Gets the collection of task results (thread-safe).
     /// </summary>
-    public IReadOnlyCollection<ITaskResult> TaskResults => _taskResults.ToList().AsReadOnly();
+    public IReadOnlyCollection<ITaskResult> TaskResults => _taskResults.GetSnapshot();
 
     /// <summary>
     /// Gets the collection of telemetry data (thread-safe).
     /// </summary>
-    public IReadOnlyCollection<TaskTelemetry> Telemetry => _telemetry.ToList().AsReadOnly();
+    public IReadOnlyCollection<TaskTelemetry> Telemetry => _telemetry.GetSnapshot();
 
     /// <summary>
     /// Gets the current circuit breaker state.
@@ -157,7 +162,18 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             Factory = kvp.Value
         }).ToList();
 
-        await ProcessTaskDefinitionsAsync(taskDefinitions, progress, combinedCts.Token);
+        try
+        {
+            // Use SafeAwait for internal operations
+            await ProcessTaskDefinitionsAsync(taskDefinitions, progress, combinedCts.Token).SafeAwait();
+        }
+        finally
+        {
+            if (_options.TelemetryExporter != null && _options.EnableDetailedTelemetry)
+            {
+                await ExportTelemetryAsync(CancellationToken.None).SafeAwait();
+            }
+        }
     }
 
     /// <summary>
@@ -233,7 +249,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
                 // Respect max concurrency
                 if (processingTasks.Count >= _options.MaxConcurrentTasks)
                 {
-                    var completedTask = await Task.WhenAny(processingTasks);
+                    var completedTask = await Task.WhenAny(processingTasks).SafeAwait();
                     processingTasks.Remove(completedTask);
 
                     // Check if the completed task was cancelled and propagate the exception
@@ -245,7 +261,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             }
 
             // Wait for all remaining tasks
-            await Task.WhenAll(processingTasks);
+            await Task.WhenAll(processingTasks).SafeAwait();
         }
         catch (OperationCanceledException) when (effectiveToken.IsCancellationRequested)
         {
@@ -255,7 +271,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
                 if (!task.IsCompleted)
                 {
                     // Wait a bit for graceful cancellation
-                    await Task.Delay(100, CancellationToken.None);
+                    await Task.Delay(100, CancellationToken.None).SafeAwait();
                 }
             }
             throw new TaskCanceledException("Task processing was cancelled");
@@ -265,7 +281,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             // Export telemetry if configured
             if (_options.TelemetryExporter != null && _options.EnableDetailedTelemetry)
             {
-                await ExportTelemetryAsync(CancellationToken.None);
+                await ExportTelemetryAsync(CancellationToken.None).SafeAwait();
             }
         }
     }
@@ -291,12 +307,12 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             Name = taskName,
             Factory = async ct =>
             {
-                var result = await task.WaitAsync(ct);
+                var result = await task.WaitAsync(ct).SafeAwait();
                 return (object?)result;
             }
         };
 
-        var result = await ProcessSingleTaskAsync(taskDef, cancellationToken);
+        var result = await ProcessSingleTaskAsync(taskDef, cancellationToken).SafeAwait();
 
         // Ensure result is not null
         if (result == null)
@@ -339,29 +355,67 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     /// <param name="taskFactories">Dictionary of task name to task factory functions.</param>
     /// <param name="cancellationToken">Cancellation token for task cancellation.</param>
     /// <returns>An async enumerable of task results.</returns>
+    /// <summary>
+    /// High-performance async enumerable with minimal allocations.
+    /// Uses Channel for efficient producer-consumer pattern.
+    /// </summary>
     public async IAsyncEnumerable<EnhancedTaskResult<object>> ProcessTasksStreamAsync(
         IDictionary<string, Func<CancellationToken, Task<object?>>> taskFactories,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(taskFactories);
 
-        var taskDefinitions = taskFactories.Select(kvp => new TaskDefinition
+        // Use Channel for high-performance producer-consumer pattern
+        var channel = Channel.CreateBounded<EnhancedTaskResult<object>>(
+            new BoundedChannelOptions(Math.Min(taskFactories.Count, 100))
+            {
+                SingleReader = true,
+                SingleWriter = false,
+                FullMode = BoundedChannelFullMode.Wait
+            });
+
+        var writer = channel.Writer;
+        var reader = channel.Reader;
+
+        // Start producer task
+        var producerTask = Task.Run(async () =>
         {
-            Name = kvp.Key,
-            Factory = kvp.Value
-        });
+            try
+            {
+                var tasks = taskFactories.Select(kvp => ProduceResultAsync(
+                    kvp.Key, kvp.Value, writer, cancellationToken));
+                
+                await Task.WhenAll(tasks).SafeAwait();
+            }
+            finally
+            {
+                writer.Complete();
+            }
+        }, cancellationToken);
 
-        var tasks = taskDefinitions.Select(taskDef =>
-            ProcessSingleTaskAsync(taskDef, cancellationToken)).ToList();
-
-        while (tasks.Any())
+        // Consume results as they're produced
+        await foreach (var result in reader.ReadAllAsync(cancellationToken))
         {
-            var completedTask = await Task.WhenAny(tasks);
-            tasks.Remove(completedTask);
-
-            var result = await completedTask;
             yield return result;
         }
+
+        // Ensure producer completed
+        await producerTask.SafeAwait();
+    }
+
+    /// <summary>
+    /// Produces a single result and writes it to the channel.
+    /// </summary>
+    private async Task ProduceResultAsync(
+        string taskName,
+        Func<CancellationToken, Task<object?>> factory,
+        ChannelWriter<EnhancedTaskResult<object>> writer,
+        CancellationToken cancellationToken)
+    {
+        var taskDef = new TaskDefinition { Name = taskName, Factory = factory };
+        var result = await ProcessSingleTaskAsync(taskDef, cancellationToken).SafeAwait();
+        
+        await writer.WriteAsync(result, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -370,7 +424,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     /// <returns>Summary of telemetry data.</returns>
     public TelemetrySummary GetTelemetrySummary()
     {
-        var telemetryList = _telemetry.ToList();
+        var telemetryList = _telemetry.GetSnapshot();
 
         if (!telemetryList.Any())
         {
@@ -481,17 +535,17 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         TaskDefinition taskDefinition,
         CancellationToken cancellationToken)
     {
-        await _concurrencyLimiter.WaitAsync(cancellationToken);
+        await _concurrencyLimiter.WaitAsync(cancellationToken).SafeAwait();
 
         try
         {
             // Check circuit breaker
             if (_circuitBreaker?.ShouldReject() == true)
             {
-                var result = GetPooledResult();
+                using var result = GetPooledResult();
                 result.Name = taskDefinition.Name;
                 result.SetError(new InvalidOperationException("Circuit breaker is open"));
-                return result;
+                return CreateResultCopy(result);
             }
 
             EnhancedTaskResult<object> taskResult;
@@ -502,24 +556,25 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
                 var retryResult = await _retryHandler.ExecuteWithRetryAsync(
                     taskDefinition.Name,
                     taskDefinition.Factory,
-                    cancellationToken);
+                    cancellationToken).SafeAwait();
 
                 // Convert the result to the expected type
-                taskResult = GetPooledResult();
-                taskResult.Name = retryResult.Name;
-                taskResult.Data = retryResult.Data;
-                taskResult.IsSuccessful = retryResult.IsSuccessful;
-                taskResult.ErrorMessage = retryResult.ErrorMessage;
-                taskResult.Exception = retryResult.Exception;
-                taskResult.ExecutionTime = retryResult.ExecutionTime;
-                taskResult.AttemptNumber = retryResult.AttemptNumber;
-                taskResult.IsRetryable = retryResult.IsRetryable;
-                taskResult.StartTime = retryResult.StartTime;
-                taskResult.Timestamp = retryResult.Timestamp;
+                using var pooledResult = GetPooledResult();
+                pooledResult.Name = retryResult.Name;
+                pooledResult.Data = retryResult.Data;
+                pooledResult.IsSuccessful = retryResult.IsSuccessful;
+                pooledResult.ErrorMessage = retryResult.ErrorMessage;
+                pooledResult.Exception = retryResult.Exception;
+                pooledResult.ExecutionTime = retryResult.ExecutionTime;
+                pooledResult.AttemptNumber = retryResult.AttemptNumber;
+                pooledResult.IsRetryable = retryResult.IsRetryable;
+                pooledResult.StartTime = retryResult.StartTime;
+                pooledResult.Timestamp = retryResult.Timestamp;
+                taskResult = CreateResultCopy(pooledResult);
             }
             else
             {
-                taskResult = await ExecuteSingleAttemptAsync(taskDefinition, cancellationToken);
+                taskResult = await ExecuteSingleAttemptAsync(taskDefinition, cancellationToken).SafeAwait();
             }
 
             // Update circuit breaker
@@ -555,7 +610,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
         CancellationToken cancellationToken)
     {
         var stopwatch = Stopwatch.StartNew();
-        var result = GetPooledResult();
+        using var result = GetPooledResult();
         result.Name = taskDefinition.Name;
         result.StartTime = DateTimeOffset.UtcNow;
 
@@ -566,7 +621,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeoutCts.CancelAfter(taskTimeout);
 
-            result.Data = await taskDefinition.Factory(timeoutCts.Token);
+            result.Data = await taskDefinition.Factory(timeoutCts.Token).SafeAwait();
             result.IsSuccessful = true;
 
             _logger?.LogDebug("Task '{TaskName}' completed successfully in {ElapsedMs}ms",
@@ -592,7 +647,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             result.ExecutionTime = stopwatch.Elapsed;
         }
 
-        return result;
+        return CreateResultCopy(result);
     }
 
     private async Task ProcessSingleTaskWithManagementAsync(
@@ -602,11 +657,13 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     {
         try
         {
-            var result = await ProcessSingleTaskAsync(taskDefinition, cancellationToken);
+            var result = await ProcessSingleTaskAsync(taskDefinition, cancellationToken).SafeAwait();
             TaskCompleted?.Invoke(this, result);
         }
         finally
         {
+            // Ensure progress callback is called
+            await Task.Yield();
             onCompleted();
         }
     }
@@ -658,52 +715,66 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 
     private double CalculateSuccessRate()
     {
-        var telemetryList = _telemetry.ToList();
+        var telemetryList = _telemetry.GetSnapshot();
         if (!telemetryList.Any()) return 0.0;
 
         return (double)telemetryList.Count(t => t.IsSuccessful) / telemetryList.Count * 100;
     }
 
-    private EnhancedTaskResult<object> GetPooledResult()
+    private PooledTaskResult<object> GetPooledResult()
     {
         if (_resultPool != null)
         {
             var pooled = _resultPool.Get();
-            // Reset the pooled object
-            pooled.Name = "UNKNOWN";
-            pooled.Data = null;
-            pooled.IsSuccessful = false;
-            pooled.ErrorMessage = null;
-            pooled.ErrorCategory = null;
-            pooled.IsRetryable = false;
-            pooled.AttemptNumber = 1;
-            pooled.Exception = null;
-            pooled.Metadata?.Clear();
-            pooled.Metadata ??= new Dictionary<string, object>();
-            pooled.Timestamp = DateTimeOffset.UtcNow;
-            pooled.StartTime = DateTimeOffset.UtcNow;
-            pooled.ExecutionTime = TimeSpan.Zero;
+            // Object is already reset by pool policy
             return pooled;
         }
 
-        return new EnhancedTaskResult<object>();
+        // Return non-pooled result when pooling is disabled
+        return new PooledTaskResult<object>(null);
     }
 
-    private void ReturnPooledResult(EnhancedTaskResult<object> result)
+    /// <summary>
+    /// Creates a copy of a pooled result for return since original will be disposed.
+    /// </summary>
+    /// <param name="source">The pooled result to copy.</param>
+    /// <returns>A new EnhancedTaskResult with copied data.</returns>
+    private EnhancedTaskResult<object> CreateResultCopy(PooledTaskResult<object> source)
+    {
+        return new EnhancedTaskResult<object>(source.Name, source.Data, source.IsSuccessful)
+        {
+            ErrorMessage = source.ErrorMessage,
+            ErrorCategory = source.ErrorCategory,
+            ExecutionTime = source.ExecutionTime,
+            IsRetryable = source.IsRetryable,
+            AttemptNumber = source.AttemptNumber,
+            Exception = source.Exception,
+            Metadata = new Dictionary<string, object>(source.Metadata),
+            Timestamp = source.Timestamp,
+            StartTime = source.StartTime
+        };
+    }
+
+    private void ReturnPooledResult(PooledTaskResult<object> result)
     {
         _resultPool?.Return(result);
     }
 
-    private ObjectPool<EnhancedTaskResult<object>> CreateResultPool()
+    private ObjectPool<PooledTaskResult<object>> CreateResultPool()
     {
         var poolOptions = _options.MemoryPoolOptions ?? new MemoryPoolOptions();
 
-        var policy = new DefaultPooledObjectPolicy<EnhancedTaskResult<object>>();
         var provider = new DefaultObjectPoolProvider
         {
             MaximumRetained = poolOptions.MaxPoolSize
         };
 
+        // Create a temporary pool for the policy
+        var tempPool = provider.Create(new PooledTaskResultPolicy<object>(null!));
+        
+        // Create the actual policy with the pool reference
+        var policy = new PooledTaskResultPolicy<object>(tempPool);
+        
         return provider.Create(policy);
     }
 
@@ -711,14 +782,14 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
     {
         if (_resultPool == null || _options.MemoryPoolOptions == null) return;
 
-        var prewarmedObjects = new List<EnhancedTaskResult<object>>();
+        var prewarmedObjects = new List<PooledTaskResult<object>>();
 
         for (int i = 0; i < _options.MemoryPoolOptions.InitialPoolSize; i++)
         {
             prewarmedObjects.Add(_resultPool.Get());
         }
 
-        await Task.Delay(1); // Yield to allow pool to stabilize
+        await Task.Delay(1).SafeAwait(); // Yield to allow pool to stabilize
 
         foreach (var obj in prewarmedObjects)
         {
@@ -732,7 +803,7 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
 
         try
         {
-            await _options.TelemetryExporter.ExportAsync(_telemetry, cancellationToken);
+            await _options.TelemetryExporter.ExportAsync(_telemetry.GetSnapshot(), cancellationToken).SafeAwait();
             _logger?.LogDebug("Telemetry exported successfully to '{ExporterName}'", _options.TelemetryExporter.Name);
         }
         catch (Exception ex)
@@ -761,6 +832,9 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             _cancellationTokenSource?.Cancel();
             _concurrencyLimiter?.Dispose();
             _cancellationTokenSource?.Dispose();
+            _taskResults?.Dispose();
+            _telemetry?.Dispose();
+            _memoryPressureMonitor?.Dispose();
             _disposed = true;
         }
     }
@@ -774,11 +848,14 @@ public class TaskListProcessorEnhanced : IDisposable, IAsyncDisposable
             // Export final telemetry
             if (_options.TelemetryExporter != null && _options.EnableDetailedTelemetry)
             {
-                await ExportTelemetryAsync(CancellationToken.None);
+                await ExportTelemetryAsync(CancellationToken.None).SafeAwait();
             }
 
             _concurrencyLimiter?.Dispose();
             _cancellationTokenSource?.Dispose();
+            _taskResults?.Dispose();
+            _telemetry?.Dispose();
+            _memoryPressureMonitor?.Dispose();
             _disposed = true;
         }
     }
