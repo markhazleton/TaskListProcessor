@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@ViewData["Description"] ?? " TaskListProcessor - A modern .NET 9.0 library for
+        orchestrating asynchronous operations with comprehensive telemetry and advanced scheduling capabilities."" />
+    <meta name="keywords" content="TaskListProcessor, .NET, Async, Performance, Telemetry, Circuit Breaker" />
+    <meta name="author" content="Mark Hazleton" />
+
+    <title>@ViewData["Title"] - TaskListProcessor Demo</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="~/images/favicon.svg">
+    <link rel="alternate icon" href="~/favicon.ico">
+    <link rel="apple-touch-icon" href="~/images/favicon.svg">
+
+    <!-- Custom CSS (includes Bootstrap 5 and Bootstrap Icons) -->
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="/css/site.min.css" />
+
+    <!-- Preconnect for external resources -->
+    <link rel="preconnect" href="https://github.com">
+    <link rel="preconnect" href="https://markhazleton.com">
+</head>
+
+<body>
+    <!-- Skip Navigation Link for Accessibility -->
+    <a class="skip-link visually-hidden-focusable" href="#main-content">Skip to main content</a>
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top" data-bs-theme="dark">
+        <div class="container-fluid px-4" style="background: var(--tlp-gradient);">
+            <!-- Brand with improved typography -->
+            <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="@Url.Action("Index", "Home")">
+                <i class="bi bi-rocket-takeoff me-2 fs-4 text-warning"></i>
+                <div class="d-flex flex-column">
+                    <span class="fw-bold">TaskListProcessor</span>
+                    <small class="opacity-75 d-none d-md-block" style="font-size: 0.7rem; margin-top: -4px;">Enterprise
+                        .NET Library</small>
+                </div>
+            </a>
+
+            <!-- Mobile toggle button -->
+            <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill mx-1 @(ViewContext.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                            asp-controller="Home" asp-action="Index" data-bs-toggle="tooltip"
+                            title="Home - Overview and getting started">
+                            <i class="bi bi-house me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill mx-1 @(ViewContext.RouteData?.Values["action"]?.ToString() == "Demo" ? "active" : "")"
+                            asp-controller="Home" asp-action="Demo" data-bs-toggle="tooltip"
+                            title="Live Demo - Interactive examples">
+                            <i class="bi bi-play-circle me-1"></i>Live Demo
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill mx-1 @(ViewContext.RouteData?.Values["action"]?.ToString() == "Performance" ? "active" : "")"
+                            asp-controller="Home" asp-action="Performance" data-bs-toggle="tooltip"
+                            title="Performance - Benchmarks and metrics">
+                            <i class="bi bi-speedometer2 me-1"></i>Performance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill mx-1 @(ViewContext.RouteData?.Values["action"]?.ToString() == "Architecture" ? "active" : "")"
+                            asp-controller="Home" asp-action="Architecture" data-bs-toggle="tooltip"
+                            title="Architecture - System design and patterns">
+                            <i class="bi bi-diagram-3 me-1"></i>Architecture
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill mx-1 @(ViewContext.RouteData?.Values["action"]?.ToString() == "Documentation" ? "active" : "")"
+                            asp-controller="Home" asp-action="Documentation" data-bs-toggle="tooltip"
+                            title="Documentation - API reference and guides">
+                            <i class="bi bi-book me-1"></i>Docs
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Right side actions -->
+                <div class="d-flex align-items-center">
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-outline-light btn-sm me-2 rounded-pill" type="button" id="theme-toggle"
+                        data-bs-toggle="tooltip" title="Toggle dark/light theme">
+                        <i class="bi bi-sun-fill"></i>
+                    </button>
+
+                    <!-- GitHub Link -->
+                    <a class="btn btn-outline-light btn-sm rounded-pill"
+                        href="https://github.com/markhazleton/TaskListProcessor" target="_blank"
+                        rel="noopener noreferrer" data-bs-toggle="tooltip" title="View source code on GitHub">
+                        <i class="bi bi-github me-1"></i>
+                        <span class="d-none d-md-inline">GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main role="main" id="main-content" class="flex-grow-1">
+        @RenderBody()
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-dark text-light mt-auto">
+        <!-- Main Footer Content -->
+        <div class="container py-5">
+            <div class="row g-4">
+                <!-- Brand and Description -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-rocket-takeoff me-2 fs-3 text-primary"></i>
+                        <h5 class="mb-0 fw-bold">TaskListProcessor</h5>
+                    </div>
+                    <p class="text-light-emphasis mb-3">
+                        A modern, enterprise-grade .NET 9.0 library for orchestrating asynchronous operations
+                        with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a href="https://github.com/markhazleton/TaskListProcessor"
+                            class="btn btn-outline-light btn-sm rounded-pill" target="_blank" rel="noopener noreferrer"
+                            data-bs-toggle="tooltip" title="View on GitHub">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="https://markhazleton.com" class="btn btn-outline-light btn-sm rounded-pill"
+                            target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" title="Visit website">
+                            <i class="bi bi-globe"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-primary">Features</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="@Url.Action("Demo", "Home")"
+                                class="text-light-emphasis text-decoration-none hover-text-primary">
+                                <i class="bi bi-check-circle me-1 text-success"></i>Live Demo
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="@Url.Action("Performance", "Home")"
+                                class="text-light-emphasis text-decoration-none hover-text-primary">
+                                <i class="bi bi-check-circle me-1 text-success"></i>Performance
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="@Url.Action("Architecture", "Home")"
+                                class="text-light-emphasis text-decoration-none hover-text-primary">
+                                <i class="bi bi-check-circle me-1 text-success"></i>Architecture
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="@Url.Action("Documentation", "Home")"
+                                class="text-light-emphasis text-decoration-none hover-text-primary">
+                                <i class="bi bi-check-circle me-1 text-success"></i>Documentation
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Technology Stack -->
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-3 text-primary">Technology</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary rounded-pill">.NET 9.0</span>
+                        <span class="badge bg-secondary rounded-pill">C#</span>
+                        <span class="badge bg-info rounded-pill">Async/Await</span>
+                        <span class="badge bg-success rounded-pill">Telemetry</span>
+                        <span class="badge bg-warning text-dark rounded-pill">Circuit Breaker</span>
+                        <span class="badge bg-danger rounded-pill">Performance</span>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-light-emphasis">
+                            <i class="bi bi-code-slash me-1"></i>
+                            Built with modern .NET practices and enterprise patterns
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Contact & Stats -->
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-3 text-primary">Connect</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="https://github.com/markhazleton/TaskListProcessor"
+                            class="text-light-emphasis text-decoration-none d-flex align-items-center" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="bi bi-github me-2"></i>
+                            GitHub Repository
+                        </a>
+                        <a href="https://markhazleton.com"
+                            class="text-light-emphasis text-decoration-none d-flex align-items-center" target="_blank"
+                            rel="noopener noreferrer">
+                            <i class="bi bi-person-circle me-2"></i>
+                            Mark Hazleton
+                        </a>
+                        <div class="text-light-emphasis d-flex align-items-center">
+                            <i class="bi bi-calendar-date me-2"></i>
+                            Updated: @DateTime.Now.ToString("MMM yyyy")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="border-top border-dark-subtle">
+            <div class="container py-3">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            © @DateTime.Now.Year TaskListProcessor. Built with ❤️ using .NET 9.0 and Bootstrap 5.
+                        </small>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check me-1"></i>
+                            Enterprise-ready • Open Source • High Performance
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS (includes Bootstrap 5 bundle) -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            const icon = themeToggle.querySelector('i');
+
+            // Get stored theme or default to light
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-bs-theme', storedTheme);
+            updateThemeIcon(storedTheme);
+
+            themeToggle.addEventListener('click', function ()
+            {
+                const currentTheme = html.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                html.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+
+            function updateThemeIcon(theme)
+            {
+                icon.className = theme === 'dark' ? 'bi bi-moon-fill' : 'bi bi-sun-fill';
+                themeToggle.setAttribute('title', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
+            }
+        });
+    </script>
+
+    <!-- Custom JavaScript (includes Bootstrap 5 and custom functionality) -->
+    <script src="/js/site.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

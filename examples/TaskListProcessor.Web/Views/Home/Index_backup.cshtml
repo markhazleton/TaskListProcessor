@@ -1,0 +1,158 @@
+@model ProcessingConfigurationViewModel
+@{
+    ViewData["Title"] = "Enterprise Task Processing";
+    ViewData["Description"] = "TaskListProcessor - A modern .NET 9.0 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.";
+}
+
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="animate-fade-in-up">
+                    <h1 class="display-3 fw-bold mb-4 text-white">
+                        <i class="bi bi-rocket-takeoff me-3 text-warning"></i>
+                        TaskListProcessor
+                    </h1>
+                    <p class="lead mb-4 fs-4 text-white-75">
+                        A modern, enterprise-grade <strong>.NET 9.0</strong> library for orchestrating asynchronous operations 
+                        with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.
+                    </p>
+                    
+                    <!-- Key Features Badges -->
+                    <div class="d-flex flex-wrap gap-2 mb-5 animate-fade-in-up animate-delay-1">
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-shield-check me-1"></i>Fault Isolation
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-graph-up me-1"></i>Enterprise Observability
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-lightning me-1"></i>Advanced Scheduling
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-code-slash me-1"></i>Type Safety
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-speedometer2 me-1"></i>High Performance
+                        </span>
+                    </div>
+                    
+                    <!-- Call-to-Action Buttons -->
+                    <div class="d-flex flex-column flex-sm-row gap-3 animate-fade-in-up animate-delay-2">
+                        <a href="#demo-section" class="btn btn-light btn-lg px-4 py-3 rounded-pill shadow-lg">
+                            <i class="bi bi-play-circle-fill me-2"></i>Interactive Demo
+                        </a>
+                        <a href="https://github.com/markhazleton/TaskListProcessor" 
+                           class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill" 
+                           target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-github me-2"></i>View Source
+                        </a>
+                        <a href="@Url.Action("Documentation", "Home")" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                            <i class="bi bi-book me-2"></i>Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Visual -->
+            <div class="col-lg-5">
+                <div class="position-relative animate-fade-in-up animate-delay-3">
+                    <div class="bg-white bg-opacity-15 backdrop-blur rounded-4 p-5 shadow-lg border border-white border-opacity-20">
+                        <div class="text-center mb-4">
+                            <div class="bg-primary bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 100px; height: 100px;">
+                                <i class="bi bi-diagram-3 fs-1 text-white"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-white text-center mb-3">Enterprise Architecture</h4>
+                        <div class="row g-3 text-center">
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-cpu text-warning fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Processing</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-activity text-info fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Monitoring</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-shield-shaded text-success fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Resilience</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <small class="text-white-75">Built with enterprise-grade patterns</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animated background elements -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="z-index: -1;">
+        <div class="position-absolute" style="top: 10%; left: 10%; width: 20px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+        <div class="position-absolute" style="top: 20%; right: 20%; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 8s ease-in-out infinite reverse;"></div>
+        <div class="position-absolute" style="bottom: 20%; left: 30%; width: 25px; height: 25px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 7s ease-in-out infinite;"></div>
+    </div>
+</section>
+
+<!-- Simple Test Content -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Bootstrap Test</h4>
+                <p>If you can see this styled alert with proper colors and formatting, Bootstrap is loading correctly.</p>
+                <hr>
+                <p class="mb-0">Check if the buttons below are properly styled:</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Test Card</h5>
+                    <p class="card-text">This is a test card to verify Bootstrap styling.</p>
+                    <a href="#" class="btn btn-primary">Primary Button</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Icons Test</h5>
+                    <p class="card-text">Testing Bootstrap Icons:</p>
+                    <p>
+                        <i class="bi bi-check-circle text-success"></i>
+                        <i class="bi bi-x-circle text-danger"></i>
+                        <i class="bi bi-info-circle text-info"></i>
+                        <i class="bi bi-exclamation-triangle text-warning"></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Colors Test</h5>
+                    <p class="card-text">Testing custom colors:</p>
+                    <span class="badge bg-primary">Primary</span>
+                    <span class="badge bg-secondary">Secondary</span>
+                    <span class="badge bg-success">Success</span>
+                    <span class="badge bg-danger">Danger</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

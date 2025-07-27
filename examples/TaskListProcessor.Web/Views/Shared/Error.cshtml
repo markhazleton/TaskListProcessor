@@ -1,0 +1,119 @@
+@model TaskListProcessor.Web.Controllers.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <div class="error-icon mb-4">
+                    <i class="bi bi-exclamation-triangle text-danger" style="font-size: 5rem;"></i>
+                </div>
+                <h1 class="display-4 text-danger mb-3">Oops! Something went wrong</h1>
+                <p class="lead text-muted mb-4">
+                    We encountered an unexpected error while processing your request.
+                </p>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @if (Model?.ShowRequestId ?? false)
+                    {
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <div>
+                                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-lightbulb text-primary me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h5 class="text-primary mb-2">What happened?</h5>
+                                    <p class="text-muted mb-0">
+                                        An unexpected error occurred while processing your request. 
+                                        This could be due to a temporary issue or an invalid operation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-tools text-success me-3 mt-1" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h5 class="text-success mb-2">What can you do?</h5>
+                                    <ul class="list-unstyled text-muted mb-0">
+                                        <li class="mb-1">• Try refreshing the page</li>
+                                        <li class="mb-1">• Go back to the previous page</li>
+                                        <li class="mb-1">• Return to the home page</li>
+                                        <li>• Contact support if the problem persists</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex flex-wrap gap-3 justify-content-center">
+                        <button onclick="window.history.back()" class="btn btn-outline-primary">
+                            <i class="bi bi-arrow-left me-2"></i>Go Back
+                        </button>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                            <i class="bi bi-house me-2"></i>Return Home
+                        </a>
+                        <button onclick="window.location.reload()" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Refresh Page
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    If this error persists, please contact our support team with the Request ID above.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-icon {
+        animation: pulse 2s infinite;
+    }
+    
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+    }
+    
+    .btn {
+        border-radius: 25px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>

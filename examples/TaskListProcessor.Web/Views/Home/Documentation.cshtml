@@ -1,0 +1,548 @@
+@{
+    ViewData["Title"] = "Documentation";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="bi bi-book me-3"></i>
+                Documentation
+            </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Table of Contents -->
+        <div class="col-lg-3">
+            <div class="card sticky-top" style="top: 1rem;">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-list me-2"></i>Table of Contents
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <a href="#overview" class="list-group-item list-group-item-action">
+                            <i class="bi bi-eye me-2"></i>Overview
+                        </a>
+                        <a href="#quick-start" class="list-group-item list-group-item-action">
+                            <i class="bi bi-rocket-takeoff me-2"></i>Quick Start
+                        </a>
+                        <a href="#key-features" class="list-group-item list-group-item-action">
+                            <i class="bi bi-star me-2"></i>Key Features
+                        </a>
+                        <a href="#api-reference" class="list-group-item list-group-item-action">
+                            <i class="bi bi-code-slash me-2"></i>API Reference
+                        </a>
+                        <a href="#examples" class="list-group-item list-group-item-action">
+                            <i class="bi bi-file-code me-2"></i>Examples
+                        </a>
+                        <a href="#best-practices" class="list-group-item list-group-item-action">
+                            <i class="bi bi-award me-2"></i>Best Practices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Documentation Content -->
+        <div class="col-lg-9">
+            <!-- Overview Section -->
+            <section id="overview" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-eye me-2"></i>Overview
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">
+                            TaskListProcessor is a production-ready .NET 9.0 library designed to solve complex
+                            asynchronous orchestration challenges in modern applications.
+                        </p>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-question-circle me-2"></i>The Problem</h5>
+                                <p>
+                                    Modern applications require sophisticated coordination of multiple async
+                                    operations—API calls, database queries, file I/O, microservice interactions—while
+                                    maintaining resilience, observability, and performance under varying loads.
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><i class="bi bi-lightbulb me-2"></i>The Solution</h5>
+                                <p>
+                                    TaskListProcessor provides a battle-tested, enterprise-ready framework with fault
+                                    isolation, enterprise observability, advanced scheduling, type safety, and
+                                    dependency injection.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Enterprise Grade:</strong> Built with enterprise-grade patterns including dependency
+                            injection, circuit breakers, task scheduling, and comprehensive telemetry.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start Section -->
+            <section id="quick-start" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-rocket-takeoff me-2"></i>Quick Start
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Installation</h5>
+                        <div class="code-block">
+                            <pre><code class="language-bash"># Clone the repository
+git clone https://github.com/markhazleton/TaskListProcessor.git
+cd TaskListProcessor
+
+# Build the solution
+dotnet build
+
+# Run the demo
+dotnet run --project examples/TaskListProcessor.Console</code></pre>
+                        </div>
+
+                        <h5 class="mt-4">Basic Usage (Direct Instantiation)</h5>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using TaskListProcessing.Core;
+using Microsoft.Extensions.Logging;
+
+// Set up logging (optional but recommended)
+using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+var logger = loggerFactory.CreateLogger&lt;Program&gt;();
+
+// Create the processor
+using var processor = new TaskListProcessorEnhanced("My Tasks", logger);
+
+// Define your tasks using the factory pattern
+var taskFactories = new Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt;
+{
+    ["Weather Data"] = async ct => await GetWeatherAsync("London"),
+    ["Stock Prices"] = async ct => await GetStockPricesAsync("MSFT"),
+    ["User Data"] = async ct => await GetUserDataAsync(userId)
+};
+
+// Execute all tasks concurrently
+await processor.ProcessTasksAsync(taskFactories, cancellationToken);
+
+// Access results and telemetry
+foreach (var result in processor.TaskResults)
+{
+    Console.WriteLine($"{result.Name}: {(result.IsSuccessful ? "✅" : "❌")}");
+}</code></pre>
+                        </div>
+
+                        <h5 class="mt-4">Dependency Injection Usage (Recommended)</h5>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using TaskListProcessing.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+// Program.cs
+var builder = Host.CreateApplicationBuilder(args);
+
+// Configure TaskListProcessor with decorators
+builder.Services.AddTaskListProcessor(options =>
+{
+    options.MaxConcurrentTasks = 10;
+    options.EnableDetailedTelemetry = true;
+    options.CircuitBreakerOptions = new() { FailureThreshold = 3 };
+})
+.WithLogging()
+.WithMetrics()
+.WithCircuitBreaker();
+
+var host = builder.Build();
+
+// Usage in your services
+public class MyService
+{
+    private readonly ITaskBatchProcessor _processor;
+    
+    public MyService(ITaskBatchProcessor processor)
+    {
+        _processor = processor;
+    }
+    
+    public async Task ProcessDataAsync()
+    {
+        var tasks = new Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt;
+        {
+            ["API Call"] = async ct => await CallApiAsync(ct),
+            ["DB Query"] = async ct => await QueryDatabaseAsync(ct)
+        };
+        
+        await _processor.ProcessTasksAsync(tasks);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Features Section -->
+            <section id="key-features" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-star me-2"></i>Key Features
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-shield-check text-success me-2"></i>Circuit Breaker Pattern</h5>
+                                    <p>Automatic failure detection and cascading failure prevention with intelligent
+                                        recovery mechanisms.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-graph-up text-info me-2"></i>Rich Telemetry</h5>
+                                    <p>Comprehensive timing, success rates, error tracking, and OpenTelemetry
+                                        integration for full observability.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-lightning text-warning me-2"></i>Advanced Scheduling</h5>
+                                    <p>Priority-based, dependency-aware task execution with configurable concurrency
+                                        limits and load balancing.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-type text-primary me-2"></i>Type Safety</h5>
+                                    <p>Strongly-typed results with full IntelliSense support and comprehensive error
+                                        categorization.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-gear text-secondary me-2"></i>Dependency Injection</h5>
+                                    <p>Native .NET DI integration with fluent configuration API and decorator pattern
+                                        support.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item p-3 border rounded">
+                                    <h5><i class="bi bi-speedometer2 text-danger me-2"></i>High Performance</h5>
+                                    <p>Concurrent execution with object pooling, efficient memory management, and
+                                        optimized async patterns.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Reference Section -->
+            <section id="api-reference" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-code-slash me-2"></i>API Reference
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Core Interfaces</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Interface</th>
+                                        <th>Description</th>
+                                        <th>Key Methods</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>ITaskProcessor</code></td>
+                                        <td>Single task execution</td>
+                                        <td><code>ExecuteTaskAsync&lt;T&gt;()</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ITaskBatchProcessor</code></td>
+                                        <td>Batch processing</td>
+                                        <td><code>ProcessTasksAsync()</code>, <code>ProcessTaskDefinitionsAsync()</code>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ITaskStreamProcessor</code></td>
+                                        <td>Streaming results</td>
+                                        <td><code>ProcessTasksStreamAsync()</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>ITaskTelemetryProvider</code></td>
+                                        <td>Telemetry & health</td>
+                                        <td><code>GetTelemetrySummary()</code>, <code>PerformHealthCheck()</code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h5 class="mt-4">Configuration Options</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Option</th>
+                                        <th>Type</th>
+                                        <th>Default</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>MaxConcurrentTasks</code></td>
+                                        <td><code>int</code></td>
+                                        <td><code>Environment.ProcessorCount * 2</code></td>
+                                        <td>Maximum concurrent tasks</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>DefaultTaskTimeout</code></td>
+                                        <td><code>TimeSpan</code></td>
+                                        <td><code>5 minutes</code></td>
+                                        <td>Default task timeout</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>EnableDetailedTelemetry</code></td>
+                                        <td><code>bool</code></td>
+                                        <td><code>true</code></td>
+                                        <td>Enable comprehensive telemetry</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>CircuitBreakerOptions</code></td>
+                                        <td><code>CircuitBreakerOptions?</code></td>
+                                        <td><code>null</code></td>
+                                        <td>Circuit breaker configuration</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Examples Section -->
+            <section id="examples" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-file-code me-2"></i>Examples
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Travel Dashboard (Real-world Scenario)</h5>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">using var processor = new TaskListProcessorEnhanced("Travel Dashboard", logger);
+using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(2));
+
+var cities = new[] { "London", "Paris", "Tokyo", "New York" };
+var taskFactories = new Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt;();
+
+// Create tasks for each city
+foreach (var city in cities)
+{
+    taskFactories[$"{city} Weather"] = ct => weatherService.GetWeatherAsync(city, ct);
+    taskFactories[$"{city} Activities"] = ct => activitiesService.GetActivitiesAsync(city, ct);
+}
+
+// Execute and handle results
+try 
+{
+    await processor.ProcessTasksAsync(taskFactories, cts.Token);
+    
+    // Group results by city
+    var cityData = processor.TaskResults
+        .GroupBy(r => r.Name.Split(' ')[0])
+        .ToDictionary(g => g.Key, g => g.ToList());
+    
+    // Display results with rich formatting
+    foreach (var (city, results) in cityData)
+    {
+        Console.WriteLine($"\n🌍 {city}:");
+        foreach (var result in results)
+        {
+            var status = result.IsSuccessful ? "✅" : "❌";
+            Console.WriteLine($"  {status} {result.Name.Split(' ')[1]}");
+        }
+    }
+}</code></pre>
+                        </div>
+
+                        <h5 class="mt-4">Circuit Breaker Configuration</h5>
+                        <div class="code-block">
+                            <pre><code class="language-csharp">var options = new TaskListProcessorOptions
+{
+    CircuitBreakerOptions = new CircuitBreakerOptions
+    {
+        FailureThreshold = 5,
+        RecoveryTimeout = TimeSpan.FromMinutes(2),
+        MinimumThroughput = 10
+    }
+};
+
+using var processor = new TaskListProcessorEnhanced("Resilient Tasks", logger, options);
+
+// Tasks will automatically trigger circuit breaker on repeated failures
+var taskFactories = new Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt;
+{
+    ["Resilient API"] = async ct => await CallExternalApiAsync(ct),
+    ["Fallback Service"] = async ct => await CallFallbackServiceAsync(ct)
+};
+
+await processor.ProcessTasksAsync(taskFactories);
+
+// Check circuit breaker status
+var cbStats = processor.CircuitBreakerStats;
+if (cbStats?.State == CircuitBreakerState.Open)
+{
+    Console.WriteLine($"Circuit breaker opened at {cbStats.OpenedAt}");
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices Section -->
+            <section id="best-practices" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-award me-2"></i>Best Practices
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="alert alert-success">
+                                    <h6><i class="bi bi-check-circle me-2"></i>Do's</h6>
+                                    <ul class="mb-0">
+                                        <li>Use dependency injection for production applications</li>
+                                        <li>Configure appropriate timeout values for your use case</li>
+                                        <li>Enable detailed telemetry for monitoring</li>
+                                        <li>Use circuit breakers for external service calls</li>
+                                        <li>Handle cancellation tokens properly</li>
+                                        <li>Monitor task performance and success rates</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="alert alert-warning">
+                                    <h6><i class="bi bi-exclamation-triangle me-2"></i>Don'ts</h6>
+                                    <ul class="mb-0">
+                                        <li>Don't ignore cancellation tokens in task implementations</li>
+                                        <li>Don't set overly aggressive timeout values</li>
+                                        <li>Don't forget to dispose processors properly</li>
+                                        <li>Don't block async methods with .Wait() or .Result</li>
+                                        <li>Don't ignore telemetry data for performance tuning</li>
+                                        <li>Don't run CPU-intensive tasks without consideration</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4">Performance Optimization Tips</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card border-primary">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-cpu text-primary fs-1"></i>
+                                        <h6 class="mt-2">Concurrency Tuning</h6>
+                                        <p class="small mb-0">Adjust MaxConcurrentTasks based on your system resources
+                                            and external service limits.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-success">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-graph-up text-success fs-1"></i>
+                                        <h6 class="mt-2">Monitoring</h6>
+                                        <p class="small mb-0">Use telemetry data to identify bottlenecks and optimize
+                                            task performance.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-info">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-shield-check text-info fs-1"></i>
+                                        <h6 class="mt-2">Resilience</h6>
+                                        <p class="small mb-0">Implement proper error handling and use circuit breakers
+                                            for external dependencies.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor =>
+            {
+                anchor.addEventListener('click', function (e)
+                {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target)
+                    {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Highlight active section in TOC
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.list-group-item[href^="#"]');
+
+            function updateActiveTocLink()
+            {
+                let currentSection = '';
+                sections.forEach(section =>
+                {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 100)
+                    {
+                        currentSection = section.id;
+                    }
+                });
+
+                tocLinks.forEach(link =>
+                {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`)
+                    {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', updateActiveTocLink);
+            updateActiveTocLink(); // Initial call
+        });
+    </script>
+}

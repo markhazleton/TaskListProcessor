@@ -1,0 +1,598 @@
+@{
+    ViewData["Title"] = "Architecture";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="bi bi-diagram-3 me-3"></i>
+                Architecture Overview
+            </h1>
+            <p class="lead mb-4">
+                TaskListProcessor implements a modern, enterprise-ready architecture with clear separation of concerns and SOLID principles.
+            </p>
+        </div>
+    </div>
+
+    <!-- Architecture Diagram -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-diagram-2 me-2"></i>System Architecture
+                    </h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="architecture-diagram">
+                        <!-- Dependency Injection Layer -->
+                        <div class="architecture-layer di-layer mb-4 p-3 rounded">
+                            <h6 class="text-primary mb-2">
+                                <i class="bi bi-gear me-2"></i>Dependency Injection Layer
+                            </h6>
+                            <code class="small">services.AddTaskListProcessor().WithAllDecorators()</code>
+                        </div>
+
+                        <div class="text-center mb-3">
+                            <i class="bi bi-arrow-down text-muted fs-2"></i>
+                        </div>
+
+                        <!-- Decorator Chain -->
+                        <div class="architecture-layer decorator-layer mb-4 p-3 rounded">
+                            <h6 class="text-success mb-2">
+                                <i class="bi bi-layers me-2"></i>Decorator Chain
+                            </h6>
+                            <div class="d-flex justify-content-center flex-wrap">
+                                <span class="badge bg-success me-2 mb-2">LoggingDecorator</span>
+                                <i class="bi bi-arrow-right text-muted align-self-center me-2"></i>
+                                <span class="badge bg-success me-2 mb-2">MetricsDecorator</span>
+                                <i class="bi bi-arrow-right text-muted align-self-center me-2"></i>
+                                <span class="badge bg-success mb-2">CircuitBreakerDecorator</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mb-3">
+                            <i class="bi bi-arrow-down text-muted fs-2"></i>
+                        </div>
+
+                        <!-- Interface Segregation Layer -->
+                        <div class="architecture-layer interface-layer mb-4 p-3 rounded">
+                            <h6 class="text-info mb-2">
+                                <i class="bi bi-puzzle me-2"></i>Interface Segregation Layer
+                            </h6>
+                            <div class="row g-2">
+                                <div class="col-md-3">
+                                    <span class="badge bg-info w-100">ITaskProcessor</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge bg-info w-100">ITaskBatchProcessor</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge bg-info w-100">ITaskStreamProcessor</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge bg-info w-100">ITelemetryProvider</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mb-3">
+                            <i class="bi bi-arrow-down text-muted fs-2"></i>
+                        </div>
+
+                        <!-- Core Processing Engine -->
+                        <div class="architecture-layer core-layer mb-4 p-3 rounded">
+                            <h6 class="text-warning mb-2">
+                                <i class="bi bi-cpu me-2"></i>Core Processing Engine
+                            </h6>
+                            <span class="badge bg-warning text-dark">TaskListProcessorEnhanced (Backward Compatible)</span>
+                        </div>
+
+                        <div class="text-center mb-3">
+                            <i class="bi bi-diagram-2 text-muted fs-2"></i>
+                        </div>
+
+                        <!-- Component Layer -->
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="architecture-component p-3 rounded border">
+                                    <h6 class="text-primary">
+                                        <i class="bi bi-list-task me-2"></i>TaskDefinition
+                                    </h6>
+                                    <ul class="small mb-0 list-unstyled">
+                                        <li>+ Dependencies</li>
+                                        <li>+ Priority</li>
+                                        <li>+ Scheduling</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="architecture-component p-3 rounded border">
+                                    <h6 class="text-success">
+                                        <i class="bi bi-graph-up me-2"></i>TaskTelemetry
+                                    </h6>
+                                    <ul class="small mb-0 list-unstyled">
+                                        <li>+ Metrics</li>
+                                        <li>+ Tracing</li>
+                                        <li>+ Health</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="architecture-component p-3 rounded border">
+                                    <h6 class="text-info">
+                                        <i class="bi bi-speedometer2 me-2"></i>TaskProgress
+                                    </h6>
+                                    <ul class="small mb-0 list-unstyled">
+                                        <li>+ Reporting</li>
+                                        <li>+ Streaming</li>
+                                        <li>+ Estimates</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Components -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="bi bi-puzzle me-2"></i>Core Components
+            </h3>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-layers text-primary me-2"></i>Interface Layer
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Clean, focused interfaces for different processing scenarios following the Interface Segregation Principle.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <code>ITaskProcessor</code> - Single task execution
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <code>ITaskBatchProcessor</code> - Batch processing
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <code>ITaskStreamProcessor</code> - Streaming results
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success me-2"></i>
+                            <code>ITaskTelemetryProvider</code> - Telemetry & health
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-stack text-success me-2"></i>Decorator Layer
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Cross-cutting concerns implemented using the Decorator pattern for separation of concerns.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-file-text text-info me-2"></i>
+                            <strong>LoggingDecorator</strong> - Structured logging
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-graph-up text-warning me-2"></i>
+                            <strong>MetricsDecorator</strong> - Performance metrics
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-shield-check text-danger me-2"></i>
+                            <strong>CircuitBreakerDecorator</strong> - Fault tolerance
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-cpu text-warning me-2"></i>Processing Engine
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Thread-safe orchestration with advanced scheduling and dependency resolution.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-lightning text-primary me-2"></i>
+                            <strong>Concurrent Execution</strong> - Parallel task processing
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-diagram-2 text-success me-2"></i>
+                            <strong>Dependency Resolution</strong> - Topological sorting
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-calendar text-info me-2"></i>
+                            <strong>Advanced Scheduling</strong> - Priority-based execution
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-activity text-info me-2"></i>Telemetry System
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p>Comprehensive observability and health monitoring with OpenTelemetry integration.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="bi bi-stopwatch text-primary me-2"></i>
+                            <strong>Performance Metrics</strong> - Timing and throughput
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-heart-pulse text-success me-2"></i>
+                            <strong>Health Monitoring</strong> - System health checks
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-bug text-danger me-2"></i>
+                            <strong>Error Tracking</strong> - Comprehensive error analysis
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Design Principles -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="bi bi-award me-2"></i>Design Principles
+            </h3>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-puzzle text-primary display-4 mb-3"></i>
+                    <h5>Interface Segregation</h5>
+                    <p class="text-muted">
+                        Clean, focused interfaces for different scenarios. Clients depend only on the methods they use.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-box text-success display-4 mb-3"></i>
+                    <h5>Single Responsibility</h5>
+                    <p class="text-muted">
+                        Each component has a clear, focused purpose. Changes to one component don't affect others.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-arrows-expand text-info display-4 mb-3"></i>
+                    <h5>Open/Closed</h5>
+                    <p class="text-muted">
+                        Open for extension through decorators and interfaces, closed for modification of core logic.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-arrow-down-up text-warning display-4 mb-3"></i>
+                    <h5>Dependency Inversion</h5>
+                    <p class="text-muted">
+                        High-level modules don't depend on low-level modules. Both depend on abstractions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-check-square text-danger display-4 mb-3"></i>
+                    <h5>Liskov Substitution</h5>
+                    <p class="text-muted">
+                        Objects can be replaced with instances of their subtypes without altering program correctness.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-shield-check text-secondary display-4 mb-3"></i>
+                    <h5>Testability</h5>
+                    <p class="text-muted">
+                        Mockable interfaces and comprehensive test coverage ensure reliable, maintainable code.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Examples -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="bi bi-code-slash me-2"></i>Implementation Examples
+            </h3>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-gear me-2"></i>Dependency Injection Setup
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0 p-3"><code class="language-csharp">// Configure services with fluent API
+builder.Services.AddTaskListProcessor(options =>
+{
+    options.MaxConcurrentTasks = 10;
+    options.EnableDetailedTelemetry = true;
+    options.CircuitBreakerOptions = new()
+    {
+        FailureThreshold = 3,
+        RecoveryTimeout = TimeSpan.FromMinutes(2)
+    };
+})
+.WithLogging()          // Add logging decorator
+.WithMetrics()          // Add metrics decorator  
+.WithCircuitBreaker();  // Add circuit breaker decorator</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-puzzle me-2"></i>Interface Usage
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0 p-3"><code class="language-csharp">// Use appropriate interface for your scenario
+public class DataService
+{
+    private readonly ITaskBatchProcessor _batchProcessor;
+    private readonly ITaskStreamProcessor _streamProcessor;
+    
+    public DataService(
+        ITaskBatchProcessor batchProcessor,
+        ITaskStreamProcessor streamProcessor)
+    {
+        _batchProcessor = batchProcessor;
+        _streamProcessor = streamProcessor;
+    }
+    
+    // Batch processing
+    public async Task ProcessBatchAsync()
+    {
+        await _batchProcessor.ProcessTasksAsync(tasks);
+    }
+    
+    // Streaming results
+    public async IAsyncEnumerable&lt;T&gt; ProcessStreamAsync()
+    {
+        await foreach (var result in _streamProcessor.ProcessTasksStreamAsync(tasks))
+        {
+            yield return result;
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-layers me-2"></i>Custom Decorator
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0 p-3"><code class="language-csharp">// Example custom decorator for caching
+public class CachingTaskProcessorDecorator : ITaskBatchProcessor
+{
+    private readonly ITaskBatchProcessor _inner;
+    private readonly IMemoryCache _cache;
+    
+    public CachingTaskProcessorDecorator(
+        ITaskBatchProcessor inner,
+        IMemoryCache cache)
+    {
+        _inner = inner;
+        _cache = cache;
+    }
+    
+    public async Task ProcessTasksAsync(
+        Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt; taskFactories,
+        IProgress&lt;TaskProgress&gt;? progress = null,
+        CancellationToken cancellationToken = default)
+    {
+        // Check cache first, then delegate to inner processor
+        var cacheKey = GenerateCacheKey(taskFactories.Keys);
+        
+        if (_cache.TryGetValue(cacheKey, out var cachedResult))
+        {
+            // Return cached result
+            return;
+        }
+        
+        await _inner.ProcessTasksAsync(taskFactories, progress, cancellationToken);
+        
+        // Cache the result
+        _cache.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-diagram-2 me-2"></i>Task Dependencies
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0 p-3"><code class="language-csharp">// Define tasks with dependencies and priorities
+var taskDefinitions = new[]
+{
+    new TaskDefinition
+    {
+        Name = "Initialize Database",
+        Factory = async ct => await InitializeDatabaseAsync(ct),
+        Priority = TaskPriority.High
+    },
+    new TaskDefinition
+    {
+        Name = "Load Configuration",
+        Factory = async ct => await LoadConfigurationAsync(ct),
+        Dependencies = new[] { "Initialize Database" },
+        Priority = TaskPriority.Medium
+    },
+    new TaskDefinition
+    {
+        Name = "Start Services",
+        Factory = async ct => await StartServicesAsync(ct),
+        Dependencies = new[] { "Load Configuration" },
+        Priority = TaskPriority.Low
+    }
+};
+
+// Process with dependency resolution
+await processor.ProcessTaskDefinitionsAsync(taskDefinitions);</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .architecture-diagram {
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        border-radius: 10px;
+        padding: 2rem;
+    }
+    
+    .architecture-layer {
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .di-layer {
+        border-color: #0d6efd;
+        background: rgba(13, 110, 253, 0.1);
+    }
+    
+    .decorator-layer {
+        border-color: #198754;
+        background: rgba(25, 135, 84, 0.1);
+    }
+    
+    .interface-layer {
+        border-color: #0dcaf0;
+        background: rgba(13, 202, 240, 0.1);
+    }
+    
+    .core-layer {
+        border-color: #ffc107;
+        background: rgba(255, 193, 7, 0.1);
+    }
+    
+    .architecture-component {
+        background: rgba(255, 255, 255, 0.9);
+        transition: transform 0.2s ease;
+    }
+    
+    .architecture-component:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    pre {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        overflow-x: auto;
+    }
+    
+    code {
+        color: #d63384;
+        background-color: transparent;
+    }
+    
+    .language-csharp {
+        color: #333;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to architecture components
+            const components = document.querySelectorAll('.architecture-component');
+            components.forEach(component => {
+                component.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                });
+                
+                component.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Add smooth scrolling for any anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.7" />
+        <PackageReference Include="System.Text.Json" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\CityThingsToDo\CityThingsToDo.csproj" />
+        <ProjectReference Include="..\..\src\CityWeatherService\CityWeatherService.csproj" />
+        <ProjectReference Include="..\..\src\TaskListProcessing\TaskListProcessing.csproj" />
+    </ItemGroup>
+
+    <!-- Frontend Build Integration -->
+    <ItemGroup>
+        <Content Remove="src\**" />
+        <None Include="src\**" />
+        <Content Remove="package.json" />
+        <Content Remove="rollup.config.js" />
+        <Content Remove="package-lock.json" />
+        <Content Remove="node_modules\**" Condition="Exists('node_modules')" />
+    </ItemGroup>
+
+    <!-- NPM Build Tasks -->
+    <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('node_modules')">
+        <Message Text="Restoring npm packages..." Importance="high" />
+        <Exec Command="npm install" ContinueOnError="false" />
+    </Target>
+
+    <Target Name="NpmBuild" BeforeTargets="Build" DependsOnTargets="NpmInstall">
+        <Message Text="Building frontend assets..." Importance="high" />
+        <Exec Command="npm run build" ContinueOnError="false" />
+    </Target>
+
+    <!-- Clean npm artifacts -->
+    <Target Name="NpmClean" BeforeTargets="Clean">
+        <Message Text="Cleaning frontend build artifacts..." Importance="high" />
+        <Exec Command="npm run clean" ContinueOnError="true" Condition="Exists('package.json')" />
+    </Target>
+
+    <!-- Ensure frontend assets are built in publish -->
+    <Target Name="PublishRunWebpack" BeforeTargets="ComputeFilesToPublish">
+        <Message Text="Building frontend assets for publish..." Importance="high" />
+        <Exec Command="npm install" />
+        <Exec Command="npm run build" />
+    </Target>
+
+    <!-- Include additional files for IIS deployment -->
+    <ItemGroup>
+        <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="appsettings.Production.json" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="IIS-DEPLOYMENT.md" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="publish-to-iis.ps1" />
+        <None Include="publish-to-iis.bat" />
+    </ItemGroup>
+
+    <!-- Ensure logs directory is created -->
+    <Target Name="CreateLogsDirectory" AfterTargets="Publish">
+        <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
+    </Target>
+
+</Project>

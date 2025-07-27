@@ -1,0 +1,871 @@
+@{
+    ViewData["Title"] = "Live Demo";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>
+                    <i class="bi bi-play-circle me-3"></i>
+                    Live Demo Dashboard
+                </h1>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" onclick="location.reload()">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                        <i class="bi bi-house me-1"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Configuration Panel -->
+        <div class="col-xl-3 col-lg-4 mb-4">
+            <div class="card sticky-top" style="top: 1rem;">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-sliders me-2"></i>Demo Configuration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="demoConfigForm">
+                        <!-- Scenario Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-diagram-2 me-1"></i>Demo Scenarios
+                            </label>
+                            <div class="list-group">
+                                <button type="button" class="list-group-item list-group-item-action scenario-btn active"
+                                    data-scenario="MainProcessing">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-geo-alt me-1"></i>City Data Collection
+                                        </h6>
+                                    </div>
+                                    <p class="mb-1 small">Fetch weather and activities for multiple cities concurrently
+                                    </p>
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action scenario-btn"
+                                    data-scenario="IndividualTask">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-target me-1"></i>Single Task
+                                        </h6>
+                                    </div>
+                                    <p class="mb-1 small">Execute individual task with detailed telemetry</p>
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action scenario-btn"
+                                    data-scenario="CancellationDemo">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-stopwatch me-1"></i>Cancellation Demo
+                                        </h6>
+                                    </div>
+                                    <p class="mb-1 small">Demonstrate timeout and cancellation handling</p>
+                                </button>
+                                <button type="button" class="list-group-item list-group-item-action scenario-btn"
+                                    data-scenario="StreamingDemo">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-broadcast me-1"></i>Streaming Results
+                                        </h6>
+                                    </div>
+                                    <p class="mb-1 small">Real-time streaming of task completion</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- City Selection -->
+                        <div class="mb-3" id="citySelectionSection">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-geo-alt me-1"></i>Cities to Process
+                            </label>
+                            <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                <div class="row g-1">
+                                    <div class="col-12 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                                            id="selectAllCities">
+                                            <i class="bi bi-check-all me-1"></i>Select All
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="London"
+                                                id="city-London" checked>
+                                            <label class="form-check-label small" for="city-London">London</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="Paris"
+                                                id="city-Paris" checked>
+                                            <label class="form-check-label small" for="city-Paris">Paris</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox"
+                                                value="New York" id="city-NewYork" checked>
+                                            <label class="form-check-label small" for="city-NewYork">New York</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="Tokyo"
+                                                id="city-Tokyo" checked>
+                                            <label class="form-check-label small" for="city-Tokyo">Tokyo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="Sydney"
+                                                id="city-Sydney">
+                                            <label class="form-check-label small" for="city-Sydney">Sydney</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox"
+                                                value="Chicago" id="city-Chicago">
+                                            <label class="form-check-label small" for="city-Chicago">Chicago</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="Dallas"
+                                                id="city-Dallas">
+                                            <label class="form-check-label small" for="city-Dallas">Dallas</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check form-check-sm">
+                                            <input class="form-check-input city-checkbox" type="checkbox" value="Rome"
+                                                id="city-Rome">
+                                            <label class="form-check-label small" for="city-Rome">Rome</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Settings -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-cpu me-1"></i>Performance Settings
+                            </label>
+
+                            <div class="mb-2">
+                                <label for="maxConcurrent" class="form-label small">Max Concurrent Tasks</label>
+                                <input type="range" class="form-range" id="maxConcurrent" min="1" max="20" value="8">
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">1</small>
+                                    <span id="maxConcurrentValue" class="badge bg-primary">8</span>
+                                    <small class="text-muted">20</small>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="timeout" class="form-label small">Timeout (minutes)</label>
+                                <input type="range" class="form-range" id="timeout" min="1" max="10" value="5">
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">1</small>
+                                    <span id="timeoutValue" class="badge bg-secondary">5</span>
+                                    <small class="text-muted">10</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Control Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-primary" id="runDemo">
+                                <span id="runBtnContent">
+                                    <i class="bi bi-play-circle me-2"></i>Run Demo
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-success" id="runStreaming" style="display:none;">
+                                <i class="bi bi-broadcast me-2"></i>Start Streaming
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="clearResults">
+                                <i class="bi bi-trash me-2"></i>Clear Results
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="col-xl-9 col-lg-8">
+            <!-- Status Bar -->
+            <div class="card mb-3">
+                <div class="card-body py-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h6 class="mb-0">
+                                <i class="bi bi-activity me-2"></i>Processing Status:
+                                <span id="statusBadge" class="badge bg-secondary">Ready</span>
+                            </h6>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <small class="text-muted">
+                                Last run: <span id="lastRunTime">Never</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Area -->
+            <div id="resultsContainer">
+                <!-- Welcome Message -->
+                <div id="welcomeMessage" class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="bi bi-rocket-takeoff display-1 text-primary mb-4"></i>
+                        <h3>Welcome to TaskListProcessor Demo</h3>
+                        <p class="lead text-muted mb-4">
+                            Experience the power of modern asynchronous task processing with real-time telemetry and
+                            advanced scheduling.
+                        </p>
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <div class="text-center">
+                                            <i class="bi bi-lightning text-warning fs-1"></i>
+                                            <h6 class="mt-2">Fast</h6>
+                                            <small class="text-muted">Concurrent execution</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center">
+                                            <i class="bi bi-shield-check text-success fs-1"></i>
+                                            <h6 class="mt-2">Reliable</h6>
+                                            <small class="text-muted">Circuit breakers</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center">
+                                            <i class="bi bi-graph-up text-info fs-1"></i>
+                                            <h6 class="mt-2">Observable</h6>
+                                            <small class="text-muted">Rich telemetry</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center">
+                                            <i class="bi bi-type text-primary fs-1"></i>
+                                            <h6 class="mt-2">Type Safe</h6>
+                                            <small class="text-muted">Strongly typed</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 mb-0">
+                            <small class="text-muted">
+                                Select a demo scenario and click "Run Demo" to get started
+                            </small>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="card" style="display:none;">
+                    <div class="card-body text-center py-5">
+                        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Processing...</span>
+                        </div>
+                        <h4>Processing Tasks...</h4>
+                        <p class="text-muted mb-4">Please wait while we demonstrate the TaskListProcessor capabilities
+                        </p>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Streaming State -->
+                <div id="streamingState" class="card" style="display:none;">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-broadcast me-2"></i>Live Streaming Results
+                            <small class="text-muted ms-2">Tasks completing in real-time</small>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="streamingProgress" class="mb-3">
+                            <div class="progress">
+                                <div id="streamingProgressBar" class="progress-bar" role="progressbar"
+                                    style="width: 0%">
+                                    0/0 tasks
+                                </div>
+                            </div>
+                        </div>
+                        <div id="streamingResults" class="streaming-container"
+                            style="max-height: 400px; overflow-y: auto;">
+                            <!-- Streaming content -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Display -->
+                <div id="resultsDisplay" style="display:none;">
+                    <!-- Dynamic results content -->
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="card border-danger" style="display:none;">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Error Occurred
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger mb-0" role="alert">
+                            <strong>Error Details:</strong>
+                            <span id="errorMessage"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            initializeDemoPage();
+        });
+
+        function initializeDemoPage()
+        {
+            // Initialize UI elements
+            setupEventListeners();
+            updateUIState();
+        }
+
+        function setupEventListeners()
+        {
+            // Scenario selection
+            document.querySelectorAll('.scenario-btn').forEach(btn =>
+            {
+                btn.addEventListener('click', function ()
+                {
+                    document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    updateUIState();
+                });
+            });
+
+            // Range inputs
+            const maxConcurrentSlider = document.getElementById('maxConcurrent');
+            const timeoutSlider = document.getElementById('timeout');
+
+            maxConcurrentSlider.addEventListener('input', function ()
+            {
+                document.getElementById('maxConcurrentValue').textContent = this.value;
+            });
+
+            timeoutSlider.addEventListener('input', function ()
+            {
+                document.getElementById('timeoutValue').textContent = this.value;
+            });
+
+            // Select all cities
+            document.getElementById('selectAllCities').addEventListener('click', function ()
+            {
+                const checkboxes = document.querySelectorAll('.city-checkbox');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                checkboxes.forEach(cb => cb.checked = !allChecked);
+                this.innerHTML = allChecked ?
+                    '<i class="bi bi-check-all me-1"></i>Select All' :
+                    '<i class="bi bi-dash-square me-1"></i>Deselect All';
+            });
+
+            // Run demo button
+            document.getElementById('runDemo').addEventListener('click', runDemo);
+            document.getElementById('runStreaming').addEventListener('click', runStreamingDemo);
+            document.getElementById('clearResults').addEventListener('click', clearResults);
+        }
+
+        function updateUIState()
+        {
+            const selectedScenario = document.querySelector('.scenario-btn.active').dataset.scenario;
+            const runDemo = document.getElementById('runDemo');
+            const runStreaming = document.getElementById('runStreaming');
+            const citySection = document.getElementById('citySelectionSection');
+
+            if (selectedScenario === 'StreamingDemo')
+            {
+                runDemo.style.display = 'none';
+                runStreaming.style.display = 'block';
+                citySection.style.display = 'block';
+            } else if (selectedScenario === 'IndividualTask')
+            {
+                runDemo.style.display = 'block';
+                runStreaming.style.display = 'none';
+                citySection.style.display = 'block';
+            } else
+            {
+                runDemo.style.display = 'block';
+                runStreaming.style.display = 'none';
+                citySection.style.display = selectedScenario === 'CancellationDemo' ? 'none' : 'block';
+            }
+        }
+
+        function getConfiguration()
+        {
+            const selectedScenario = document.querySelector('.scenario-btn.active').dataset.scenario;
+            const selectedCities = Array.from(document.querySelectorAll('.city-checkbox:checked'))
+                .map(cb => cb.value);
+
+            if (selectedScenario !== 'CancellationDemo' && selectedCities.length === 0)
+            {
+                alert('Please select at least one city');
+                return null;
+            }
+
+            return {
+                SelectedCities: selectedCities,
+                MaxConcurrentTasks: parseInt(document.getElementById('maxConcurrent').value),
+                TimeoutMinutes: parseInt(document.getElementById('timeout').value),
+                EnableDetailedTelemetry: true,
+                ShowIndividualResults: true,
+                Scenario: selectedScenario
+            };
+        }
+
+        function showState(stateName)
+        {
+            const states = ['welcomeMessage', 'loadingState', 'streamingState', 'resultsDisplay', 'errorState'];
+            states.forEach(state =>
+            {
+                document.getElementById(state).style.display = state === stateName ? 'block' : 'none';
+            });
+        }
+
+        function updateStatus(status, type = 'secondary')
+        {
+            const badge = document.getElementById('statusBadge');
+            badge.textContent = status;
+            badge.className = `badge bg-${type}`;
+
+            if (status === 'Completed' || status === 'Error')
+            {
+                document.getElementById('lastRunTime').textContent = new Date().toLocaleTimeString();
+            }
+        }
+
+        async function runDemo()
+        {
+            const config = getConfiguration();
+            if (!config) return;
+
+            showState('loadingState');
+            updateStatus('Processing...', 'warning');
+
+            try
+            {
+                const response = await fetch('/Home/ProcessTasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+
+                if (!response.ok)
+                {
+                    let errorMessage = 'Network error occurred';
+                    try
+                    {
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || errorData.details || errorMessage;
+                        console.error('Server error details:', errorData);
+                    } catch (jsonError)
+                    {
+                        console.error('Failed to parse error response:', jsonError);
+                        errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                const data = await response.json();
+                displayResults(data);
+                updateStatus(data.IsCompleted ? 'Completed' : 'Partial', data.HasErrors ? 'danger' : 'success');
+            } catch (error)
+            {
+                console.error('Demo execution error:', error);
+                showError(`Processing Error: ${error.message}`);
+                updateStatus('Error', 'danger');
+            }
+        }
+
+        async function runStreamingDemo()
+        {
+            const config = getConfiguration();
+            if (!config) return;
+
+            showState('streamingState');
+            updateStatus('Streaming...', 'info');
+
+            const streamingResults = document.getElementById('streamingResults');
+            const progressBar = document.getElementById('streamingProgressBar');
+            streamingResults.innerHTML = '<p class="text-muted">Starting streaming demo...</p>';
+
+            try
+            {
+                // Use EventSource like the home page for proper SSE support
+                const cities = config.SelectedCities.join(',');
+                const eventSource = new EventSource(`/Home/StreamingDemo?cities=${encodeURIComponent(cities)}`);
+
+                let messageCount = 0;
+
+                eventSource.onopen = function (event)
+                {
+                    console.log('Demo SSE connection opened:', event);
+                    streamingResults.innerHTML = '<p class="text-success">Streaming connection established...</p>';
+                };
+
+                eventSource.onmessage = function (event)
+                {
+                    messageCount++;
+                    console.log(`Demo SSE message ${messageCount} received:`, event.data);
+
+                    try
+                    {
+                        const data = JSON.parse(event.data);
+                        console.log('Demo parsed SSE data:', data);
+                        updateStreamingDisplay(data, progressBar);
+
+                        if (data.isCompleted)
+                        {
+                            console.log('Demo streaming completed, closing connection');
+                            eventSource.close();
+                            updateStatus('Streaming Complete', 'success');
+                        }
+                    } catch (e)
+                    {
+                        console.error('Demo error parsing SSE data:', e, 'Raw data:', event.data);
+                    }
+                };
+
+                eventSource.addEventListener('taskUpdate', function (event)
+                {
+                    messageCount++;
+                    console.log(`Demo SSE taskUpdate ${messageCount} received:`, event.data);
+
+                    try
+                    {
+                        const data = JSON.parse(event.data);
+                        console.log('Demo parsed taskUpdate data:', data);
+                        updateStreamingDisplay(data, progressBar);
+
+                        if (data.isCompleted)
+                        {
+                            console.log('Demo streaming completed, closing connection');
+                            eventSource.close();
+                            updateStatus('Streaming Complete', 'success');
+                        }
+                    } catch (e)
+                    {
+                        console.error('Demo error parsing taskUpdate data:', e, 'Raw data:', event.data);
+                    }
+                });
+
+                eventSource.onerror = function (event)
+                {
+                    console.error('Demo SSE error:', event);
+                    streamingResults.innerHTML = '<p class="text-danger">Streaming connection error</p>';
+                    eventSource.close();
+                    showError('Streaming connection failed');
+                    updateStatus('Error', 'danger');
+                };
+
+                // Clean up after 30 seconds if not completed
+                setTimeout(() =>
+                {
+                    if (eventSource.readyState !== EventSource.CLOSED)
+                    {
+                        console.log('Demo closing SSE connection due to timeout');
+                        eventSource.close();
+                        updateStatus('Streaming Timeout', 'warning');
+                    }
+                }, 30000);
+
+            } catch (error)
+            {
+                console.error('Demo streaming setup error:', error);
+                showError(error.message);
+                updateStatus('Error', 'danger');
+            }
+        }
+
+        function updateStreamingDisplay(data, progressBar)
+        {
+            const streamingResults = document.getElementById('streamingResults');
+
+            // Update progress
+            if (data.detailedTelemetry)
+            {
+                const completed = data.detailedTelemetry.length;
+                const estimated = data.selectedCities ? data.selectedCities.length * 2 : completed;
+                const percentage = Math.min((completed / estimated) * 100, 100);
+
+                progressBar.style.width = `${percentage}%`;
+                progressBar.textContent = `${completed}/${estimated} tasks`;
+            }
+
+            // Show task results
+            if (data.detailedTelemetry && data.detailedTelemetry.length > 0)
+            {
+                let html = '<div class="list-group list-group-flush">';
+
+                data.detailedTelemetry.forEach((task, index) =>
+                {
+                    const statusClass = task.isSuccessful ? 'success' : 'danger';
+                    const icon = task.isSuccessful ? 'check-circle-fill' : 'x-circle-fill';
+                    const timeAgo = 'Just completed';
+
+                    html += `
+                                        <div class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    <i class="bi bi-${icon} text-${statusClass} me-2"></i>
+                                                    ${task.taskName}
+                                                </div>
+                                                <small class="text-muted">${timeAgo}</small>
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="badge bg-${task.performanceColor} rounded-pill">
+                                                    <i class="bi bi-${task.performanceIcon} me-1"></i>
+                                                    ${task.elapsedMilliseconds}ms
+                                                </span>
+                                                <br>
+                                                <small class="text-muted">${task.performanceLevel}</small>
+                                            </div>
+                                        </div>
+                                    `;
+                });
+
+                html += '</div>';
+                streamingResults.innerHTML = html;
+
+                // Auto-scroll to bottom
+                streamingResults.scrollTop = streamingResults.scrollHeight;
+            }
+        }
+
+        function displayResults(data)
+        {
+            showState('resultsDisplay');
+            const resultsDisplay = document.getElementById('resultsDisplay');
+
+            let html = '';
+
+            // Performance Overview
+            if (data.TelemetrySummary)
+            {
+                html += generatePerformanceOverview(data.TelemetrySummary);
+            }
+
+            // City Results
+            if (data.CityResults && data.CityResults.length > 0)
+            {
+                html += generateCityResults(data.CityResults);
+            }
+
+            // Detailed Telemetry
+            if (data.DetailedTelemetry && data.DetailedTelemetry.length > 0)
+            {
+                html += generateDetailedTelemetry(data.DetailedTelemetry);
+            }
+
+            resultsDisplay.innerHTML = html;
+        }
+
+        function generatePerformanceOverview(summary)
+        {
+            return `
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="bi bi-speedometer2 me-2"></i>Performance Overview
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="performance-card text-center p-3 bg-body-secondary rounded">
+                                                <i class="bi bi-list-task text-primary fs-1"></i>
+                                                <h4 class="mt-2 mb-0">${summary.TotalTasks}</h4>
+                                                <small class="text-body-secondary">Total Tasks</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="performance-card text-center p-3 bg-body-secondary rounded">
+                                                <i class="bi bi-check-circle text-success fs-1"></i>
+                                                <h4 class="mt-2 mb-0">${summary.SuccessRate.toFixed(1)}%</h4>
+                                                <small class="text-body-secondary">Success Rate</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="performance-card text-center p-3 bg-body-secondary rounded">
+                                                <i class="bi bi-stopwatch text-info fs-1"></i>
+                                                <h4 class="mt-2 mb-0">${Math.round(summary.AverageExecutionTime)}ms</h4>
+                                                <small class="text-body-secondary">Average Time</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="performance-card text-center p-3 bg-body-secondary rounded">
+                                                <i class="bi bi-graph-up text-warning fs-1"></i>
+                                                <h4 class="mt-2 mb-0">${summary.ThroughputPerSecond.toFixed(1)}/s</h4>
+                                                <small class="text-body-secondary">Throughput</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+        } function generateCityResults(cities)
+        {
+            let html = `
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <i class="bi bi-geo-alt me-2"></i>City Results
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                            `;
+
+            cities.forEach(city =>
+            {
+                const weatherStatus = city.HasWeatherData ? 'success' : 'danger';
+                const activitiesStatus = city.HasActivitiesData ? 'success' : 'danger';
+
+                html += `
+                                    <div class="col-lg-6">
+                                        <div class="card border-start border-primary border-3">
+                                            <div class="card-header py-2">
+                                                <h6 class="mb-0">
+                                                    <i class="bi bi-geo-alt me-2"></i>${city.CityName}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body py-2">
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <div class="d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="bi bi-cloud-sun text-${weatherStatus} me-2"></i>
+                                                            <small>Weather</small>
+                                                        </div>
+                                                        ${city.Weather && city.Weather.IsSuccessful ?
+                        `<span class="badge bg-${weatherStatus}">${city.Weather.DurationMs}ms</span>` :
+                        `<span class="badge bg-${weatherStatus}">Failed</span>`}
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="bi bi-calendar-event text-${activitiesStatus} me-2"></i>
+                                                            <small>Activities</small>
+                                                        </div>
+                                                        ${city.Activities && city.Activities.IsSuccessful ?
+                        `<span class="badge bg-${activitiesStatus}">${city.Activities.DurationMs}ms</span>` :
+                        `<span class="badge bg-${activitiesStatus}">Failed</span>`}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            `;
+            }); html += `
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+            return html;
+        }
+
+        function generateDetailedTelemetry(telemetry)
+        {
+            let html = `
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">
+                                            <i class="bi bi-graph-up me-2"></i>Detailed Telemetry
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Task Name</th>
+                                                        <th>Duration</th>
+                                                        <th>Performance</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                            `;
+
+            telemetry.forEach(task =>
+            {
+                const statusClass = task.IsSuccessful ? 'success' : 'danger';
+                const statusIcon = task.IsSuccessful ? 'check-circle-fill' : 'x-circle-fill';
+
+                html += `
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-${statusIcon} text-${statusClass} me-2"></i>
+                                            ${task.TaskName}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="font-monospace">${task.ElapsedMilliseconds}ms</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-${task.PerformanceColor}">
+                                            <i class="bi bi-${task.PerformanceIcon} me-1"></i>
+                                            ${task.PerformanceLevel}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        ${task.IsSuccessful ?
+                        '<span class="text-success">Success</span>' :
+                        `<span class="text-danger">Failed</span>
+                                             ${task.ErrorMessage ? `<br><small class="text-muted">${task.ErrorMessage}</small>` : ''}`}
+                                    </td>
+                                </tr>
+                            `;
+            }); html += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+            return html;
+        }
+
+        function showError(message)
+        {
+            showState('errorState');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function clearResults()
+        {
+            showState('welcomeMessage');
+            updateStatus('Ready', 'secondary');
+            document.getElementById('lastRunTime').textContent = 'Never';
+        }
+    </script>
+}

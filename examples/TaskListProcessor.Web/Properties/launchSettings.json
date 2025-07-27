@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "TaskListProcessor.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:28963;http://localhost:28964"
+    }
+  }
+}

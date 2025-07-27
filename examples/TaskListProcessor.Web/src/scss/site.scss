@@ -1,0 +1,72 @@
+// TaskListProcessor Web - Main SCSS Entry Point
+
+// Import Sass built-in modules
+@use 'sass:color';
+
+// 1. Use custom variables first (before Bootstrap)
+@use 'variables' as vars;
+
+// 2. Use Bootstrap from node_modules
+@use 'bootstrap/scss/bootstrap';
+
+// 3. Use Bootstrap Icons from node_modules
+@use 'bootstrap-icons/font/bootstrap-icons';
+
+// 4. Use custom styles
+@use 'mixins' as mixins;
+@use 'animations';
+@use 'components';
+@use 'prism';
+
+// 5. Global styles and overrides
+body {
+  font-family: vars.$font-family-sans-serif;
+  line-height: vars.$line-height-base;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: vars.$light;
+}
+
+::-webkit-scrollbar-thumb {
+  background: vars.$secondary;
+  border-radius: 4px;
+  
+  &:hover {
+    background: color.adjust(vars.$secondary, $lightness: -10%);
+  }
+}
+
+// Focus styles
+*:focus {
+  outline: 2px solid vars.$primary;
+  outline-offset: 2px;
+}
+
+// Selection styles
+::selection {
+  background-color: color.change(vars.$primary, $alpha: 0.2);
+  color: vars.$dark;
+}
+
+// Print styles
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  .card {
+    border: 1px solid vars.$secondary !important;
+    box-shadow: none !important;
+  }
+}

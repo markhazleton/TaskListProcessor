@@ -1,0 +1,940 @@
+@model ProcessingConfigurationViewModel
+@{
+    ViewData["Title"] = "Enterprise Task Processing";
+    ViewData["Description"] = "TaskListProcessor - A modern .NET 9.0 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.";
+}
+
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="animate-fade-in-up">
+                    <h1 class="display-3 fw-bold mb-4 text-white">
+                        <i class="bi bi-rocket-takeoff me-3 text-warning"></i>
+                        TaskListProcessor
+                    </h1>
+                    <p class="lead mb-4 fs-4 text-white-75">
+                        A modern, enterprise-grade <strong>.NET 9.0</strong> library for orchestrating asynchronous operations 
+                        with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.
+                    </p>
+                    
+                    <!-- Key Features Badges -->
+                    <div class="d-flex flex-wrap gap-2 mb-5 animate-fade-in-up animate-delay-1">
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-shield-check me-1"></i>Fault Isolation
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-graph-up me-1"></i>Enterprise Observability
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-lightning me-1"></i>Advanced Scheduling
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-code-slash me-1"></i>Type Safety
+                        </span>
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-speedometer2 me-1"></i>High Performance
+                        </span>
+                    </div>
+                    
+                    <!-- Call-to-Action Buttons -->
+                    <div class="d-flex flex-column flex-sm-row gap-3 animate-fade-in-up animate-delay-2">
+                        <a href="#demo-section" class="btn btn-light btn-lg px-4 py-3 rounded-pill shadow-lg">
+                            <i class="bi bi-play-circle-fill me-2"></i>Interactive Demo
+                        </a>
+                        <a href="https://github.com/markhazleton/TaskListProcessor" 
+                           class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill" 
+                           target="_blank" rel="noopener noreferrer">
+                            <i class="bi bi-github me-2"></i>View Source
+                        </a>
+                        <a href="@Url.Action("Documentation", "Home")" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                            <i class="bi bi-book me-2"></i>Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Visual -->
+            <div class="col-lg-5">
+                <div class="position-relative animate-fade-in-up animate-delay-3">
+                    <div class="bg-white bg-opacity-15 backdrop-blur rounded-4 p-5 shadow-lg border border-white border-opacity-20">
+                        <div class="text-center mb-4">
+                            <div class="bg-primary bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 100px; height: 100px;">
+                                <i class="bi bi-diagram-3 fs-1 text-white"></i>
+                            </div>
+                        </div>
+                        <h4 class="text-white text-center mb-3">Enterprise Architecture</h4>
+                        <div class="row g-3 text-center">
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-cpu text-warning fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Processing</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-activity text-info fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Monitoring</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-white bg-opacity-10 rounded-3 p-2">
+                                    <i class="bi bi-shield-shaded text-success fs-4"></i>
+                                    <div class="small text-white-75 mt-1">Resilience</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <small class="text-white-75">Built with enterprise-grade patterns</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animated background elements -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="z-index: -1;">
+        <div class="position-absolute" style="top: 10%; left: 10%; width: 20px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 6s ease-in-out infinite;"></div>
+        <div class="position-absolute" style="top: 20%; right: 20%; width: 15px; height: 15px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 8s ease-in-out infinite reverse;"></div>
+        <div class="position-absolute" style="bottom: 20%; left: 30%; width: 25px; height: 25px; background: rgba(255,255,255,0.1); border-radius: 50%; animation: float 7s ease-in-out infinite;"></div>
+    </div>
+</section>
+
+<!-- Feature Highlights Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">
+                <i class="bi bi-stars text-primary me-3"></i>Enterprise Features
+            </h2>
+            <p class="lead text-muted">Built for mission-critical applications with enterprise-grade capabilities</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Circuit Breaker Pattern -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-shield-exclamation fs-3 text-primary"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">Circuit Breaker</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Intelligent fault isolation prevents cascading failures and provides graceful degradation 
+                            when downstream services become unavailable.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Automatic fault detection</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Configurable thresholds</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Fast recovery</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comprehensive Telemetry -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-activity fs-3 text-info"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">Enterprise Telemetry</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Complete observability with OpenTelemetry integration, custom metrics, 
+                            structured logging, and distributed tracing.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>OpenTelemetry integration</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Custom metrics & traces</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Structured logging</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Scheduling -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-calendar-event fs-3 text-warning"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">Smart Scheduling</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Flexible scheduling with cron expressions, delays, retries, and intelligent 
+                            task prioritization for optimal resource utilization.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Cron expressions</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Retry policies</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Priority queues</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Type Safety -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-code-slash fs-3 text-success"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">Type Safety</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Strongly-typed configurations and generic task definitions ensure compile-time 
+                            safety and improved developer experience.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Generic task definitions</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Compile-time validation</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>IntelliSense support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dependency Injection -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-danger bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-diagram-3 fs-3 text-danger"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">DI Integration</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Seamless integration with Microsoft.Extensions.DependencyInjection and 
+                            popular IoC containers for enterprise applications.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Native DI support</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Scoped services</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Configuration binding</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performance -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-purple bg-opacity-10 rounded-circle p-3 me-3">
+                                <i class="bi bi-speedometer2 fs-3 text-purple"></i>
+                            </div>
+                            <h5 class="mb-0 fw-bold">High Performance</h5>
+                        </div>
+                        <p class="text-muted mb-3">
+                            Optimized for high-throughput scenarios with async/await patterns, 
+                            connection pooling, and efficient memory management.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Async/await patterns</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Connection pooling</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>Memory efficiency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <!-- Interactive Demo Section -->
+    <section id="demo-section" class="py-5 bg-primary bg-gradient">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3 text-white">
+                    <i class="bi bi-play-circle-fill me-3"></i>Interactive Demo
+                </h2>
+                <p class="lead text-white-75 mb-4">
+                    Experience the power and flexibility of TaskListProcessor with live examples
+                </p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Configuration Panel -->
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-lg h-100">
+                        <div class="card-header bg-white border-0 pb-0">
+                            <h5 class="mb-0 text-primary">
+                                <i class="bi bi-gear-fill me-2"></i>Processing Configuration
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="configForm">
+                                <!-- City Selection -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-geo-alt me-2"></i>Select Cities
+                                    </label>
+                                    <div class="row">
+                                        @foreach (var city in Model.AvailableCities)
+                                        {
+                                            <div class="col-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input city-checkbox" type="checkbox" 
+                                                           value="@city" id="city-@city"
+                                                           @(Model.SelectedCities.Contains(city) ? "checked" : "")>
+                                                    <label class="form-check-label small" for="city-@city">
+                                                        @city
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <small class="form-text text-muted">Select cities to fetch weather and activity data</small>
+                                </div>
+
+                                <!-- Processing Scenario -->
+                                <div class="mb-4">
+                                    <label for="scenario" class="form-label fw-semibold">
+                                        <i class="bi bi-diagram-2 me-2"></i>Processing Scenario
+                                    </label>
+                                    <select class="form-select" id="scenario">
+                                        <option value="MainProcessing">Main Processing</option>
+                                        <option value="IndividualTask">Individual Task</option>
+                                        <option value="CancellationDemo">Cancellation Demo</option>
+                                        <option value="StreamingDemo">Streaming Demo</option>
+                                    </select>
+                                    <small class="form-text text-muted">Choose the type of processing demonstration</small>
+                                </div>
+
+                                <!-- Max Concurrent Tasks -->
+                                <div class="mb-4">
+                                    <label for="maxConcurrentTasks" class="form-label fw-semibold">
+                                        <i class="bi bi-cpu me-2"></i>Max Concurrent Tasks
+                                    </label>
+                                    <div class="d-flex align-items-center">
+                                        <input type="range" class="form-range flex-grow-1" id="maxConcurrentTasks" 
+                                               min="1" max="20" value="@Model.MaxConcurrentTasks">
+                                        <span class="ms-3 badge bg-primary" id="maxConcurrentValue">@Model.MaxConcurrentTasks</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-muted">1</small>
+                                        <small class="text-muted">20</small>
+                                    </div>
+                                    <small class="form-text text-muted">Number of tasks to process simultaneously</small>
+                                </div>
+
+                                <!-- Timeout -->
+                                <div class="mb-4">
+                                    <label for="timeoutMinutes" class="form-label fw-semibold">
+                                        <i class="bi bi-clock me-2"></i>Timeout (Minutes)
+                                    </label>
+                                    <div class="d-flex align-items-center">
+                                        <input type="range" class="form-range flex-grow-1" id="timeoutMinutes" 
+                                               min="1" max="10" value="@Model.TimeoutMinutes">
+                                        <span class="ms-3 badge bg-secondary" id="timeoutValue">@Model.TimeoutMinutes</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-muted">1</small>
+                                        <small class="text-muted">10</small>
+                                    </div>
+                                    <small class="form-text text-muted">Maximum time to wait for task completion</small>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary btn-lg" id="startProcessing">
+                                        <i class="bi bi-play-circle me-2"></i>Start Processing
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-lg" id="startStreaming" style="display:none;">
+                                        <i class="bi bi-broadcast me-2"></i>Start Streaming
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Results Panel -->
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-lg h-100">
+                        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center pb-0">
+                            <h5 class="mb-0 text-primary">
+                                <i class="bi bi-activity me-2"></i>Live Processing Results
+                            </h5>
+                            <div id="processingStatus" class="badge bg-secondary">Ready</div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Loading State -->
+                            <div id="loadingSection" style="display:none;">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                                        <span class="visually-hidden">Processing...</span>
+                                    </div>
+                                    <h5 class="mb-3">Processing Tasks...</h5>
+                                    <p class="text-muted">Please wait while we fetch data from multiple cities</p>
+                                    <div class="progress mt-4" style="height: 6px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                             role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Results Section -->
+                            <div id="resultsSection" style="display:none;">
+                                <!-- Results will be populated here -->
+                            </div>
+
+                            <!-- Streaming Section -->
+                            <div id="streamingSection" style="display:none;">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">
+                                        <i class="bi bi-broadcast me-2"></i>Live Streaming Results
+                                    </h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="spinner-grow spinner-grow-sm text-success me-2" role="status">
+                                            <span class="visually-hidden">Streaming...</span>
+                                        </div>
+                                        <small class="text-success fw-semibold">LIVE</small>
+                                    </div>
+                                </div>
+                                <div id="streamingResults" class="streaming-container border rounded-3 p-3 bg-dark text-light font-monospace" 
+                                     style="height: 300px; overflow-y: auto;">
+                                    <!-- Streaming results will appear here -->
+                                </div>
+                            </div>
+
+                            <!-- Error Section -->
+                            <div id="errorSection" style="display:none;">
+                                <div class="alert alert-danger border-0 shadow-sm" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                                        <div>
+                                            <strong>Processing Error</strong>
+                                            <div class="mt-1" id="errorMessage"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Overview Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">
+                    <i class="bi bi-diagram-3 text-primary me-3"></i>Architecture Overview
+                </h2>
+                <p class="lead text-muted">Explore the clean, intuitive API and enterprise-grade configuration</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Quick Start Example -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="mb-0 text-primary">
+                                <i class="bi bi-code-square me-2"></i>Quick Start
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="bg-dark text-light rounded-3 p-3 mb-0"><code class="language-csharp">// Basic Usage
+using var processor = new TaskListProcessorEnhanced("My Tasks", logger);
+
+var taskFactories = new Dictionary&lt;string, Func&lt;CancellationToken, Task&lt;object?&gt;&gt;&gt;
+{
+    ["Weather Data"] = async ct => await GetWeatherAsync("London"),
+    ["Stock Prices"] = async ct => await GetStockPricesAsync("MSFT"),
+    ["User Analytics"] = async ct => await GetAnalyticsAsync()
+};
+
+var results = await processor.ProcessTasksAsync(taskFactories, cancellationToken);
+
+// Access results with full type safety
+foreach (var (taskName, result) in results)
+{
+    Console.WriteLine($"{taskName}: {result.Status}");
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Configuration -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="mb-0 text-success">
+                                <i class="bi bi-gear-fill me-2"></i>Enterprise Configuration
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="bg-dark text-light rounded-3 p-3 mb-0"><code class="language-csharp">// Advanced Configuration with DI
+builder.Services.AddTaskListProcessor(options => 
+{
+    options.MaxConcurrentTasks = 10;
+    options.EnableDetailedTelemetry = true;
+    options.CircuitBreakerOptions = new() 
+    { 
+        FailureThreshold = 3,
+        RecoveryTimeSpan = TimeSpan.FromMinutes(2)
+    };
+    options.RetryPolicy = RetryPolicy.ExponentialBackoff(3);
+})
+.WithLogging()
+.WithMetrics()
+.WithCircuitBreaker()
+.WithOpenTelemetry();</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Benefits -->
+            <div class="row g-4 mt-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-shield-check fs-2 text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Fault Tolerant</h5>
+                        <p class="text-muted small">
+                            Built-in circuit breaker pattern prevents cascading failures and provides graceful degradation
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-speedometer2 fs-2 text-success"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">High Performance</h5>
+                        <p class="text-muted small">
+                            Optimized async/await patterns with configurable concurrency and intelligent task scheduling
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-eye fs-2 text-info"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Observable</h5>
+                        <p class="text-muted small">
+                            Comprehensive telemetry with OpenTelemetry integration for complete system visibility
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action Section -->
+    <section class="py-5 bg-primary bg-gradient">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3 class="text-white fw-bold mb-2">Ready to Get Started?</h3>
+                    <p class="text-white-75 mb-0 fs-5">
+                        Integrate TaskListProcessor into your enterprise applications today and experience 
+                        the power of robust, observable task orchestration.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-lg-end">
+                        <a href="@Url.Action("Documentation", "Home")" 
+                           class="btn btn-light btn-lg px-4 py-2 rounded-pill">
+                            <i class="bi bi-book me-2"></i>Documentation
+                        </a>
+                        <a href="@Url.Action("Performance", "Home")" 
+                           class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill">
+                            <i class="bi bi-speedometer2 me-2"></i>Performance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize range input displays
+            const maxConcurrentSlider = document.getElementById('maxConcurrentTasks');
+            const maxConcurrentValue = document.getElementById('maxConcurrentValue');
+            const timeoutSlider = document.getElementById('timeoutMinutes');
+            const timeoutValue = document.getElementById('timeoutValue');
+            const scenarioSelect = document.getElementById('scenario');
+            const startProcessing = document.getElementById('startProcessing');
+            const startStreaming = document.getElementById('startStreaming');
+
+            maxConcurrentSlider.addEventListener('input', function() {
+                maxConcurrentValue.textContent = this.value;
+            });
+
+            timeoutSlider.addEventListener('input', function() {
+                timeoutValue.textContent = this.value;
+            });
+
+            // Show/hide streaming button based on scenario
+            scenarioSelect.addEventListener('change', function() {
+                if (this.value === 'StreamingDemo') {
+                    startProcessing.style.display = 'none';
+                    startStreaming.style.display = 'block';
+                } else {
+                    startProcessing.style.display = 'block';
+                    startStreaming.style.display = 'none';
+                }
+            });
+
+            // Start processing
+            startProcessing.addEventListener('click', function() {
+                startTaskProcessing();
+            });
+
+            // Start streaming
+            startStreaming.addEventListener('click', function() {
+                startStreamingProcessing();
+            });
+
+            function getConfiguration() {
+                const selectedCities = Array.from(document.querySelectorAll('.city-checkbox:checked'))
+                    .map(cb => cb.value);
+                
+                if (selectedCities.length === 0) {
+                    alert('Please select at least one city');
+                    return null;
+                }
+
+                return {
+                    SelectedCities: selectedCities,
+                    MaxConcurrentTasks: parseInt(maxConcurrentSlider.value),
+                    TimeoutMinutes: parseInt(timeoutSlider.value),
+                    EnableDetailedTelemetry: true,
+                    ShowIndividualResults: true,
+                    Scenario: scenarioSelect.value
+                };
+            }
+
+            function showLoading() {
+                document.getElementById('loadingSection').style.display = 'block';
+                document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('streamingSection').style.display = 'none';
+                document.getElementById('errorSection').style.display = 'none';
+                document.getElementById('processingStatus').textContent = 'Processing...';
+                document.getElementById('processingStatus').className = 'badge bg-warning';
+            }
+
+            function showResults(data) {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').innerHTML = renderResults(data);
+                document.getElementById('processingStatus').textContent = data.IsCompleted ? 'Completed' : 'Partial';
+                document.getElementById('processingStatus').className = data.HasErrors ? 'badge bg-danger' : 'badge bg-success';
+            }
+
+            function showError(message) {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('errorSection').style.display = 'block';
+                document.getElementById('errorMessage').textContent = message;
+                document.getElementById('processingStatus').textContent = 'Error';
+                document.getElementById('processingStatus').className = 'badge bg-danger';
+            }
+
+            async function startTaskProcessing() {
+                const config = getConfiguration();
+                if (!config) return;
+
+                showLoading();
+
+                try {
+                    const response = await fetch('/Home/ProcessTasks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(config)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Network error occurred');
+                    }
+
+                    const data = await response.json();
+                    showResults(data);
+                } catch (error) {
+                    showError(error.message);
+                }
+            }
+
+            async function startStreamingProcessing() {
+                const config = getConfiguration();
+                if (!config) return;
+
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('streamingSection').style.display = 'block';
+                document.getElementById('errorSection').style.display = 'none';
+                document.getElementById('processingStatus').textContent = 'Streaming...';
+                document.getElementById('processingStatus').className = 'badge bg-info';
+
+                const streamingResults = document.getElementById('streamingResults');
+                streamingResults.innerHTML = '<p class="text-muted">Starting streaming...</p>';
+
+                try {
+                    const response = await fetch('/Home/ProcessStreamingTasks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(config)
+                    });
+
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const jsonData = line.substring(6);
+                                if (jsonData.trim()) {
+                                    try {
+                                        const data = JSON.parse(jsonData);
+                                        updateStreamingResults(data);
+                                    } catch (e) {
+                                        console.error('Error parsing JSON:', e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    showError(error.message);
+                }
+            }
+
+            function updateStreamingResults(data) {
+                const streamingResults = document.getElementById('streamingResults');
+                streamingResults.innerHTML = renderStreamingResults(data);
+                
+                if (data.IsCompleted) {
+                    document.getElementById('processingStatus').textContent = 'Streaming Complete';
+                    document.getElementById('processingStatus').className = 'badge bg-success';
+                }
+            }
+
+            function renderResults(data) {
+                let html = '';
+
+                // Telemetry Summary
+                html += renderTelemetrySummary(data.TelemetrySummary);
+
+                // City Results
+                if (data.CityResults && data.CityResults.length > 0) {
+                    html += '<h6 class="mt-4"><i class="bi bi-geo-alt me-2"></i>City Results</h6>';
+                    html += '<div class="row">';
+                    data.CityResults.forEach(city => {
+                        html += renderCityCard(city);
+                    });
+                    html += '</div>';
+                }
+
+                // Detailed Telemetry
+                if (data.DetailedTelemetry && data.DetailedTelemetry.length > 0) {
+                    html += renderDetailedTelemetry(data.DetailedTelemetry);
+                }
+
+                return html;
+            }
+
+            function renderStreamingResults(data) {
+                let html = '<h6><i class="bi bi-activity me-2"></i>Live Results</h6>';
+                
+                // Progress indicator
+                const completed = data.DetailedTelemetry ? data.DetailedTelemetry.length : 0;
+                const total = data.TelemetrySummary ? data.TelemetrySummary.TotalTasks : completed;
+                
+                if (total > 0) {
+                    const percentage = (completed / total) * 100;
+                    html += `<div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: ${percentage}%" 
+                             aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">
+                            ${completed}/${total} tasks
+                        </div>
+                    </div>`;
+                }
+
+                // Show completed tasks
+                if (data.DetailedTelemetry && data.DetailedTelemetry.length > 0) {
+                    html += '<div class="list-group">';
+                    data.DetailedTelemetry.forEach(task => {
+                        const statusClass = task.IsSuccessful ? 'success' : 'danger';
+                        const icon = task.IsSuccessful ? 'check-circle' : 'x-circle';
+                        html += `
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-${icon} text-${statusClass} me-2"></i>
+                                    ${task.TaskName}
+                                </div>
+                                <div>
+                                    <span class="badge bg-${task.PerformanceColor} me-2">
+                                        <i class="bi bi-${task.PerformanceIcon} me-1"></i>
+                                        ${task.ElapsedMilliseconds}ms
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                }
+
+                return html;
+            }
+
+            function renderTelemetrySummary(summary) {
+                if (!summary) return '';
+
+                return `
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="card telemetry-card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-list-task text-primary fs-1"></i>
+                                    <h5 class="card-title">${summary.TotalTasks}</h5>
+                                    <p class="card-text small text-muted">Total Tasks</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card telemetry-card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-check-circle text-success fs-1"></i>
+                                    <h5 class="card-title">${summary.SuccessRate.toFixed(1)}%</h5>
+                                    <p class="card-text small text-muted">Success Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card telemetry-card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-stopwatch text-info fs-1"></i>
+                                    <h5 class="card-title">${Math.round(summary.AverageExecutionTime)}ms</h5>
+                                    <p class="card-text small text-muted">Avg Time</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card telemetry-card">
+                                <div class="card-body text-center">
+                                    <i class="bi bi-speedometer2 text-warning fs-1"></i>
+                                    <h5 class="card-title">${summary.ThroughputPerSecond.toFixed(1)}/s</h5>
+                                    <p class="card-text small text-muted">Throughput</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderCityCard(city) {
+                const weatherStatus = city.HasWeatherData ? 'success' : 'danger';
+                const activitiesStatus = city.HasActivitiesData ? 'success' : 'danger';
+                const weatherIcon = city.HasWeatherData ? 'check-circle' : 'x-circle';
+                const activitiesIcon = city.HasActivitiesData ? 'check-circle' : 'x-circle';
+
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card city-card h-100">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="bi bi-geo-alt me-2"></i>${city.CityName}
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-${weatherIcon} text-${weatherStatus} me-2"></i>
+                                            <small>Weather</small>
+                                        </div>
+                                        ${city.Weather && city.Weather.IsSuccessful ? 
+                                            `<small class="text-success">${city.Weather.DurationMs}ms</small>` : 
+                                            `<small class="text-danger">Failed</small>`}
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-${activitiesIcon} text-${activitiesStatus} me-2"></i>
+                                            <small>Activities</small>
+                                        </div>
+                                        ${city.Activities && city.Activities.IsSuccessful ? 
+                                            `<small class="text-success">${city.Activities.DurationMs}ms</small>` : 
+                                            `<small class="text-danger">Failed</small>`}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderDetailedTelemetry(telemetry) {
+                if (!telemetry || telemetry.length === 0) return '';
+
+                let html = '<h6 class="mt-4"><i class="bi bi-graph-up me-2"></i>Detailed Telemetry</h6>';
+                html += '<div class="table-responsive">';
+                html += '<table class="table table-sm table-hover">';
+                html += '<thead><tr><th>Task</th><th>Duration</th><th>Performance</th><th>Status</th></tr></thead>';
+                html += '<tbody>';
+
+                telemetry.forEach(task => {
+                    const statusIcon = task.IsSuccessful ? 'check-circle' : 'x-circle';
+                    const statusClass = task.IsSuccessful ? 'success' : 'danger';
+                    
+                    html += `
+                        <tr>
+                            <td>${task.TaskName}</td>
+                            <td>${task.ElapsedMilliseconds}ms</td>
+                            <td>
+                                <span class="badge bg-${task.PerformanceColor}">
+                                    <i class="bi bi-${task.PerformanceIcon} me-1"></i>
+                                    ${task.PerformanceLevel}
+                                </span>
+                            </td>
+                            <td>
+                                <i class="bi bi-${statusIcon} text-${statusClass}"></i>
+                                ${task.IsSuccessful ? 'Success' : 'Failed'}
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table></div>';
+                return html;
+            }
+        });
+    </script>
+}

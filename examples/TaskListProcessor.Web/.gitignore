@@ -1,0 +1,25 @@
+# NPM dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+wwwroot/css/site.css
+wwwroot/css/site.css.map
+wwwroot/css/site.min.css
+wwwroot/js/site.js
+wwwroot/js/site.js.map
+wwwroot/js/site.min.js
+
+# Package lock files (uncomment the one you want to track)
+package-lock.json
+# yarn.lock
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,81 @@
+// TaskListProcessor Web - Custom Mixins
+
+// Import Sass built-in modules
+@use 'sass:color';
+@use 'sass:map';
+
+// Import variables
+@use 'variables' as vars;
+
+// Animation mixins
+@mixin fadeInUp($duration: 0.6s, $delay: 0s) {
+  animation: fadeInUp $duration ease-out $delay both;
+}
+
+@mixin slideInRight($duration: 0.6s, $delay: 0s) {
+  animation: slideInRight $duration ease-out $delay both;
+}
+
+@mixin pulse($duration: 2s) {
+  animation: pulse $duration infinite;
+}
+
+// Gradient mixins
+@mixin gradient-background($direction: 135deg, $color1: #667eea, $color2: #764ba2) {
+  background: linear-gradient($direction, $color1 0%, $color2 100%);
+}
+
+// Card mixins
+@mixin enhanced-card {
+  border: none;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$box-shadow;
+  transition: vars.$transition-base;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: vars.$box-shadow-lg;
+  }
+}
+
+// Button mixins
+@mixin gradient-button($color1: vars.$primary, $color2: color.adjust(vars.$primary, $lightness: -10%)) {
+  background: linear-gradient(45deg, $color1, $color2);
+  border: none;
+  transition: vars.$transition-base;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px color.change($color1, $alpha: 0.3);
+  }
+}
+
+// Text mixins
+@mixin text-gradient($color1: vars.$primary, $color2: color.adjust(vars.$primary, $lightness: -20%)) {
+  background: linear-gradient(45deg, $color1, $color2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Responsive mixins
+@mixin media-breakpoint-up($name) {
+  @if $name == xs {
+    @content;
+  } @else {
+    @media (min-width: map.get(vars.$grid-breakpoints, $name)) {
+      @content;
+    }
+  }
+}
+
+@mixin media-breakpoint-down($name) {
+  @if $name == xs {
+    // No media query needed for xs down
+  } @else {
+    $max-width: map.get(vars.$grid-breakpoints, $name) - 0.02px;
+    @media (max-width: $max-width) {
+      @content;
+    }
+  }
+}

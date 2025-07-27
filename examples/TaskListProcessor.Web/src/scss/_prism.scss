@@ -1,0 +1,259 @@
+// TaskListProcessor Web - PrismJS Styles
+// Custom PrismJS theme integration with Bootstrap 5
+
+// Use mixins for responsive features
+@use 'mixins' as mixins;
+
+// Use PrismJS core styles
+@use 'prismjs/themes/prism-tomorrow';
+
+// Use plugin styles
+@use 'prismjs/plugins/line-numbers/prism-line-numbers';
+@use 'prismjs/plugins/toolbar/prism-toolbar';
+
+// Custom PrismJS enhancements for Bootstrap 5
+.code-block-enhanced {
+  .card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    
+    .copy-btn {
+      --bs-btn-padding-y: 0.25rem;
+      --bs-btn-padding-x: 0.5rem;
+      --bs-btn-font-size: 0.75rem;
+      
+      &:hover {
+        background-color: var(--bs-secondary-bg);
+      }
+    }
+  }
+  
+  pre {
+    margin: 0;
+    border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+    background: #2d3748 !important;
+    
+    &.line-numbers {
+      padding-left: 3.8em;
+    }
+  }
+  
+  code {
+    background: transparent !important;
+    color: #e2e8f0;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+// Override PrismJS theme to match our design
+pre[class*="language-"] {
+  background: #2d3748;
+  color: #e2e8f0;
+  border: none;
+  box-shadow: none;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+// Line numbers styling
+.line-numbers-rows {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  
+  > span:before {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+// Token colors for our theme
+.token {
+  &.comment,
+  &.prolog,
+  &.doctype,
+  &.cdata {
+    color: #718096;
+  }
+  
+  &.punctuation {
+    color: #e2e8f0;
+  }
+  
+  &.property,
+  &.tag,
+  &.boolean,
+  &.number,
+  &.constant,
+  &.symbol,
+  &.deleted {
+    color: #f56565;
+  }
+  
+  &.selector,
+  &.attr-name,
+  &.string,
+  &.char,
+  &.builtin,
+  &.inserted {
+    color: #68d391;
+  }
+  
+  &.operator,
+  &.entity,
+  &.url,
+  .language-css &.string,
+  .style &.string {
+    color: #4fd1c7;
+  }
+  
+  &.atrule,
+  &.attr-value,
+  &.keyword {
+    color: #9f7aea;
+  }
+  
+  &.function,
+  &.class-name {
+    color: #f6ad55;
+  }
+  
+  &.regex,
+  &.important,
+  &.variable {
+    color: #ed8936;
+  }
+}
+
+// Namespace styling
+.namespace {
+  opacity: 0.7;
+}
+
+// C# specific token styling
+.language-csharp {
+  .token {
+    &.keyword {
+      color: #9f7aea;
+      font-weight: 500;
+    }
+    
+    &.class-name {
+      color: #63b3ed;
+    }
+    
+    &.generic-method,
+    &.function {
+      color: #f6ad55;
+    }
+    
+    &.string {
+      color: #68d391;
+    }
+    
+    &.number {
+      color: #f687b3;
+    }
+  }
+}
+
+// JSON specific styling
+.language-json {
+  .token {
+    &.property {
+      color: #63b3ed;
+    }
+    
+    &.string {
+      color: #68d391;
+    }
+    
+    &.number {
+      color: #f687b3;
+    }
+    
+    &.boolean {
+      color: #9f7aea;
+    }
+    
+    &.null {
+      color: #718096;
+    }
+  }
+}
+
+// Responsive improvements
+@include mixins.media-breakpoint-down(sm) {
+  .code-block-enhanced {
+    .card-header {
+      padding: 0.5rem;
+      
+      .d-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+    
+    pre {
+      font-size: 0.75rem;
+      
+      &.line-numbers {
+        padding-left: 3em;
+      }
+    }
+  }
+}
+
+// Dark theme support
+[data-bs-theme="dark"] {
+  .code-block-enhanced {
+    .card-header {
+      background-color: var(--bs-dark-bg-subtle);
+      border-color: var(--bs-border-color);
+      
+      .copy-btn {
+        --bs-btn-color: var(--bs-body-color);
+        --bs-btn-border-color: var(--bs-border-color);
+        
+        &:hover {
+          background-color: var(--bs-secondary-bg);
+        }
+      }
+    }
+  }
+}
+
+// Integration with existing code-block class
+.code-block {
+  pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--bs-border-radius);
+    padding: 1rem;
+    overflow-x: auto;
+    
+    code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: 0.875rem;
+    }
+  }
+}

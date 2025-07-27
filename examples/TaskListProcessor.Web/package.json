@@ -1,0 +1,39 @@
+{
+  "name": "tasklistprocessor-web",
+  "version": "1.0.0",
+  "description": "Frontend build system for TaskListProcessor Web Application",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "npm run copy:fonts && npm run build:css && npm run build:js",
+    "build:css": "npm run compile:scss && npm run minify:css",
+    "build:js": "npm run bundle:js && npm run minify:js",
+    "copy:fonts": "node -e \"const fs=require('fs');const path=require('path');const src='node_modules/bootstrap-icons/font/fonts';const dest1='wwwroot/fonts';const dest2='wwwroot/css/fonts';[dest1,dest2].forEach(dest=>{if(!fs.existsSync(dest))fs.mkdirSync(dest,{recursive:true});fs.readdirSync(src).forEach(f=>fs.copyFileSync(path.join(src,f),path.join(dest,f)));});\"",
+    "compile:scss": "sass src/scss/site.scss:wwwroot/css/site.css --style=expanded --source-map --load-path=node_modules",
+    "minify:css": "cleancss -o wwwroot/css/site.min.css wwwroot/css/site.css",
+    "bundle:js": "rollup -c rollup.config.js",
+    "minify:js": "terser wwwroot/js/site.js -o wwwroot/js/site.min.js --source-map",
+    "watch": "npm run watch:css & npm run watch:js",
+    "watch:css": "sass src/scss/site.scss:wwwroot/css/site.css --watch --style=expanded --source-map --load-path=node_modules",
+    "watch:js": "rollup -c rollup.config.js --watch",
+    "dev": "npm run watch",
+    "clean": "rimraf \"wwwroot/css/site.css\" \"wwwroot/css/site.css.map\" \"wwwroot/css/site.min.css\" \"wwwroot/js/site.js\" \"wwwroot/js/site.js.map\" \"wwwroot/js/site.min.js\" \"wwwroot/js/site.min.js.map\" \"wwwroot/fonts\" \"wwwroot/css/fonts\"",
+    "rebuild": "npm run clean && npm run build",
+    "start": "npm run build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "clean-css-cli": "^5.6.3",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.46.0",
+    "sass": "^1.89.2",
+    "terser": "^5.43.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "prismjs": "^1.30.0"
+  }
+}

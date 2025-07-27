@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityThingsToDo.Tests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListProcessing.Tests", "tests\TaskListProcessing.Tests\TaskListProcessing.Tests.csproj", "{98C1084F-561C-401B-B3CB-4EB9C6EBD944}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListProcessor.Web", "examples\TaskListProcessor.Web\TaskListProcessor.Web.csproj", "{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{98C1084F-561C-401B-B3CB-4EB9C6EBD944}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98C1084F-561C-401B-B3CB-4EB9C6EBD944}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98C1084F-561C-401B-B3CB-4EB9C6EBD944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{EDF29710-5A62-46CB-9DCB-83C413535A8A} = {78413CE0-0D6C-44BB-940D-7DE8ECB6B7C7}
 		{EB2DAEC0-548B-4C74-943D-D7C6AE062F09} = {A84FA21B-F073-46EB-B0D8-C5F6AC852A92}
 		{98C1084F-561C-401B-B3CB-4EB9C6EBD944} = {A84FA21B-F073-46EB-B0D8-C5F6AC852A92}
+		{3785D4B2-681F-9A8D-C1A1-DEE94C5747CD} = {EFCF0B29-9251-4372-918E-55816A895152}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01FEA8B4-D934-49A0-A57E-EEA0E6E98271}
