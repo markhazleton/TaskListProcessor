@@ -383,13 +383,26 @@ body {
   }
 }
 
-// Enhanced Footer
-.footer, footer {
-  background: linear-gradient(135deg, #212529 0%, #343a40 100%);
+// Enhanced Footer with Light/Dark Mode Support
+.footer-custom {
+  background: var(--bs-body-bg);
+  border-top: 2px solid var(--bs-border-color);
+  color: var(--bs-body-color);
   
-  .hover-text-primary:hover {
-    color: vars.$primary !important;
-    text-decoration: underline !important;
+  .footer-text {
+    color: var(--bs-secondary-color);
+    line-height: 1.6;
+  }
+  
+  .footer-link {
+    color: var(--bs-secondary-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: var(--bs-primary);
+      transform: translateX(3px);
+    }
   }
   
   .badge {
@@ -397,14 +410,83 @@ body {
     
     &:hover {
       transform: scale(1.05);
+      box-shadow: 0 2px 8px color.change(vars.$primary, $alpha: 0.3);
     }
   }
   
-  .btn-outline-light {
+  .btn-outline-primary {
     transition: all 0.2s ease;
     
     &:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 12px color.change(vars.$primary, $alpha: 0.3);
+    }
+  }
+  
+  .footer-bottom {
+    background: var(--bs-secondary-bg);
+    border-top: 1px solid var(--bs-border-color);
+    
+    .footer-copyright {
+      color: var(--bs-secondary-color);
+      
+      .bi-heart-fill {
+        animation: heartbeat 1.5s ease-in-out infinite;
+      }
+    }
+    
+    .footer-badges {
+      color: var(--bs-secondary-color);
+    }
+  }
+}
+
+// Heartbeat animation for footer
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+// Dark mode specific footer styles
+[data-bs-theme="dark"] {
+  .footer-custom {
+    border-top-color: var(--bs-border-color);
+    
+    .footer-text {
+      color: var(--bs-body-color);
+      opacity: 0.8;
+    }
+    
+    .footer-link {
+      color: var(--bs-body-color);
+      opacity: 0.8;
+      
+      &:hover {
+        color: var(--bs-primary);
+        opacity: 1;
+      }
+    }
+    
+    .btn-outline-primary {
+      border-color: var(--bs-primary);
+      color: var(--bs-primary);
+      
+      &:hover {
+        background-color: var(--bs-primary);
+        color: var(--bs-dark);
+      }
+    }
+    
+    .footer-bottom {
+      background: var(--bs-dark);
+      border-top-color: var(--bs-border-color-translucent);
     }
   }
 }

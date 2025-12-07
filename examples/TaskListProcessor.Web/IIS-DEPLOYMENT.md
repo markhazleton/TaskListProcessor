@@ -10,11 +10,11 @@ This guide explains how to deploy the TaskListProcessor Web Application to a Win
 
 - Windows Server 2016 or later / Windows 10 or later
 - Internet Information Services (IIS) 7.0 or later
-- .NET 9.0 Hosting Bundle installed
+- .NET 10.0 Hosting Bundle installed
 
-### .NET 9.0 Hosting Bundle Installation
+### .NET 10.0 Hosting Bundle Installation
 
-1. Download the .NET 9.0 Hosting Bundle from: <https://dotnet.microsoft.com/download/dotnet/9.0>
+1. Download the .NET 10.0 Hosting Bundle from: <https://dotnet.microsoft.com/download/dotnet/10.0>
 2. Run the installer on the target server
 3. Restart IIS after installation: `iisreset`
 
