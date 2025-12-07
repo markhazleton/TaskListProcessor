@@ -25,9 +25,9 @@
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="10.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-		<PackageReference Include="OpenTelemetry" Version="1.12.0" />
-		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
-		<PackageReference Include="BenchmarkDotNet" Version="0.15.2" />
-		<PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.2" />
+		<PackageReference Include="OpenTelemetry" Version="1.14.0" />
+		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+		<PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.8" />
 	</ItemGroup>
 </Project>
