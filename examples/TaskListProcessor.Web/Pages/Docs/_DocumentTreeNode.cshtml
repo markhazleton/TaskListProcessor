@@ -1,0 +1,38 @@
+@model TaskListProcessor.Web.Models.DocumentTreeNode
+
+@if (Model.IsDirectory)
+{
+    <!-- Directory/Category Node -->
+    <div class="accordion-item border-0">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-white border-0 py-2" type="button" 
+                    data-bs-toggle="collapse" data-bs-target="#collapse-@Model.Name.Replace(" ", "-")"
+                    aria-expanded="false">
+                <i class="bi @Model.Icon me-2"></i>
+                <span>@Model.Name</span>
+                @if (!string.IsNullOrEmpty(Model.Badge))
+                {
+                    <span class="badge @Model.BadgeClass ms-2">@Model.Badge</span>
+                }
+            </button>
+        </h2>
+        <div id="collapse-@Model.Name.Replace(" ", "-")" class="accordion-collapse collapse">
+            <div class="accordion-body p-0">
+                <div class="list-group list-group-flush ms-3">
+                    @foreach (var child in Model.Children)
+                    {
+                        <partial name="_DocumentTreeNode" model="child" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Document Node -->
+    <a href="/Docs/@Model.Path" class="list-group-item list-group-item-action border-0 py-2">
+        <i class="bi @Model.Icon me-2"></i>
+        <span class="small">@Model.Name</span>
+    </a>
+}

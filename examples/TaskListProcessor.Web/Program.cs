@@ -3,6 +3,7 @@ using CityWeatherService;
 using TaskListProcessor.Web.Services;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,10 +27,22 @@ builder.Services.AddLogging(logging =>
     logging.SetMinimumLevel(LogLevel.Information);
 });
 
+// Add Razor Pages support for Docs section
+builder.Services.AddRazorPages()
+    .AddRazorPagesOptions(options =>
+    {
+        // Configure Razor Pages to use Views/Shared for layouts
+        options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+    });
+
+// Add memory cache for markdown rendering
+builder.Services.AddMemoryCache();
+
 // Register our services
 builder.Services.AddScoped<WeatherService>();
 builder.Services.AddScoped<CityThingsToDoService>();
 builder.Services.AddScoped<TaskProcessingService>();
+builder.Services.AddSingleton<MarkdownService>();
 
 var app = builder.Build();
 
@@ -47,6 +60,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapRazorPages(); // Add Razor Pages routing
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

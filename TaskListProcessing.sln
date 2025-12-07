@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34302.71
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11222.16 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskListProcessing", "src\TaskListProcessing\TaskListProcessing.csproj", "{58CB5090-69F7-44D5-A08E-FE79DB01D27A}"
 EndProject
@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{457EF58D-5C6E-4CFA-AD3F-D0AC6C1C34D8}"
 	ProjectSection(SolutionItems) = preProject
 		Generic TaskResult_T_ in List_20231110_111944.md = Generic TaskResult_T_ in List_20231110_111944.md
+		docs\IMPROVEMENT_PLAN.md = docs\IMPROVEMENT_PLAN.md
 		NET Code Article_ Task Handling_20231110_084310.md = NET Code Article_ Task Handling_20231110_084310.md
 		README.md = README.md
 	EndProjectSection
