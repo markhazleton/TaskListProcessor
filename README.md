@@ -1,11 +1,11 @@
 # 🚀 TaskListProcessor
 
-[![.NET](https://img.shields.io/badge/.NET-9.0+-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square)](https://github.com/markhazleton/TaskListProcessor)
 [![NuGet](https://img.shields.io/badge/NuGet-Coming%20Soon-orange?style=flat-square)](https://www.nuget.org/packages/TaskListProcessor)
 
-> **A modern, enterprise-grade .NET 9.0 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, dependency injection, and advanced scheduling capabilities.**
+> **A modern, enterprise-grade .NET 10.0 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, dependency injection, and advanced scheduling capabilities.**
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## ✨ Overview
 
-TaskListProcessor is a production-ready .NET 9.0 library designed to solve complex asynchronous orchestration challenges in modern applications. Built with enterprise-grade patterns including dependency injection, circuit breakers, task scheduling, and comprehensive telemetry, it provides a robust foundation for high-throughput, fault-tolerant systems.
+TaskListProcessor is a production-ready .NET 10.0 library designed to solve complex asynchronous orchestration challenges in modern applications. Built with enterprise-grade patterns including dependency injection, circuit breakers, task scheduling, and comprehensive telemetry, it provides a robust foundation for high-throughput, fault-tolerant systems.
 
 ### 🎯 Why TaskListProcessor?
 

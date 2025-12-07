@@ -6,7 +6,7 @@ A comprehensive web demonstration of the TaskListProcessor library, showcasing a
 
 ### Prerequisites
 
-- .NET 9.0 SDK or later
+- .NET 10.0 SDK or later
 - A modern web browser with JavaScript enabled
 
 ### Running the Application
@@ -74,7 +74,7 @@ A comprehensive web demonstration of the TaskListProcessor library, showcasing a
 
 ### Backend
 
-- **ASP.NET Core 9.0** - Web framework
+- **ASP.NET Core 10.0** - Web framework
 - **TaskListProcessor Library** - Core processing engine
 - **Dependency Injection** - Built-in DI container
 - **Structured Logging** - Microsoft.Extensions.Logging
@@ -257,7 +257,7 @@ dotnet TaskListProcessor.Web.dll
 ### Docker (Optional)
 
 ```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY . .
 EXPOSE 80
