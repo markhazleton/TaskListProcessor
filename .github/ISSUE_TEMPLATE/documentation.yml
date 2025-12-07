@@ -1,0 +1,84 @@
+name: 📖 Documentation Improvement
+description: Suggest improvements to documentation
+title: "[Docs]: "
+labels: ["documentation", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation needs improvement?
+      options:
+        - README
+        - Getting Started Guide
+        - Tutorial
+        - API Reference
+        - Architecture Documentation
+        - Example Code
+        - FAQ
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: doc-location
+    attributes:
+      label: Document Location
+      description: Which file or section needs improvement?
+      placeholder: e.g., docs/getting-started/02-fundamentals.md or README.md section "Quick Start"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue
+      description: What's wrong or missing from the current documentation?
+      placeholder: The documentation doesn't explain...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: How should it be improved?
+      placeholder: It should include...
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Content
+      description: If applicable, provide the content you'd like to see
+      render: markdown
+      placeholder: |
+        ## Suggested Content
+
+        Your proposed documentation content here...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: How would you like to help?
+      options:
+        - label: I can submit a PR with the improvement
+        - label: I can provide more details if needed
+        - label: I can review the changes once made
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context or screenshots
+    validations:
+      required: false
