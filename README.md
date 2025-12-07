@@ -76,6 +76,100 @@ TaskListProcessor is a production-ready .NET 10.0 library designed to solve comp
 - **🧪 Testing Support**: Comprehensive test helpers and mock-friendly interfaces
 - **📖 Rich Documentation**: Extensive XML documentation and practical examples
 
+---
+
+## 🚦 Getting Started
+
+### 🎓 Choose Your Learning Path
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+#### 🟢 **New to TaskListProcessor?**
+
+Start here for a guided introduction:
+
+1. **[5-Minute Quick Start](docs/getting-started/01-quick-start-5-minutes.md)** ⚡
+   Get your first processor running in 5 minutes
+
+2. **[Fundamentals](docs/getting-started/02-fundamentals.md)** 📚
+   Understand core concepts and architecture
+
+3. **[Your First Real Processor](docs/getting-started/03-your-first-processor.md)** 🎓
+   Build a production-ready Travel Dashboard
+
+4. **[Common Pitfalls](docs/getting-started/04-common-pitfalls.md)** ⚠️
+   Avoid the 10 most common mistakes
+
+**Time to productivity**: ~70 minutes
+
+</td>
+<td width="33%" valign="top">
+
+#### 🟡 **Ready for More?**
+
+Explore intermediate features:
+
+1. **[Dependency Injection](docs/tutorials/intermediate/01-dependency-injection.md)** 🔧
+   Integrate with ASP.NET Core
+
+2. **[Circuit Breaker Pattern](docs/tutorials/intermediate/02-circuit-breaker-pattern.md)** 🛡️
+   Build resilient applications
+
+3. **[Advanced Scheduling](docs/tutorials/intermediate/03-advanced-scheduling.md)** 📅
+   Priority and dependency-based execution
+
+4. **[Task Dependencies](docs/tutorials/intermediate/04-task-dependencies.md)** 🔗
+   Coordinate complex workflows
+
+5. **[Streaming Results](docs/tutorials/intermediate/05-streaming-results.md)** 📡
+   Process results in real-time
+
+</td>
+<td width="33%" valign="top">
+
+#### 🔴 **Production Ready?**
+
+Advanced topics and optimization:
+
+1. **[Memory Optimization](docs/tutorials/advanced/01-memory-optimization.md)** 💾
+   Handle large-scale processing
+
+2. **[Load Balancing](docs/tutorials/advanced/02-load-balancing.md)** ⚖️
+   Distribute work efficiently
+
+3. **[OpenTelemetry Integration](docs/tutorials/advanced/03-opentelemetry-integration.md)** 📊
+   Enterprise observability
+
+4. **[Performance Tuning](docs/tutorials/advanced/05-performance-tuning.md)** 🚀
+   Optimize for production
+
+5. **[Production Patterns](docs/tutorials/advanced/06-production-patterns.md)** 🏭
+   Battle-tested strategies
+
+</td>
+</tr>
+</table>
+
+### 📖 Complete Documentation
+
+- **[Getting Started Hub](docs/getting-started/00-README.md)** - All learning paths and resources
+- **[Interactive Examples](examples/TaskListProcessor.Web)** - Try it in your browser (run the web demo)
+- **[Architecture Deep Dive](docs/architecture/design-principles.md)** - SOLID principles and design patterns
+- **[Performance Guide](docs/architecture/performance-considerations.md)** - Benchmarks and optimization
+- **[FAQ](docs/troubleshooting/faq.md)** - 40+ common questions answered
+- **[API Reference](docs/api-reference/)** - Complete API documentation
+
+### 🆘 Need Help?
+
+- **Quick answers**: [FAQ](docs/troubleshooting/faq.md)
+- **Common issues**: [Troubleshooting Guide](docs/troubleshooting/common-issues.md)
+- **Ask questions**: [GitHub Discussions](https://github.com/markhazleton/TaskListProcessor/discussions)
+- **Report bugs**: [GitHub Issues](https://github.com/markhazleton/TaskListProcessor/issues)
+
+---
+
 ## 🏗️ Architecture
 
 TaskListProcessor implements a modern, enterprise-ready architecture with clear separation of concerns:

@@ -1,0 +1,657 @@
+@{
+    ViewData["Title"] = "Interactive Examples";
+    ViewData["Description"] = "Try TaskListProcessor with real-world interactive examples and scenarios";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="bi bi-code-square me-3"></i>Interactive Examples
+                </h1>
+                <p class="lead mb-4">
+                    Explore real-world scenarios with live demonstrations
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Category Tabs -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <ul class="nav nav-pills nav-fill" id="exampleTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="beginner-tab" data-bs-toggle="pill"
+                        data-bs-target="#beginner" type="button" role="tab">
+                    <i class="bi bi-1-circle me-2"></i>Beginner
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="intermediate-tab" data-bs-toggle="pill"
+                        data-bs-target="#intermediate" type="button" role="tab">
+                    <i class="bi bi-2-circle me-2"></i>Intermediate
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="advanced-tab" data-bs-toggle="pill"
+                        data-bs-target="#advanced" type="button" role="tab">
+                    <i class="bi bi-3-circle me-2"></i>Advanced
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="realworld-tab" data-bs-toggle="pill"
+                        data-bs-target="#realworld" type="button" role="tab">
+                    <i class="bi bi-globe me-2"></i>Real-World
+                </button>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- Tab Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="tab-content" id="exampleTabsContent">
+
+            <!-- Beginner Examples -->
+            <div class="tab-pane fade show active" id="beginner" role="tabpanel">
+                <div class="row g-4">
+
+                    <!-- Simple Task Execution -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-success rounded-circle p-2 me-3">
+                                        <i class="bi bi-play-fill"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Simple Task Execution</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Execute multiple independent tasks concurrently with automatic error handling.
+                                </p>
+                                <div class="code-example bg-dark text-light p-3 rounded mb-3">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">var tasks = new Dictionary&lt;string, Func&lt;CT, Task&lt;object?&gt;&gt;&gt;
+{
+    ["Task 1"] = async ct => "Result 1",
+    ["Task 2"] = async ct => "Result 2",
+    ["Task 3"] = async ct => "Result 3"
+};
+
+await processor.ProcessTasksAsync(tasks);</pre></code>
+                                </div>
+                                <button class="btn btn-success btn-sm" onclick="runSimpleExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="simpleResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Handling -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-warning rounded-circle p-2 me-3">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Error Handling</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    See how TaskListProcessor isolates failures and continues processing other tasks.
+                                </p>
+                                <div class="code-example bg-dark text-light p-3 rounded mb-3">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">var tasks = new Dictionary&lt;string, Func&lt;CT, Task&lt;object?&gt;&gt;&gt;
+{
+    ["Success"] = async ct => "OK",
+    ["Failure"] = async ct => throw new Exception("Error!"),
+    ["Also Success"] = async ct => "Also OK"
+};
+
+await processor.ProcessTasksAsync(tasks);
+// Other tasks continue despite failure!</pre></code>
+                                </div>
+                                <button class="btn btn-warning btn-sm" onclick="runErrorExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="errorResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Reporting -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-info rounded-circle p-2 me-3">
+                                        <i class="bi bi-graph-up"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Progress Reporting</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Track task completion in real-time with built-in progress reporting.
+                                </p>
+                                <div class="code-example bg-dark text-light p-3 rounded mb-3">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">var progress = new Progress&lt;TaskProgress&gt;(p =>
+{
+    Console.WriteLine($"{p.CompletedTasks}/{p.TotalTasks}");
+});
+
+await processor.ProcessTasksAsync(tasks, progress);</pre></code>
+                                </div>
+                                <button class="btn btn-info btn-sm" onclick="runProgressExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="progressResult" class="mt-3">
+                                    <div class="progress" style="height: 25px; display: none;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                             role="progressbar" style="width: 0%">0%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-primary rounded-circle p-2 me-3">
+                                        <i class="bi bi-speedometer2"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Telemetry & Metrics</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Automatic performance metrics and execution telemetry for all tasks.
+                                </p>
+                                <div class="code-example bg-dark text-light p-3 rounded mb-3">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">await processor.ProcessTasksAsync(tasks);
+
+var summary = processor.GetTelemetrySummary();
+Console.WriteLine($"Success Rate: {summary.SuccessRate}%");
+Console.WriteLine($"Avg Time: {summary.AvgTime}ms");</pre></code>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="runTelemetryExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="telemetryResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Intermediate Examples -->
+            <div class="tab-pane fade" id="intermediate" role="tabpanel">
+                <div class="row g-4">
+
+                    <!-- Circuit Breaker -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-danger rounded-circle p-2 me-3">
+                                        <i class="bi bi-shield-x"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Circuit Breaker Pattern</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Prevent cascading failures with automatic circuit breaker protection.
+                                </p>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    The circuit breaker opens after 5 consecutive failures and automatically recovers after 2 minutes.
+                                </div>
+                                <button class="btn btn-danger btn-sm" onclick="runCircuitBreakerExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="circuitBreakerResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task Dependencies -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-success rounded-circle p-2 me-3">
+                                        <i class="bi bi-diagram-3"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Task Dependencies</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Define task execution order with explicit dependencies.
+                                </p>
+                                <div class="mermaid text-center mb-3">
+graph LR
+    A[Step 1] --> B[Step 2]
+    A --> C[Step 3]
+    B --> D[Step 4]
+    C --> D
+                                </div>
+                                <button class="btn btn-success btn-sm" onclick="runDependencyExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="dependencyResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Streaming Results -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-primary rounded-circle p-2 me-3">
+                                        <i class="bi bi-broadcast"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Streaming Results</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Process results as they complete instead of waiting for all tasks.
+                                </p>
+                                <div class="alert alert-success">
+                                    <i class="bi bi-lightning-fill me-2"></i>
+                                    Results appear in real-time as each task completes
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="runStreamingExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="streamingResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Scheduling -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="badge bg-warning rounded-circle p-2 me-3">
+                                        <i class="bi bi-calendar-check"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Priority-Based Scheduling</h5>
+                                </div>
+                                <p class="card-text text-muted">
+                                    Execute high-priority tasks before lower-priority ones.
+                                </p>
+                                <div class="code-example bg-dark text-light p-3 rounded mb-3 small">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">new TaskDefinition {
+    Name = "Critical",
+    Priority = TaskPriority.High
+}</pre></code>
+                                </div>
+                                <button class="btn btn-warning btn-sm" onclick="runSchedulingExample()">
+                                    <i class="bi bi-play-circle me-1"></i>Run Example
+                                </button>
+                                <div id="schedulingResult" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Advanced Examples -->
+            <div class="tab-pane fade" id="advanced" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Advanced Examples</strong> - These demonstrate production-level patterns and optimizations.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-memory text-danger me-2"></i>
+                                    Memory Optimization
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Process 10,000+ tasks with bounded memory usage using streaming.
+                                </p>
+                                <a href="/Examples/MemoryOptimization" class="btn btn-danger btn-sm">View Example</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-distribute-vertical text-success me-2"></i>
+                                    Load Balancing
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Distribute tasks across multiple processors for optimal throughput.
+                                </p>
+                                <a href="/Examples/LoadBalancing" class="btn btn-success btn-sm">View Example</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+                                    OpenTelemetry Integration
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Export metrics and traces to observability platforms.
+                                </p>
+                                <a href="/Examples/OpenTelemetry" class="btn btn-primary btn-sm">View Example</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-sliders text-warning me-2"></i>
+                                    Custom Schedulers
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Build custom scheduling logic for specific requirements.
+                                </p>
+                                <a href="/Examples/CustomSchedulers" class="btn btn-warning btn-sm">View Example</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-World Examples -->
+            <div class="tab-pane fade" id="realworld" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <strong>Production-Ready Examples</strong> - Complete applications you can deploy today.
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-cloud-download text-primary me-2"></i>
+                                    API Aggregation
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Combine data from multiple REST APIs concurrently.
+                                </p>
+                                <ul class="small text-muted">
+                                    <li>Weather + Hotels + Activities</li>
+                                    <li>Error isolation</li>
+                                    <li>Progress reporting</li>
+                                    <li>Telemetry dashboard</li>
+                                </ul>
+                                <a href="@Url.Action("Demo", "Home")" class="btn btn-primary btn-sm">
+                                    Try Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-database text-success me-2"></i>
+                                    Batch Data Processing
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Process large datasets with configurable batch sizes.
+                                </p>
+                                <ul class="small text-muted">
+                                    <li>1000+ records/second</li>
+                                    <li>Memory-efficient streaming</li>
+                                    <li>Error retry logic</li>
+                                    <li>Progress tracking</li>
+                                </ul>
+                                <a href="/Examples/BatchProcessing" class="btn btn-success btn-sm">
+                                    View Example
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-diagram-3 text-danger me-2"></i>
+                                    Microservice Orchestration
+                                </h5>
+                                <p class="card-text text-muted">
+                                    Coordinate calls across multiple microservices.
+                                </p>
+                                <ul class="small text-muted">
+                                    <li>Service dependencies</li>
+                                    <li>Circuit breaker protection</li>
+                                    <li>Fallback strategies</li>
+                                    <li>Distributed tracing</li>
+                                </ul>
+                                <a href="/Examples/Microservices" class="btn btn-danger btn-sm">
+                                    View Example
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h3 class="mb-4">Ready to Build Your Own?</h3>
+        <p class="text-muted mb-4">
+            Follow our step-by-step tutorial to create a production-ready application
+        </p>
+        <a href="https://github.com/markhazleton/TaskListProcessor/blob/main/docs/getting-started/03-your-first-processor.md"
+           class="btn btn-primary btn-lg" target="_blank">
+            <i class="bi bi-book me-2"></i>Start Tutorial
+        </a>
+    </div>
+</section>
+
+@section Scripts {
+<!-- Mermaid for diagrams -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+
+    function runSimpleExample() {
+        const result = document.getElementById('simpleResult');
+        result.innerHTML = `
+            <div class="alert alert-success">
+                <strong>Execution Complete!</strong><br>
+                <small class="d-block mt-2">
+                    ✅ Task 1: "Result 1" (245ms)<br>
+                    ✅ Task 2: "Result 2" (312ms)<br>
+                    ✅ Task 3: "Result 3" (189ms)<br>
+                    <strong class="mt-2 d-block">Total Time: 312ms (concurrent)</strong>
+                </small>
+            </div>
+        `;
+    }
+
+    function runErrorExample() {
+        const result = document.getElementById('errorResult');
+        result.innerHTML = `
+            <div class="alert alert-warning">
+                <strong>Execution Complete with Partial Success!</strong><br>
+                <small class="d-block mt-2">
+                    ✅ Success: "OK" (198ms)<br>
+                    ❌ Failure: Exception - "Error!" (156ms)<br>
+                    ✅ Also Success: "Also OK" (223ms)<br>
+                    <strong class="mt-2 d-block">2/3 tasks succeeded (66.7%)</strong>
+                </small>
+            </div>
+        `;
+    }
+
+    function runProgressExample() {
+        const result = document.getElementById('progressResult');
+        const progressBar = result.querySelector('.progress');
+        const progressBarInner = result.querySelector('.progress-bar');
+
+        progressBar.style.display = 'block';
+        let progress = 0;
+
+        const interval = setInterval(() => {
+            progress += 10;
+            progressBarInner.style.width = progress + '%';
+            progressBarInner.textContent = progress + '%';
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    result.innerHTML = `
+                        <div class="alert alert-success mt-3">
+                            <strong>All Tasks Complete!</strong><br>
+                            <small>10/10 tasks processed successfully</small>
+                        </div>
+                    `;
+                }, 500);
+            }
+        }, 300);
+    }
+
+    function runTelemetryExample() {
+        const result = document.getElementById('telemetryResult');
+        result.innerHTML = `
+            <div class="card bg-dark text-light">
+                <div class="card-body">
+                    <h6 class="card-title">📊 Telemetry Summary</h6>
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-6 mb-3">
+                            <div class="h3 text-success">95.2%</div>
+                            <small>Success Rate</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="h3 text-info">245ms</div>
+                            <small>Avg Time</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h3 text-warning">89ms</div>
+                            <small>Fastest</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h3 text-danger">512ms</div>
+                            <small>Slowest</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function runCircuitBreakerExample() {
+        const result = document.getElementById('circuitBreakerResult');
+        result.innerHTML = `
+            <div class="alert alert-danger">
+                <strong>⚠️ Circuit Breaker Opened</strong><br>
+                <small class="d-block mt-2">
+                    After 5 consecutive failures, the circuit breaker opened to prevent cascading failures.<br>
+                    <strong class="mt-2 d-block">Will retry in 2 minutes...</strong>
+                </small>
+            </div>
+        `;
+    }
+
+    function runDependencyExample() {
+        const result = document.getElementById('dependencyResult');
+        result.innerHTML = `
+            <div class="alert alert-success">
+                <strong>Execution Order (by dependencies):</strong><br>
+                <small class="d-block mt-2">
+                    1️⃣ Step 1 completed (200ms)<br>
+                    2️⃣ Step 2 & Step 3 started concurrently<br>
+                    3️⃣ Step 2 completed (150ms)<br>
+                    4️⃣ Step 3 completed (180ms)<br>
+                    5️⃣ Step 4 started after both completed<br>
+                    6️⃣ Step 4 completed (95ms)<br>
+                    <strong class="mt-2 d-block">Total: 625ms</strong>
+                </small>
+            </div>
+        `;
+    }
+
+    function runStreamingExample() {
+        const result = document.getElementById('streamingResult');
+        result.innerHTML = '<div class="alert alert-info">Processing...</div>';
+
+        let count = 0;
+        const tasks = ['API Call 1', 'Database Query', 'File Processing', 'API Call 2', 'Data Transform'];
+
+        const interval = setInterval(() => {
+            if (count < tasks.length) {
+                result.innerHTML += `<div class="alert alert-success alert-sm mb-2 fade-in">✅ ${tasks[count]} completed</div>`;
+                count++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 600);
+    }
+
+    function runSchedulingExample() {
+        const result = document.getElementById('schedulingResult');
+        result.innerHTML = `
+            <div class="alert alert-success">
+                <strong>Priority Execution Order:</strong><br>
+                <small class="d-block mt-2">
+                    🔴 High Priority Task 1 (150ms)<br>
+                    🔴 High Priority Task 2 (200ms)<br>
+                    🟡 Medium Priority Task 1 (180ms)<br>
+                    🟡 Medium Priority Task 2 (220ms)<br>
+                    🟢 Low Priority Task 1 (160ms)<br>
+                    🟢 Low Priority Task 2 (190ms)<br>
+                </small>
+            </div>
+        `;
+    }
+</script>
+
+<style>
+.code-example {
+    font-size: 0.85rem;
+    overflow-x: auto;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.nav-pills .nav-link {
+    border-radius: 50px;
+    margin: 0 5px;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+</style>
+}

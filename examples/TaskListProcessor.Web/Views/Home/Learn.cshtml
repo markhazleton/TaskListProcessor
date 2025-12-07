@@ -1,0 +1,361 @@
+@{
+    ViewData["Title"] = "Learn TaskListProcessor";
+    ViewData["Description"] = "Interactive learning hub for TaskListProcessor - tutorials, examples, and hands-on exercises";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-gradient text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="bi bi-book me-3"></i>Learn TaskListProcessor
+                </h1>
+                <p class="lead mb-4">
+                    Master asynchronous task processing with interactive tutorials and real-world examples
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Learning Paths -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Beginner Path -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="badge bg-success rounded-circle p-3 me-3">
+                                <i class="bi bi-1-circle-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-0">Beginner</h3>
+                                <small class="text-muted">Start Here!</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4">
+                            New to TaskListProcessor? Start with the basics and build your first processor in minutes.
+                        </p>
+                        <h6 class="fw-bold mb-3">You'll Learn:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Quick Start (5 min)</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Core Concepts</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Simple Task Execution</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Error Handling</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Progress Reporting</li>
+                        </ul>
+                        <a href="/Learn/Beginner" class="btn btn-success w-100 mt-3">
+                            <i class="bi bi-play-circle me-2"></i>Start Learning
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intermediate Path -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="badge bg-warning rounded-circle p-3 me-3">
+                                <i class="bi bi-2-circle-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-0">Intermediate</h3>
+                                <small class="text-muted">Level Up!</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4">
+                            Know the basics? Explore advanced features and production patterns.
+                        </p>
+                        <h6 class="fw-bold mb-3">You'll Learn:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Dependency Injection</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Circuit Breaker Pattern</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Advanced Scheduling</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Task Dependencies</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>Streaming Results</li>
+                        </ul>
+                        <a href="/Learn/Intermediate" class="btn btn-warning w-100 mt-3">
+                            <i class="bi bi-arrow-up-circle me-2"></i>Continue Learning
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Path -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="badge bg-danger rounded-circle p-3 me-3">
+                                <i class="bi bi-3-circle-fill fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-0">Advanced</h3>
+                                <small class="text-muted">Expert Level</small>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4">
+                            Master production optimization and advanced patterns for enterprise scenarios.
+                        </p>
+                        <h6 class="fw-bold mb-3">You'll Learn:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Memory Optimization</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Load Balancing</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>OpenTelemetry</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Custom Schedulers</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Production Patterns</li>
+                        </ul>
+                        <a href="/Learn/Advanced" class="btn btn-danger w-100 mt-3">
+                            <i class="bi bi-trophy me-2"></i>Master It
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Examples -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Interactive Examples</h2>
+            <p class="text-muted">Try these scenarios right in your browser</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm hover-lift h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-cloud-download display-4 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">API Aggregation</h5>
+                        <p class="card-text text-muted small">
+                            Fetch data from multiple APIs concurrently
+                        </p>
+                        <a href="/Examples/ApiAggregation" class="btn btn-sm btn-outline-primary">Try It</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm hover-lift h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-database display-4 text-success"></i>
+                        </div>
+                        <h5 class="card-title">Batch Processing</h5>
+                        <p class="card-text text-muted small">
+                            Process large datasets efficiently
+                        </p>
+                        <a href="/Examples/BatchProcessing" class="btn btn-sm btn-outline-success">Try It</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm hover-lift h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-check display-4 text-warning"></i>
+                        </div>
+                        <h5 class="card-title">Circuit Breaker</h5>
+                        <p class="card-text text-muted small">
+                            Handle failures gracefully
+                        </p>
+                        <a href="/Examples/CircuitBreaker" class="btn btn-sm btn-outline-warning">Try It</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm hover-lift h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-diagram-3 display-4 text-danger"></i>
+                        </div>
+                        <h5 class="card-title">Microservices</h5>
+                        <p class="card-text text-muted small">
+                            Orchestrate service calls
+                        </p>
+                        <a href="/Examples/Microservices" class="btn btn-sm btn-outline-danger">Try It</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Documentation Quick Links -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Quick Resources</h2>
+            <p class="text-muted">Essential guides and references</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-rocket-takeoff text-primary me-2"></i>
+                            Quick Start
+                        </h5>
+                        <p class="card-text text-muted">
+                            Get your first processor running in 5 minutes
+                        </p>
+                        <a href="https://github.com/markhazleton/TaskListProcessor/blob/main/docs/getting-started/01-quick-start-5-minutes.md"
+                           class="btn btn-sm btn-primary" target="_blank">
+                            Read Guide <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-question-circle text-success me-2"></i>
+                            FAQ
+                        </h5>
+                        <p class="card-text text-muted">
+                            Answers to 40+ common questions
+                        </p>
+                        <a href="https://github.com/markhazleton/TaskListProcessor/blob/main/docs/troubleshooting/faq.md"
+                           class="btn btn-sm btn-success" target="_blank">
+                            View FAQ <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                            Common Pitfalls
+                        </h5>
+                        <p class="card-text text-muted">
+                            Avoid the 10 most common mistakes
+                        </p>
+                        <a href="https://github.com/markhazleton/TaskListProcessor/blob/main/docs/getting-started/04-common-pitfalls.md"
+                           class="btn btn-sm btn-warning" target="_blank">
+                            Learn More <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Learning Progress Tracker -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h3 class="mb-4 text-center">
+                            <i class="bi bi-clipboard-check me-2"></i>Track Your Progress
+                        </h3>
+                        <p class="text-center text-muted mb-4">
+                            Follow our recommended 4-week learning path
+                        </p>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Week 1: Foundations</span>
+                                <span class="text-muted">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                Quick Start → Fundamentals → Your First Processor → Common Pitfalls
+                            </small>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Week 2: Core Features</span>
+                                <span class="text-muted">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                Batch Processing → Error Handling → Progress Reporting → Telemetry
+                            </small>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Week 3: Intermediate</span>
+                                <span class="text-muted">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                DI → Circuit Breaker → Scheduling → Dependencies → Streaming
+                            </small>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Week 4: Advanced & Production</span>
+                                <span class="text-muted">0%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted d-block mt-1">
+                                Optimization → Performance → Production Patterns → Build Your Project
+                            </small>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="/Learn/Beginner" class="btn btn-primary btn-lg">
+                                <i class="bi bi-play-fill me-2"></i>Start Your Journey
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+</style>
+
+@section Scripts {
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+</script>
+}

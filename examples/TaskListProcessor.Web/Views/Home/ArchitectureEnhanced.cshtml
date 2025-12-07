@@ -1,0 +1,830 @@
+@{
+    ViewData["Title"] = "Architecture & Design";
+    ViewData["Description"] = "Explore the architecture, design patterns, and principles behind TaskListProcessor";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-dark text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="bi bi-diagram-3 me-3"></i>Architecture & Design
+                </h1>
+                <p class="lead mb-4">
+                    Understand the principles and patterns that make TaskListProcessor robust and extensible
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tab Navigation -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <ul class="nav nav-pills nav-fill" id="architectureTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="pill"
+                        data-bs-target="#overview" type="button" role="tab">
+                    <i class="bi bi-eye me-2"></i>Overview
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="components-tab" data-bs-toggle="pill"
+                        data-bs-target="#components" type="button" role="tab">
+                    <i class="bi bi-boxes me-2"></i>Components
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="patterns-tab" data-bs-toggle="pill"
+                        data-bs-target="#patterns" type="button" role="tab">
+                    <i class="bi bi-grid-3x3 me-2"></i>Patterns
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="flow-tab" data-bs-toggle="pill"
+                        data-bs-target="#flow" type="button" role="tab">
+                    <i class="bi bi-arrow-right-circle me-2"></i>Execution Flow
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="solid-tab" data-bs-toggle="pill"
+                        data-bs-target="#solid" type="button" role="tab">
+                    <i class="bi bi-star me-2"></i>SOLID
+                </button>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- Tab Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="tab-content" id="architectureTabsContent">
+
+            <!-- Overview Tab -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <h2 class="mb-4">Architecture Overview</h2>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-layers text-primary me-2"></i>
+                                    Layered Architecture
+                                </h5>
+                                <p class="card-text">
+                                    TaskListProcessor follows a clean, layered architecture with clear separation of concerns.
+                                </p>
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Client Layer</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>DI Container Layer</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Decorator Layer</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Interface Layer</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Core Processing Layer</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Support Services Layer</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-shield-check text-success me-2"></i>
+                                    Key Design Principles
+                                </h5>
+                                <p class="card-text">
+                                    Built on industry-standard design principles and patterns.
+                                </p>
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-star text-warning me-2"></i>SOLID Principles</li>
+                                    <li><i class="bi bi-star text-warning me-2"></i>Dependency Injection</li>
+                                    <li><i class="bi bi-star text-warning me-2"></i>Interface Segregation</li>
+                                    <li><i class="bi bi-star text-warning me-2"></i>Decorator Pattern</li>
+                                    <li><i class="bi bi-star text-warning me-2"></i>Strategy Pattern</li>
+                                    <li><i class="bi bi-star text-warning me-2"></i>Circuit Breaker Pattern</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mb-3">High-Level Architecture</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body bg-light">
+                        <div class="mermaid">
+graph TB
+    subgraph Client["Client Layer"]
+        CA[Client Application]
+    end
+
+    subgraph DI["DI Container Layer"]
+        DIC[Service Provider]
+    end
+
+    subgraph Decorators["Decorator Layer"]
+        LD[Logging Decorator]
+        MD[Metrics Decorator]
+        CB[Circuit Breaker Decorator]
+    end
+
+    subgraph Interfaces["Interface Layer"]
+        ITP[ITaskProcessor]
+        ITBP[ITaskBatchProcessor]
+        ITSP[ITaskStreamProcessor]
+        ITTP[ITaskTelemetryProvider]
+    end
+
+    subgraph Core["Core Processing Layer"]
+        TLP[TaskListProcessorEnhanced]
+        SCHED[Task Scheduler]
+        EXEC[Task Executor]
+        TEL[Telemetry Collector]
+    end
+
+    subgraph Support["Support Services"]
+        CBL[Circuit Breaker Logic]
+        POOL[Memory Pool]
+        LB[Load Balancer]
+    end
+
+    CA --> DIC
+    DIC --> LD
+    LD --> MD
+    MD --> CB
+    CB --> ITP & ITBP & ITSP & ITTP
+    ITP & ITBP & ITSP & ITTP --> TLP
+    TLP --> SCHED & EXEC & TEL
+    TLP --> CBL & POOL & LB
+
+    style Client fill:#e1f5ff
+    style DI fill:#fff4e1
+    style Decorators fill:#ffe1e1
+    style Interfaces fill:#e8f5e8
+    style Core fill:#f5e1ff
+    style Support fill:#ffe8e1
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components Tab -->
+            <div class="tab-pane fade" id="components" role="tabpanel">
+                <h2 class="mb-4">Core Components</h2>
+
+                <div class="row g-4">
+                    <!-- TaskListProcessorEnhanced -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-cpu me-2"></i>
+                                    TaskListProcessorEnhanced
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Role:</strong> Main orchestrator and backward-compatible entry point</p>
+                                <p class="text-muted">Coordinates all task execution, manages state, and provides comprehensive functionality.</p>
+                                <h6 class="mt-3">Key Responsibilities:</h6>
+                                <ul class="small">
+                                    <li>Task scheduling and execution</li>
+                                    <li>Error handling and isolation</li>
+                                    <li>Telemetry collection</li>
+                                    <li>Progress reporting</li>
+                                    <li>Circuit breaker management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interfaces -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-plug me-2"></i>
+                                    Segregated Interfaces
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Role:</strong> Clean, focused contracts for different scenarios</p>
+                                <p class="text-muted">Follows Interface Segregation Principle for minimal dependencies.</p>
+                                <h6 class="mt-3">Available Interfaces:</h6>
+                                <ul class="small">
+                                    <li><code>ITaskProcessor</code> - Single task execution</li>
+                                    <li><code>ITaskBatchProcessor</code> - Batch processing</li>
+                                    <li><code>ITaskStreamProcessor</code> - Streaming results</li>
+                                    <li><code>ITaskTelemetryProvider</code> - Telemetry access</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decorators -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-layers me-2"></i>
+                                    Decorator Chain
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Role:</strong> Cross-cutting concerns via composition</p>
+                                <p class="text-muted">Add features without modifying core code (Open/Closed Principle).</p>
+                                <h6 class="mt-3">Available Decorators:</h6>
+                                <ul class="small">
+                                    <li>LoggingDecorator - Structured logging</li>
+                                    <li>MetricsDecorator - Performance metrics</li>
+                                    <li>CircuitBreakerDecorator - Failure protection</li>
+                                    <li>RetryDecorator - Automatic retries</li>
+                                    <li>CachingDecorator - Result caching</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scheduler -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-calendar-check me-2"></i>
+                                    Task Scheduler
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Role:</strong> Task ordering and execution planning</p>
+                                <p class="text-muted">Handles dependencies, priorities, and execution strategies.</p>
+                                <h6 class="mt-3">Scheduling Strategies:</h6>
+                                <ul class="small">
+                                    <li>FIFO (First In, First Out)</li>
+                                    <li>LIFO (Last In, First Out)</li>
+                                    <li>Priority-based</li>
+                                    <li>Dependency-aware</li>
+                                    <li>Custom strategies</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="mt-5 mb-3">Component Interaction</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body bg-light">
+                        <div class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant P as Processor
+    participant S as Scheduler
+    participant E as Executor
+    participant T as Telemetry
+    participant CB as Circuit Breaker
+
+    C->>P: ProcessTasksAsync(tasks)
+    P->>CB: ShouldAllowExecution()
+    alt Circuit Open
+        CB-->>P: Block
+        P-->>C: CircuitBreakerOpenException
+    else Circuit Closed
+        CB-->>P: Allow
+        P->>S: Schedule(tasks)
+        S-->>P: Ordered tasks
+        loop For each task
+            P->>E: ExecuteAsync(task)
+            E->>T: RecordStart(task)
+            E->>E: await task()
+            E->>T: RecordEnd(task, result)
+            E-->>P: Result
+        end
+        P-->>C: Complete
+    end
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patterns Tab -->
+            <div class="tab-pane fade" id="patterns" role="tabpanel">
+                <h2 class="mb-4">Design Patterns</h2>
+
+                <div class="accordion" id="patternsAccordion">
+
+                    <!-- Decorator Pattern -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#decoratorPattern">
+                                <i class="bi bi-layers-fill me-2"></i>
+                                <strong>Decorator Pattern</strong>
+                            </button>
+                        </h2>
+                        <div id="decoratorPattern" class="accordion-collapse collapse show"
+                             data-bs-parent="#patternsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">
+                                    <strong>Purpose:</strong> Add cross-cutting concerns without modifying core logic
+                                </p>
+                                <div class="mermaid">
+graph LR
+    Client[Client Code] --> IProcessor[ITaskBatchProcessor]
+    IProcessor --> LogDec[LoggingDecorator]
+    LogDec --> MetDec[MetricsDecorator]
+    MetDec --> Core[Core Processor]
+
+    style LogDec fill:#ffe1e1
+    style MetDec fill:#e1ffe1
+    style Core fill:#e1e1ff
+                                </div>
+                                <h6 class="mt-3">Benefits:</h6>
+                                <ul>
+                                    <li>Add features without changing core code</li>
+                                    <li>Compose behaviors at runtime</li>
+                                    <li>Maintain Open/Closed Principle</li>
+                                    <li>Easy to test in isolation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Circuit Breaker Pattern -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#circuitBreakerPattern">
+                                <i class="bi bi-shield-x me-2"></i>
+                                <strong>Circuit Breaker Pattern</strong>
+                            </button>
+                        </h2>
+                        <div id="circuitBreakerPattern" class="accordion-collapse collapse"
+                             data-bs-parent="#patternsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">
+                                    <strong>Purpose:</strong> Prevent cascading failures and allow systems to recover
+                                </p>
+                                <div class="mermaid">
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Open: Failure threshold exceeded
+    Open --> HalfOpen: After recovery timeout
+    HalfOpen --> Closed: Success
+    HalfOpen --> Open: Failure
+    Closed --> Closed: Success
+
+    note right of Closed
+        Normal operation
+        Requests pass through
+    end note
+
+    note right of Open
+        Failing fast
+        Blocking requests
+    end note
+
+    note right of HalfOpen
+        Testing recovery
+        Limited requests
+    end note
+                                </div>
+                                <h6 class="mt-3">States:</h6>
+                                <ul>
+                                    <li><strong>Closed:</strong> Normal operation, monitoring failures</li>
+                                    <li><strong>Open:</strong> Too many failures, blocking execution</li>
+                                    <li><strong>Half-Open:</strong> Testing if system recovered</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strategy Pattern -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#strategyPattern">
+                                <i class="bi bi-diagram-3 me-2"></i>
+                                <strong>Strategy Pattern</strong>
+                            </button>
+                        </h2>
+                        <div id="strategyPattern" class="accordion-collapse collapse"
+                             data-bs-parent="#patternsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">
+                                    <strong>Purpose:</strong> Pluggable algorithms for task scheduling
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Available Strategies:</h6>
+                                        <ul>
+                                            <li>FIFOSchedulingStrategy</li>
+                                            <li>LIFOSchedulingStrategy</li>
+                                            <li>PrioritySchedulingStrategy</li>
+                                            <li>DependencyAwareStrategy</li>
+                                            <li>Custom strategies</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Benefits:</h6>
+                                        <ul>
+                                            <li>Swap algorithms at runtime</li>
+                                            <li>Easy to add new strategies</li>
+                                            <li>Testable in isolation</li>
+                                            <li>Clear separation of concerns</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Factory Pattern -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#factoryPattern">
+                                <i class="bi bi-gear me-2"></i>
+                                <strong>Factory Pattern</strong>
+                            </button>
+                        </h2>
+                        <div id="factoryPattern" class="accordion-collapse collapse"
+                             data-bs-parent="#patternsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">
+                                    <strong>Purpose:</strong> Create task instances with consistent configuration
+                                </p>
+                                <div class="bg-dark text-light p-3 rounded">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">// Task factories create tasks at the right time
+Func&lt;CancellationToken, Task&lt;object?&gt;&gt; factory = async ct =>
+{
+    // Created when executed, not when defined
+    return await FetchDataAsync(ct);
+};
+
+// Benefits:
+// - Proper cancellation token binding
+// - Lazy creation (only when needed)
+// - Enables retries and circuit breaker
+// - Better resource management</pre></code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Observer Pattern -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#observerPattern">
+                                <i class="bi bi-eye me-2"></i>
+                                <strong>Observer Pattern (Progress Reporting)</strong>
+                            </button>
+                        </h2>
+                        <div id="observerPattern" class="accordion-collapse collapse"
+                             data-bs-parent="#patternsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">
+                                    <strong>Purpose:</strong> Notify observers of progress changes
+                                </p>
+                                <div class="bg-dark text-light p-3 rounded">
+                                    <code><pre style="margin: 0; color: #e0e0e0;">var progress = new Progress&lt;TaskProgress&gt;(p =>
+{
+    // Called automatically on each task completion
+    Console.WriteLine($"{p.CompletedTasks}/{p.TotalTasks}");
+    UpdateUI(p.PercentComplete);
+});
+
+await processor.ProcessTasksAsync(tasks, progress);</pre></code>
+                                </div>
+                                <p class="mt-3">
+                                    Uses .NET's built-in <code>IProgress&lt;T&gt;</code> pattern for thread-safe progress reporting.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Execution Flow Tab -->
+            <div class="tab-pane fade" id="flow" role="tabpanel">
+                <h2 class="mb-4">Task Execution Flow</h2>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body bg-light">
+                        <h5 class="card-title">Complete Execution Flowchart</h5>
+                        <div class="mermaid">
+flowchart TD
+    Start([Client Code]) --> Validate{Valid Input?}
+    Validate -->|No| ErrorInput[Throw ArgumentException]
+    Validate -->|Yes| CheckCircuit{Circuit Breaker Open?}
+
+    CheckCircuit -->|Yes| ErrorCircuit[Throw CircuitBreakerOpenException]
+    CheckCircuit -->|No| Schedule[Schedule Tasks]
+
+    Schedule --> DepSort[Resolve Dependencies]
+    DepSort --> PrioSort[Apply Priority Ordering]
+    PrioSort --> ExecLoop[Task Execution Loop]
+
+    ExecLoop --> CheckSlot{Concurrency Slot Available?}
+    CheckSlot -->|No| Wait[Wait for Slot]
+    Wait --> CheckSlot
+    CheckSlot -->|Yes| StartTask[Start Task]
+
+    StartTask --> RecordStart[Record Telemetry Start]
+    RecordStart --> Execute[Execute Task Factory]
+
+    Execute --> Success{Success?}
+    Success -->|Yes| RecordSuccess[Record Success + Data]
+    Success -->|No| CatchError[Catch Exception]
+    CatchError --> RecordFailure[Record Failure + Error]
+
+    RecordSuccess --> UpdateCB1[Update Circuit Breaker]
+    RecordFailure --> UpdateCB2[Update Circuit Breaker]
+
+    UpdateCB1 --> ReportProgress[Report Progress]
+    UpdateCB2 --> ReportProgress
+
+    ReportProgress --> MoreTasks{More Tasks?}
+    MoreTasks -->|Yes| ExecLoop
+    MoreTasks -->|No| Complete([Return Results])
+
+    style Start fill:#e1f5ff
+    style Complete fill:#e1ffe1
+    style ErrorInput fill:#ffe1e1
+    style ErrorCircuit fill:#ffe1e1
+    style Execute fill:#fff4e1
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">
+                                    <i class="bi bi-1-circle-fill me-2"></i>
+                                    Submission Phase
+                                </h5>
+                                <ol>
+                                    <li>Validate input parameters</li>
+                                    <li>Check circuit breaker state</li>
+                                    <li>Resolve task dependencies</li>
+                                    <li>Apply scheduling strategy</li>
+                                    <li>Initialize telemetry</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="bi bi-2-circle-fill me-2"></i>
+                                    Execution Phase
+                                </h5>
+                                <ol>
+                                    <li>Wait for concurrency slot</li>
+                                    <li>Create task from factory</li>
+                                    <li>Record start time</li>
+                                    <li>Execute async operation</li>
+                                    <li>Capture result or exception</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-warning">
+                                    <i class="bi bi-3-circle-fill me-2"></i>
+                                    Completion Phase
+                                </h5>
+                                <ol>
+                                    <li>Record end time</li>
+                                    <li>Calculate duration</li>
+                                    <li>Update telemetry</li>
+                                    <li>Update circuit breaker</li>
+                                    <li>Report progress</li>
+                                    <li>Return results</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOLID Tab -->
+            <div class="tab-pane fade" id="solid" role="tabpanel">
+                <h2 class="mb-4">SOLID Principles</h2>
+                <p class="lead text-muted">
+                    TaskListProcessor exemplifies all five SOLID principles for maintainable, extensible software.
+                </p>
+
+                <div class="row g-4">
+
+                    <!-- Single Responsibility -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-1-circle-fill me-2"></i>
+                                    Single Responsibility Principle
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Each class has one reason to change</p>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <small>
+                                        <code>TaskProcessor</code> → Execute single tasks<br>
+                                        <code>TaskBatchProcessor</code> → Execute batches<br>
+                                        <code>TaskTelemetryProvider</code> → Collect metrics<br>
+                                        <code>CircuitBreaker</code> → Manage fault tolerance
+                                    </small>
+                                </div>
+                                <p class="text-muted small">
+                                    Each component has a clear, focused purpose making the codebase easier to understand, test, and maintain.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Open/Closed -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-2-circle-fill me-2"></i>
+                                    Open/Closed Principle
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Open for extension, closed for modification</p>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <small>
+                                        Extend via decorators:<br>
+                                        • LoggingDecorator<br>
+                                        • MetricsDecorator<br>
+                                        • CustomDecorator (yours!)
+                                    </small>
+                                </div>
+                                <p class="text-muted small">
+                                    Add new features through composition without modifying existing code. Create custom decorators to add your own cross-cutting concerns.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liskov Substitution -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-3-circle-fill me-2"></i>
+                                    Liskov Substitution Principle
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Subtypes must be substitutable for their base types</p>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <small>
+                                        Any <code>ITaskBatchProcessor</code> works:<br>
+                                        • TaskBatchProcessor<br>
+                                        • TaskListProcessorEnhanced<br>
+                                        • LoggingDecorator wrapping any
+                                    </small>
+                                </div>
+                                <p class="text-muted small">
+                                    All implementations fully satisfy their interface contracts, enabling safe polymorphism and easy mocking for tests.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interface Segregation -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-4-circle-fill me-2"></i>
+                                    Interface Segregation Principle
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Clients depend only on what they use</p>
+                                <div class="bg-light p-3 rounded mb-3">
+                                    <small>
+                                        Focused interfaces:<br>
+                                        • Need single task? <code>ITaskProcessor</code><br>
+                                        • Need batches? <code>ITaskBatchProcessor</code><br>
+                                        • Need streaming? <code>ITaskStreamProcessor</code><br>
+                                        • Need metrics? <code>ITaskTelemetryProvider</code>
+                                    </small>
+                                </div>
+                                <p class="text-muted small">
+                                    Depend on exactly what you need, nothing more. Each interface is focused and purpose-specific.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dependency Inversion -->
+                    <div class="col-md-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-5-circle-fill me-2"></i>
+                                    Dependency Inversion Principle
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Depend on abstractions, not concretions</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="bg-light p-3 rounded">
+                                            <small>
+                                                <strong>High-level modules</strong> depend on <strong>interfaces</strong>:<br>
+                                                <code>MyService(ITaskBatchProcessor processor)</code>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="bg-light p-3 rounded">
+                                            <small>
+                                                <strong>Implementations</strong> resolved by <strong>DI container</strong>:<br>
+                                                <code>services.AddTaskListProcessor()</code>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mt-3">
+                                    Loose coupling through dependency injection enables easy testing with mocks and flexibility to swap implementations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h3 class="mb-4">Want to Learn More?</h3>
+        <p class="text-muted mb-4">
+            Read the complete architecture documentation with code examples
+        </p>
+        <a href="https://github.com/markhazleton/TaskListProcessor/blob/main/docs/architecture/design-principles.md"
+           class="btn btn-primary btn-lg" target="_blank">
+            <i class="bi bi-book me-2"></i>Read Full Documentation
+        </a>
+    </div>
+</section>
+
+@section Scripts {
+<!-- Mermaid for diagrams -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis'
+        },
+        sequence: {
+            useMaxWidth: true,
+            wrap: true
+        }
+    });
+</script>
+
+<style>
+.nav-pills .nav-link {
+    border-radius: 50px;
+    margin: 0 5px;
+}
+
+.nav-pills .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #000;
+}
+
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+</style>
+}
