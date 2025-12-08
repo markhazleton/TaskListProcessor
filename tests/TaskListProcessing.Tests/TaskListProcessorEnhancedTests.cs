@@ -325,23 +325,21 @@ public class TaskListProcessorEnhancedTests
         cts.Cancel();
 
         // Assert
-        await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await processingTask);
+        await Assert.ThrowsAsync<TaskCanceledException>(async () => await processingTask);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public async Task ProcessTasksAsync_WithNullTasks_ThrowsArgumentNullException()
     {
         // Arrange
         var processor = new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
         await processor.InitializeAsync();
 
-        // Act
-        await processor.ProcessTasksAsync(null!);
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(async () => await processor.ProcessTasksAsync(null!));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
     public async Task ExecuteTaskAsync_WithNullOrEmptyName_ThrowsArgumentException()
     {
         // Arrange
@@ -349,20 +347,19 @@ public class TaskListProcessorEnhancedTests
         await processor.InitializeAsync();
         var task = Task.FromResult("test");
 
-        // Act
-        await processor.ExecuteTaskAsync(string.Empty, task);
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentException>(async () => await processor.ExecuteTaskAsync(string.Empty, task));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public async Task ExecuteTaskAsync_WithNullTask_ThrowsArgumentNullException()
     {
         // Arrange
         var processor = new TaskListProcessorEnhanced("TestProcessor", _mockLogger.Object, _options);
         await processor.InitializeAsync();
 
-        // Act
-        await processor.ExecuteTaskAsync<string>("test", null!);
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(async () => await processor.ExecuteTaskAsync<string>("test", null!));
     }
 
     [TestMethod]

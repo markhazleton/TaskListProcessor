@@ -28,27 +28,24 @@ namespace CityWeatherService.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public async Task GetWeather_ShouldThrowArgumentNullException_WhenCityIsNull()
         {
-            // Act
-            await _weatherService.GetWeather(null, false);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _weatherService.GetWeather(null, false));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public async Task GetWeather_ShouldThrowArgumentNullException_WhenCityIsEmpty()
         {
-            // Act
-            await _weatherService.GetWeather(string.Empty, false);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _weatherService.GetWeather(string.Empty, false));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public async Task GetWeather_ShouldThrowArgumentNullException_WhenCityIsWhitespace()
         {
-            // Act
-            await _weatherService.GetWeather(" ", false);
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _weatherService.GetWeather(" ", false));
         }
 
         [TestMethod]

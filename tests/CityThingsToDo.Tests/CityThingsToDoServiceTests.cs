@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace CityThingsToDo.Tests;
 
 [TestClass]
@@ -31,7 +33,7 @@ public class CityThingsToDoServiceTests
         var city = "Atlantis";
 
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<ArgumentException>(
+        await Assert.ThrowsAsync<ArgumentException>(
             async () => await _service.GetThingsToDoAsync(city),
             "Expected an ArgumentException for an unknown city, but none was thrown."
         );
@@ -44,7 +46,7 @@ public class CityThingsToDoServiceTests
     public async Task GetThingsToDoAsync_InvalidCity_ThrowsArgumentNullException(string city)
     {
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+        await Assert.ThrowsAsync<ArgumentNullException>(
             async () => await _service.GetThingsToDoAsync(city),
             "Expected an ArgumentNullException for a null or empty city string, but none was thrown."
         );

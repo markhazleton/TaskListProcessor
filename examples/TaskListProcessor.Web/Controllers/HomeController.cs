@@ -11,15 +11,25 @@ public class HomeController : Controller
 {
     private readonly TaskProcessingService _taskProcessingService;
     private readonly ILogger<HomeController> _logger;
+    private readonly SeoMetadataService _seoMetadataService;
+    private readonly SitemapService _sitemapService;
 
-    public HomeController(TaskProcessingService taskProcessingService, ILogger<HomeController> logger)
+    public HomeController(
+        TaskProcessingService taskProcessingService, 
+        ILogger<HomeController> logger, 
+        SeoMetadataService seoMetadataService,
+        SitemapService sitemapService)
     {
         _taskProcessingService = taskProcessingService;
         _logger = logger;
+        _seoMetadataService = seoMetadataService;
+        _sitemapService = sitemapService;
     }
 
     public IActionResult Index()
     {
+        SetSeoMetadata("home");
+        
         var model = new ProcessingConfigurationViewModel
         {
             SelectedCities = new List<string> { "London", "Paris", "New York", "Tokyo" },
@@ -263,28 +273,61 @@ public class HomeController : Controller
 
     public IActionResult Demo()
     {
+        SetSeoMetadata("demo");
         return View();
     }
 
     public IActionResult Documentation()
     {
+        SetSeoMetadata("documentation");
         return View();
     }
 
     public IActionResult Performance()
     {
+        SetSeoMetadata("performance");
         return View();
     }
 
     public IActionResult Architecture()
     {
+        SetSeoMetadata("architecture");
         return View();
+    }
+
+    private void SetSeoMetadata(string pageName)
+    {
+        var metadata = _seoMetadataService.GetMetadataForPage(pageName);
+        
+        ViewData["Title"] = metadata.Title;
+        ViewData["Description"] = metadata.Description;
+        ViewData["Keywords"] = metadata.Keywords;
+        ViewData["CanonicalUrl"] = metadata.CanonicalUrl;
+        ViewData["OgImage"] = metadata.ImageUrl;
+        ViewData["OgType"] = metadata.Type;
+        ViewData["StructuredData"] = _seoMetadataService.GenerateStructuredData(pageName);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [Route("sitemap.xml")]
+    [ResponseCache(Duration = 3600)] // Cache for 1 hour
+    public IActionResult Sitemap()
+    {
+        try
+        {
+            var sitemap = _sitemapService.GenerateSitemap();
+            return Content(sitemap, "application/xml", System.Text.Encoding.UTF8);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating sitemap");
+            return StatusCode(500, "Error generating sitemap");
+        }
     }
 }
 

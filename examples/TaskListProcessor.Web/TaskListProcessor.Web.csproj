@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Markdig" Version="0.37.0" />
-        <PackageReference Include="Markdig.SyntaxHighlighting" Version="0.2.0" />
+        <PackageReference Include="Markdig" Version="0.44.0" />
+        <PackageReference Include="Markdig.SyntaxHighlighting" Version="1.1.7" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
@@ -27,6 +27,7 @@
     <ItemGroup>
         <Content Remove="src\**" />
         <None Include="src\**" />
+        <Content Remove="appsettings.Production.json" />
         <Content Remove="package.json" />
         <Content Remove="rollup.config.js" />
         <Content Remove="package-lock.json" />

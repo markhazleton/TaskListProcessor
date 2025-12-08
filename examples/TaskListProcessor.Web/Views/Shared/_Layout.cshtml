@@ -4,12 +4,79 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="@ViewData["Description"] ?? " TaskListProcessor - A modern .NET 10 library for
-        orchestrating asynchronous operations with comprehensive telemetry and advanced scheduling capabilities."" />
-    <meta name="keywords" content="TaskListProcessor, .NET, Async, Performance, Telemetry, Circuit Breaker" />
+    
+    <!-- Primary Meta Tags -->
+    <title>@ViewData["Title"] - TaskListProcessor</title>
+    <meta name="title" content="@ViewData["Title"] - TaskListProcessor" />
+    <meta name="description" content="@ViewData["Description"] ?? "TaskListProcessor - A modern, enterprise-grade .NET 10 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities."" />
+    <meta name="keywords" content="@ViewData["Keywords"] ?? "TaskListProcessor, .NET 10, async task processing, enterprise library, circuit breaker pattern, telemetry, observability, OpenTelemetry, microservices, distributed systems, fault tolerance, task orchestration, C# library, async/await, performance optimization"" />
     <meta name="author" content="Mark Hazleton" />
-
-    <title>@ViewData["Title"] - TaskListProcessor Demo</title>
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@ViewData["CanonicalUrl"] ?? "https://tasklistprocessor.com"" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@ViewData["OgType"] ?? "website"" />
+    <meta property="og:url" content="@ViewData["CanonicalUrl"] ?? "https://tasklistprocessor.com"" />
+    <meta property="og:title" content="@ViewData["Title"] - TaskListProcessor" />
+    <meta property="og:description" content="@ViewData["Description"] ?? "Enterprise-grade .NET 10 library for asynchronous task processing with circuit breakers, telemetry, and fault tolerance."" />
+    <meta property="og:image" content="@ViewData["OgImage"] ?? "https://tasklistprocessor.com/images/tasklistprocessor-social.png"" />
+    <meta property="og:site_name" content="TaskListProcessor" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@ViewData["CanonicalUrl"] ?? "https://tasklistprocessor.com"" />
+    <meta name="twitter:title" content="@ViewData["Title"] - TaskListProcessor" />
+    <meta name="twitter:description" content="@ViewData["Description"] ?? "Enterprise-grade .NET 10 library for asynchronous task processing with circuit breakers and telemetry."" />
+    <meta name="twitter:image" content="@ViewData["OgImage"] ?? "https://tasklistprocessor.com/images/tasklistprocessor-social.png"" />
+    <meta name="twitter:creator" content="@@markhazleton" />
+    <meta name="twitter:site" content="@@markhazleton" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#0d6efd" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Structured Data (Schema.org) -->
+    @if (ViewData["StructuredData"] != null)
+    {
+        <script type="application/ld+json">
+            @Html.Raw(ViewData["StructuredData"])
+        </script>
+    }
+    else
+    {
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "TaskListProcessor",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Windows, Linux, macOS",
+            "description": "Enterprise-grade .NET 10 library for orchestrating asynchronous operations with comprehensive telemetry, circuit breakers, and advanced scheduling capabilities.",
+            "offers": {
+                "@@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "author": {
+                "@@type": "Person",
+                "name": "Mark Hazleton",
+                "url": "https://markhazleton.com"
+            },
+            "programmingLanguage": "C#",
+            "runtimePlatform": ".NET 10",
+            "keywords": "task processing, asynchronous operations, circuit breaker, telemetry, enterprise library",
+            "codeRepository": "https://github.com/markhazleton/TaskListProcessor",
+            "license": "https://github.com/markhazleton/TaskListProcessor/blob/main/LICENSE"
+        }
+        </script>
+    }
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="~/images/favicon.svg">

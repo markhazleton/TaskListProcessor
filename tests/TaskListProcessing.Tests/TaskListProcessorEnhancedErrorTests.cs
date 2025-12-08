@@ -166,7 +166,7 @@ public class TaskListProcessorEnhancedErrorTests
         cts.Cancel();
 
         // Assert
-        await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () => await processingTask);
+        await Assert.ThrowsAsync<TaskCanceledException>(async () => await processingTask);
     }
 
     [TestMethod]

@@ -1,0 +1,29 @@
+# robots.txt for TaskListProcessor
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Disallow crawling of API endpoints and system files
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /lib/
+Disallow: /css/
+Disallow: /js/
+
+# Sitemap location
+Sitemap: https://tasklistprocessor.com/sitemap.xml
